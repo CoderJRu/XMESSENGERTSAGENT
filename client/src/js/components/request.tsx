@@ -12,8 +12,8 @@ import { any } from "zod";
 
 //
 
-const supaKey: any = process.env["SUPABASE_KEY"];
-const supaUrl: any = process.env["SUPABASE_URL"];
+const supaKey: any = import.meta.env.VITE_SUPABASE_KEY;
+const supaUrl: any = import.meta.env.VITE_SUPABASE_URL;
 const supabase: any = createClient(supaUrl, supaKey);
 
 export const InsertDb = async (newData: any, pubKey: any) => {
@@ -26,10 +26,14 @@ export const InsertDb = async (newData: any, pubKey: any) => {
 };
 
 const connectMe = async () => {
-  await connectSdk();
+  try {
+    await connectSdk();
+  } catch (error) {
+    console.error("Connection failed:", error);
+  }
 };
 // connects the app to demos nodes :)
-connectMe();
+connectMe().catch(console.error);
 
 const UpdateDb = async (
   table: any,
@@ -53,7 +57,7 @@ const FetchDb = async (table: any, target: any, targetValue: any) => {
   return _data;
 };
 //generate phrases
-
+/*
 type KeypairResult = {
   _mnemonics: string;
   _status: any;
@@ -166,3 +170,4 @@ export const generatePhrases = async (): Promise<KeypairResult> => {
   console.log(resultsjson);
   return resultsjson;
 };
+*/

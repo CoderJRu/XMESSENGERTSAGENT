@@ -37,7 +37,7 @@ document
     showLoading();
 
     if (tempPhrase.length > 0) {
-      const results: any = {}; //await XmComponents.loginPhrase(tempPhrase);
+      const results: any = await XmComponents.loginPhrase(tempPhrase);
 
       if ((results as any).status === "success") {
         data = (results as any).data;
