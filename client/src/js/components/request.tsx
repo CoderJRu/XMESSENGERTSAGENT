@@ -26,14 +26,10 @@ export const InsertDb = async (newData: any, pubKey: any) => {
 };
 
 const connectMe = async () => {
-  try {
-    await connectSdk();
-  } catch (error) {
-    console.error("Connection failed:", error);
-  }
+  await connectSdk();
 };
 // connects the app to demos nodes :)
-connectMe().catch(console.error);
+connectMe();
 
 const UpdateDb = async (
   table: any,
