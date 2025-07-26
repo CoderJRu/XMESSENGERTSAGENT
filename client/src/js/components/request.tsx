@@ -32,11 +32,11 @@ export const InsertDb = async (newData: any, pubKey: any) => {
   } catch (err) {}
 };
 
-// const connectMe = async () => {
-//   await connectSdk();
-// };
+ const connectMe = async () => {
+   await connectSdk();
+ };
 // // connects the app to demos nodes :)
-// connectMe();
+ connectMe();
 
 const UpdateDb = async (
   table: any,
