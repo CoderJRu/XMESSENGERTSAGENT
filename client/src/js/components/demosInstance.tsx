@@ -3,15 +3,12 @@ import { Demos } from "@kynesyslabs/demosdk/websdk";
 import bip39 from "bip39";
 import { setupMessenger } from "./instantMessage.js";
 export async function connectSdk() {
-  try {
-    const demos = new Demos()
-    await demos.connect("http://84.247.128.61:53550")
-    console.log("connected to rpc:", demos.connected)
-    return demos
-  } catch (error) {
-    console.error("Failed to connect to RPC:", error)
-    return null
-  }
+ // var result = await demos.connect("http://84.247.128.61:53550");
+  //console.log("nodes results ", result.connected);
+  const demos = new Demos()
+  await demos.connect("http://84.247.128.61:53550")
+
+  console.log("connected to rpc:", demos.connected)
 }
 
 //me();
