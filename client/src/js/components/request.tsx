@@ -1,19 +1,26 @@
-import {
-  connectSdk,
-  loggingMnemonics,
-  generateKeypair,
-} from "./demosInstance.tsx";
+// Buffer polyfill for browser compatibility
+import { Buffer } from 'buffer';
+if (typeof window !== 'undefined') {
+  window.Buffer = Buffer;
+}
+
+// Temporarily comment demos SDK to test core functionality
+// import {
+//   connectSdk,
+//   loggingMnemonics,
+//   generateKeypair,
+// } from "./demosInstance.tsx";
 import { createClient } from "@supabase/supabase-js";
 import { generateID, generateFloatID, delay, abbrNum } from "./matheFunc.tsx";
 import { lastNames, firstNames } from "./names.tsx";
-import { setupMessenger } from "./instantMessage.js";
+// import { setupMessenger } from "./instantMessage.js";
 import { promises } from "dns";
 import { any } from "zod";
 
 //
 
-const supaKey: any = process.env["SUPABASE_KEY"];
-const supaUrl: any = process.env["SUPABASE_URL"];
+const supaUrl: any = import.meta.env.VITE_SUPABASE_URL;
+const supaKey: any = import.meta.env.VITE_SUPABASE_KEY;
 const supabase: any = createClient(supaUrl, supaKey);
 
 export const InsertDb = async (newData: any, pubKey: any) => {
@@ -25,11 +32,11 @@ export const InsertDb = async (newData: any, pubKey: any) => {
   } catch (err) {}
 };
 
-const connectMe = async () => {
-  await connectSdk();
-};
-// connects the app to demos nodes :)
-connectMe();
+// const connectMe = async () => {
+//   await connectSdk();
+// };
+// // connects the app to demos nodes :)
+// connectMe();
 
 const UpdateDb = async (
   table: any,
@@ -53,7 +60,6 @@ const FetchDb = async (table: any, target: any, targetValue: any) => {
   return _data;
 };
 //generate phrases
-
 type KeypairResult = {
   _mnemonics: string;
   _status: any;
@@ -108,7 +114,14 @@ type LoggedAccount = {
 export const loginPhrase = async (PhraseList: any): Promise<LoggedAccount> => {
   try {
     var _phraseList: any = PhraseList;
-    var status: any = await loggingMnemonics(_phraseList);
+    // Temporarily return mock data for testing
+    const loggedResults: LoggedAccount = {
+      status: "success", 
+      data: { id: "test", username: "TestUser", publicKey: "testkey" },
+      peer: null
+    };
+    return loggedResults;
+    // var status: any = await loggingMnemonics(_phraseList);
     const decoder: any = new TextDecoder();
     console.log(
       "public is ",
@@ -152,17 +165,14 @@ export const loginPhrase = async (PhraseList: any): Promise<LoggedAccount> => {
 };
 
 export const generatePhrases = async (): Promise<KeypairResult> => {
-  const { _mnemonics, _status, _keypair, _publicKey, _privateKey } =
-    await generateKeypair();
-
+  // Temporarily return mock data for testing
   const resultsjson: KeypairResult = {
-    _mnemonics,
-    _status,
-    _keypair,
-    _publicKey,
-    _privateKey,
+    _mnemonics: "test mnemonic phrase",
+    _status: "success",
+    _keypair: { publicKey: "testpubkey", privateKey: "testprivkey" },
+    _publicKey: "testpubkey", 
+    _privateKey: "testprivkey"
   };
-
   console.log(resultsjson);
   return resultsjson;
 };
