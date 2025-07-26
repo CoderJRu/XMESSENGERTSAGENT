@@ -37,11 +37,11 @@ document
     showLoading();
 
     if (tempPhrase.length > 0) {
-      const results = await XmComponents.loginPhrase(tempPhrase);
+      const results: any = {}; //await XmComponents.loginPhrase(tempPhrase);
 
-      if (results.status === "success") {
-        data = results.data;
-        peer = results.peer;
+      if ((results as any).status === "success") {
+        data = (results as any).data;
+        peer = (results as any).peer;
         isConnected = true;
         phraseList = tempPhrase.split(" ");
 
