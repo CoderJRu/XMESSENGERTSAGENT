@@ -5,33 +5,37 @@ export let isConnected: boolean = false;
 
 // Success popup functions
 export function showSuccessPopup(title: string, message: string): void {
-  const overlay = document.getElementById('success-popup-overlay');
-  const titleEl = document.getElementById('success-title');
-  const messageEl = document.getElementById('success-message');
-  
+  const overlay = document.getElementById("success-popup-overlay");
+  const titleEl = document.getElementById("success-title");
+  const messageEl = document.getElementById("success-message");
+
   if (overlay && titleEl && messageEl) {
     titleEl.textContent = title;
     messageEl.textContent = message;
-    overlay.classList.add('show');
+    overlay.classList.add("show");
   }
 }
 
 export function hideSuccessPopup(): void {
-  const overlay = document.getElementById('success-popup-overlay');
+  const overlay = document.getElementById("success-popup-overlay");
   if (overlay) {
-    overlay.classList.remove('show');
+    overlay.classList.remove("show");
   }
 }
 
 // Button state management
 export function updateButtonStates(): void {
-  const connectBtn = document.getElementById('connect-button-id') as HTMLButtonElement;
-  const createBtn = document.getElementById('create-button-id') as HTMLButtonElement;
-  const connectPara = document.querySelector('.connect-para') as HTMLElement;
-  
+  const connectBtn = document.getElementById(
+    "connect-button-id",
+  ) as HTMLButtonElement;
+  const createBtn = document.getElementById(
+    "create-button-id",
+  ) as HTMLButtonElement;
+  const connectPara = document.querySelector(".connect-para") as HTMLElement;
+
   if (isConnected) {
     if (connectBtn) {
-      connectBtn.textContent = 'Connected';
+      connectBtn.textContent = "Connected";
       connectBtn.disabled = true;
     }
     if (createBtn) {
@@ -98,7 +102,10 @@ document
 
         hideLoading();
         updateButtonStates();
-        showSuccessPopup("Wallet Connected!", "Your account has been successfully connected. Welcome back!");
+        showSuccessPopup(
+          "Wallet Connected!",
+          "Your account has been successfully connected. Welcome back!",
+        );
       } else {
         hideLoading();
       }
@@ -219,22 +226,27 @@ document
       data = results.data;
       console.log(data);
       updateButtonStates();
-      showSuccessPopup("Account Created!", "Your new wallet account has been created successfully. Your recovery phrases have been generated.");
+      showSuccessPopup(
+        "Account Created!",
+        "Your new wallet account has been created successfully. Your recovery phrases have been generated.",
+      );
     }
 
     hideLoading();
   });
 
 // Success popup close handler
-document.getElementById('success-close-btn')?.addEventListener('click', () => {
+document.getElementById("success-close-btn")?.addEventListener("click", () => {
   hideSuccessPopup();
 });
 
 // Close popup when clicking outside
-document.getElementById('success-popup-overlay')?.addEventListener('click', (e) => {
-  if (e.target === document.getElementById('success-popup-overlay')) {
-    hideSuccessPopup();
-  }
-});
+document
+  .getElementById("success-popup-overlay")
+  ?.addEventListener("click", (e) => {
+    if (e.target === document.getElementById("success-popup-overlay")) {
+      hideSuccessPopup();
+    }
+  });
 
 hideLoading();
