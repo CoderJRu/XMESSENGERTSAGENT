@@ -2492,10 +2492,6 @@ z-index: 1;
   width: 120px;
   height: 120px;
   margin-bottom: 16px;
-  border-radius: 50%;
-  overflow: hidden;
-  background: rgba(255, 255, 255, 0.05);
-  border: 3px solid rgba(255, 255, 255, 0.1);
 }
 
 .profile-image {
@@ -2503,8 +2499,8 @@ z-index: 1;
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
+  border: 4px solid rgba(255, 255, 255, 0.1);
   transition: all 0.3s ease;
-  background: rgba(255, 255, 255, 0.03);
 }
 
 .profile-image-overlay {
@@ -2678,10 +2674,10 @@ z-index: 1;
 
 @media (max-width: 768px) {
   .profile-content {
-    padding: 20px;
+    padding: 24px;
     width: 95%;
     max-width: none;
-    margin: 10px;
+    margin: 20px;
   }
   
   .profile-header h3 {
@@ -2691,27 +2687,10 @@ z-index: 1;
   .profile-image-container {
     width: 100px;
     height: 100px;
-    border-width: 2px;
-  }
-  
-  .upload-icon {
-    font-size: 20px;
-  }
-  
-  .upload-text {
-    font-size: 10px;
   }
   
   .profile-actions {
     flex-direction: column;
-  }
-  
-  .profile-avatar-section {
-    margin-bottom: 24px;
-  }
-  
-  .profile-form {
-    gap: 20px;
   }
 }
 
