@@ -1,14 +1,17 @@
 import { DemosWebAuth } from "@kynesyslabs/demosdk/websdk";
 import { Demos } from "@kynesyslabs/demosdk/websdk";
-import bip39 from "bip39";
+import * as bip39 from "bip39";
+import { Buffer } from "buffer";
+import { toHex } from "./RexyMath.jsx";
+
 import { setupMessenger } from "./instantMessage.js";
 export async function connectSdk() {
- // var result = await demos.connect("http://84.247.128.61:53550");
+  // var result = await demos.connect("http://84.247.128.61:53550");
   //console.log("nodes results ", result.connected);
-  const demos = new Demos()
-  await demos.connect("http://84.247.128.61:53550")
+  const demos = new Demos();
+  await demos.connect("https://demosnode.discus.sh");
 
-  console.log("connected to rpc:", demos.connected)
+  console.log("connected to rpc:", demos.connected);
 }
 
 //me();
@@ -32,7 +35,7 @@ export const generateKeypair = async () => {
 
   var newKeys = {
     publicKey: Buffer.from(publicKey).toString("hex"),
-    privateKey: Buffer.from(privateKey).toString("hex"),
+    privateKey: Buffer.from(publicKey).toString("hex"),
   };
 
   return {
@@ -41,12 +44,13 @@ export const generateKeypair = async () => {
     _keypair: newKeys,
     _publicKey: Buffer.from(publicKey).toString("hex"),
     _privateKey: Buffer.from(privateKey).toString("hex"),
+    identity: identity,
   };
 };
 
 //generateKeypair();
 
-export const loggingMnemonics = async (mnemonics:any) => {
+export const loggingMnemonics = async (mnemonics: any) => {
   const seed = bip39.mnemonicToSeedSync(mnemonics);
   const keypair = DemosWebAuth.keyPairFromMnemonic(seed);
   const [status, message] = await identity.login(keypair.privateKey);
@@ -54,7 +58,7 @@ export const loggingMnemonics = async (mnemonics:any) => {
   const bufferMsg = Buffer.from(msg);
   const [_status, signature] = await identity.sign(bufferMsg);
   console.log("signature is ", identity.publicKey);
- // const peer = await setupMessenger(identity, _id);
+  // const peer = await setupMessenger(identity, _id);
   //await peer.sendMessage("target-peer-id", "Hello from me!");
   //await identity.logout();
   return {

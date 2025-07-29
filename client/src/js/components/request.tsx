@@ -9,7 +9,8 @@ import { lastNames, firstNames } from "./names.tsx";
 import { setupMessenger } from "./instantMessage.js";
 import { promises } from "dns";
 import { any } from "zod";
-
+import { Buffer } from "buffer";
+import { toHex } from "./RexyMath.tsx";
 //
 
 const supaKey: any = import.meta.env.VITE_SUPABASE_KEY;
@@ -53,7 +54,7 @@ const FetchDb = async (table: any, target: any, targetValue: any) => {
   return _data;
 };
 //generate phrases
-/*
+
 type KeypairResult = {
   _mnemonics: string;
   _status: any;
@@ -67,6 +68,7 @@ type KeypairResult = {
 
 type AccountCreated = {
   status: string;
+  data: any;
 };
 
 export const createAccount = async (
@@ -90,47 +92,53 @@ export const createAccount = async (
     await InsertDb(_newData, publicKey);
     const resultsJson: AccountCreated = {
       status: "success",
+      data: _newData,
     };
     return resultsJson;
   } catch (err) {
     console.log(err);
     const resultsJson: AccountCreated = {
       status: "failed",
+      data: null,
     };
     return resultsJson;
   }
 };
+
 type LoggedAccount = {
   status: string;
   data: any;
   peer: any;
 };
+
 export const loginPhrase = async (PhraseList: any): Promise<LoggedAccount> => {
   try {
     var _phraseList: any = PhraseList;
     var status: any = await loggingMnemonics(_phraseList);
+
     const decoder: any = new TextDecoder();
     console.log(
       "public is ",
       Buffer.from(status.keypair.publicKey).toString("hex"),
     );
-    var myData = await FetchDb(
-      "user",
-      "api",
-      Buffer.from(status.keypair.publicKey).toString("hex"),
-    );
+    console.log("public is ", toHex(status.keypair.publicKey));
+    var myData = await FetchDb("user", "api", toHex(status.keypair.publicKey));
+    console.log("the logged data is :", myData);
+
     //
     if (myData.length > 0) {
       var fetchedData = myData[0].data;
       var myidentity = status.identity;
-      var peer = await setupMessenger(myidentity, fetchedData.id);
-      console.log("peer is ", peer);
+      // var peer = await setupMessenger(myidentity, fetchedData.id);
+      // console.log("peer is ", peer);
+
       //ceate a message recieve promise of the logged data
       const loggedResults: LoggedAccount = {
         status: "success",
         data: fetchedData,
-        peer: peer,
+        peer: null,
       };
+
       return loggedResults;
     } else {
       const loggedResults: LoggedAccount = {
@@ -166,4 +174,3 @@ export const generatePhrases = async (): Promise<KeypairResult> => {
   console.log(resultsjson);
   return resultsjson;
 };
-*/

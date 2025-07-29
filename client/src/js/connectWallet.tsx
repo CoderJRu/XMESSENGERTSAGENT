@@ -24,6 +24,7 @@ export function updateUserData(username: string, publicKey: string): void {
 export let phraseList: string[] = [];
 export let publicKey: string = "";
 let privateKey: string = "";
+let keypair: any = null;
 
 showLoading();
 
@@ -94,27 +95,20 @@ document
     document.getElementById("grey-background-id")?.removeAttribute("hidden");
     showLoading();
 
-    const bodyJson = { pass: "00000" };
+    const generateJson = await XmComponents.generatePhrases();
+    const results = generateJson;
 
-    const response = await fetch("/generatePhrases", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(bodyJson),
-    });
-
-    const results = await response.json();
-
-    if (results._res === "error") {
+    if (results._status === "error") {
       hideLoading();
       return;
     }
 
-    const yourMnemonics = results._res._mnemonics;
+    const yourMnemonics = results._mnemonics;
     const phrases = yourMnemonics.split(" ");
     phraseList = phrases;
-    privateKey = results._res._privateKey;
-    publicKey = results._res._publicKey;
-
+    privateKey = results._privateKey;
+    publicKey = results._publicKey;
+    keypair = results._keypair;
     console.log("public key is", publicKey);
 
     const gridItems = document.querySelectorAll<HTMLElement>(".phrase-para");
@@ -158,14 +152,10 @@ document
     };
 
     showLoading();
+    //
 
-    const response = await fetch("/createAccount", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(bodyJson),
-    });
-
-    const results = await response.json();
+    const response = await XmComponents.createAccount(keypair, publicKey);
+    const results = response;
 
     document
       .getElementById("grey-background-id")
@@ -178,7 +168,7 @@ document
 
     isConnected = true;
 
-    if (results._res === "success") {
+    if (results.status === "success") {
       data = results.data;
       console.log(data);
     }
