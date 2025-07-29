@@ -3,6 +3,42 @@ import * as XmComponents from "../js/components/request";
 
 export let isConnected: boolean = false;
 
+// Success popup functions
+export function showSuccessPopup(title: string, message: string): void {
+  const overlay = document.getElementById('success-popup-overlay');
+  const titleEl = document.getElementById('success-title');
+  const messageEl = document.getElementById('success-message');
+  
+  if (overlay && titleEl && messageEl) {
+    titleEl.textContent = title;
+    messageEl.textContent = message;
+    overlay.classList.add('show');
+  }
+}
+
+export function hideSuccessPopup(): void {
+  const overlay = document.getElementById('success-popup-overlay');
+  if (overlay) {
+    overlay.classList.remove('show');
+  }
+}
+
+// Button state management
+export function updateButtonStates(): void {
+  const connectBtn = document.getElementById('connect-button-id') as HTMLButtonElement;
+  const createBtn = document.getElementById('create-button-id') as HTMLButtonElement;
+  
+  if (isConnected) {
+    if (connectBtn) {
+      connectBtn.textContent = 'Connected';
+      connectBtn.disabled = true;
+    }
+    if (createBtn) {
+      createBtn.disabled = true;
+    }
+  }
+}
+
 export interface WalletData {
   username: string;
   publicKey: string;
@@ -52,6 +88,8 @@ document
         connectModal?.setAttribute("hidden", "true");
 
         hideLoading();
+        updateButtonStates();
+        showSuccessPopup("Wallet Connected!", "Your account has been successfully connected. Welcome back!");
       } else {
         hideLoading();
       }
@@ -171,9 +209,23 @@ document
     if (results.status === "success") {
       data = results.data;
       console.log(data);
+      updateButtonStates();
+      showSuccessPopup("Account Created!", "Your new wallet account has been created successfully. Your recovery phrases have been generated.");
     }
 
     hideLoading();
   });
+
+// Success popup close handler
+document.getElementById('success-close-btn')?.addEventListener('click', () => {
+  hideSuccessPopup();
+});
+
+// Close popup when clicking outside
+document.getElementById('success-popup-overlay')?.addEventListener('click', (e) => {
+  if (e.target === document.getElementById('success-popup-overlay')) {
+    hideSuccessPopup();
+  }
+});
 
 hideLoading();
