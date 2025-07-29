@@ -27,6 +27,7 @@ export function hideSuccessPopup(): void {
 export function updateButtonStates(): void {
   const connectBtn = document.getElementById('connect-button-id') as HTMLButtonElement;
   const createBtn = document.getElementById('create-button-id') as HTMLButtonElement;
+  const connectPara = document.querySelector('.connect-para') as HTMLElement;
   
   if (isConnected) {
     if (connectBtn) {
@@ -35,6 +36,14 @@ export function updateButtonStates(): void {
     }
     if (createBtn) {
       createBtn.disabled = true;
+    }
+    if (connectPara) {
+      connectPara.innerHTML = `
+        <svg style="display: inline-block; width: 20px; height: 20px; margin-right: 8px; vertical-align: middle;" viewBox="0 0 24 24" fill="none" stroke="#4CAF50" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="20,6 9,17 4,12"></polyline>
+        </svg>
+        <span style="color: #4CAF50;">Wallet connected</span>
+      `;
     }
   }
 }
