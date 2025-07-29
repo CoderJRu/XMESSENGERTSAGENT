@@ -26,105 +26,50 @@ function handleImageUpload(file: File): void {
 
   const reader = new FileReader();
   reader.onload = (e) => {
-    if (!e.target?.result) {
-      alert('Failed to read image file');
-      return;
-    }
-
     const img = new Image();
     img.onload = () => {
-      try {
-        // Create canvas to resize image
-        const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
-        
-        if (!ctx) {
-          alert('Canvas not supported on this device');
-          return;
-        }
-        
-        // Set canvas size to 1024x1024
-        canvas.width = 1024;
-        canvas.height = 1024;
-        
-        // Draw and resize image
-        ctx.drawImage(img, 0, 0, 1024, 1024);
-        
-        // Get resized image as data URL
-        currentProfileImage = canvas.toDataURL('image/jpeg', 0.8);
-        
-        // Update the displayed image
-        const profileImg = document.querySelector('.profile-image') as HTMLImageElement;
-        if (profileImg) {
-          profileImg.src = currentProfileImage;
-        }
-      } catch (error) {
-        console.error('Error processing image:', error);
-        alert('Failed to process image. Please try a different image.');
+      // Create canvas to resize image
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      
+      // Set canvas size to 1024x1024
+      canvas.width = 1024;
+      canvas.height = 1024;
+      
+      // Draw and resize image
+      ctx?.drawImage(img, 0, 0, 1024, 1024);
+      
+      // Get resized image as data URL
+      currentProfileImage = canvas.toDataURL('image/jpeg', 0.8);
+      
+      // Update the displayed image
+      const profileImg = document.querySelector('.profile-image') as HTMLImageElement;
+      if (profileImg) {
+        profileImg.src = currentProfileImage;
       }
     };
-    
-    img.onerror = () => {
-      alert('Failed to load image. Please try a different file.');
-    };
-    
-    img.src = e.target.result as string;
+    img.src = e.target?.result as string;
   };
-  
-  reader.onerror = () => {
-    alert('Failed to read file. Please try again.');
-  };
-  
   reader.readAsDataURL(file);
 }
 
 // Copy public key to clipboard
 function copyPublicKey(): void {
   const publicKey = data.publicKey || '';
-  
-  // Check if clipboard API is available
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(publicKey).then(() => {
-      showCopySuccess();
-    }).catch(() => {
-      fallbackCopy(publicKey);
-    });
-  } else {
-    fallbackCopy(publicKey);
-  }
-}
-
-// Fallback copy method for older browsers/mobile
-function fallbackCopy(text: string): void {
-  const textArea = document.createElement('textarea');
-  textArea.value = text;
-  textArea.style.position = 'fixed';
-  textArea.style.opacity = '0';
-  document.body.appendChild(textArea);
-  textArea.select();
-  
-  try {
-    document.execCommand('copy');
-    showCopySuccess();
-  } catch (err) {
-    alert('Failed to copy public key. Please copy manually.');
-  }
-  
-  document.body.removeChild(textArea);
-}
-
-// Show copy success feedback
-function showCopySuccess(): void {
-  const copyBtn = document.querySelector('.copy-key-btn') as HTMLElement;
-  if (copyBtn) {
-    const originalText = copyBtn.textContent;
-    copyBtn.textContent = 'Copied!';
-    copyBtn.style.background = 'rgba(76, 175, 80, 0.4)';
-    setTimeout(() => {
-      copyBtn.textContent = originalText;
-      copyBtn.style.background = 'rgba(76, 175, 80, 0.2)';
-    }, 2000);
-  }
+  navigator.clipboard.writeText(publicKey).then(() => {
+    const copyBtn = document.querySelector('.copy-key-btn') as HTMLElement;
+    if (copyBtn) {
+      const originalText = copyBtn.textContent;
+      copyBtn.textContent = 'Copied!';
+      copyBtn.style.background = 'rgba(76, 175, 80, 0.4)';
+      setTimeout(() => {
+        copyBtn.textContent = originalText;
+        copyBtn.style.background = 'rgba(76, 175, 80, 0.2)';
+      }, 2000);
+    }
+  }).catch(() => {
+    alert('Failed to copy public key');
+  });
 }
 
 // Save profile changes
