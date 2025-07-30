@@ -17,17 +17,24 @@ document.addEventListener("DOMContentLoaded", () => {
     "chat-interface",
   ) as HTMLElement | null;
   const contactItems = document.querySelectorAll(".contact-item");
-  const chatBackBtn = document.getElementById("chat-back-btn");
+  const chatBackBtn = document.querySelector(".chat-back-container");
   const contactsBackBtn = document.getElementById("contacts-back-btn");
   const chatUsername = document.getElementById("chat-username");
   const chatLastSeen = document.getElementById("chat-last-seen");
 
+  // Function to go back to contacts
+  const goBackToContacts = (): void => {
+    console.log("Going back to contact list");
+    if (contactListView && chatInterface) {
+      contactListView.style.display = "block";
+      chatInterface.style.display = "none";
+    }
+  };
+
   contactItems.forEach((item) => {
-    item.addEventListener("click", function () {
-      const username =
-        (this as HTMLElement).getAttribute("data-username") || "";
-      const lastSeen =
-        (this as HTMLElement).getAttribute("data-lastseen") || "";
+    item.addEventListener("click", function (this: HTMLElement) {
+      const username = this.getAttribute("data-username") || "";
+      const lastSeen = this.getAttribute("data-lastseen") || "";
 
       if (chatUsername) chatUsername.textContent = username;
       if (chatLastSeen) chatLastSeen.textContent = lastSeen;
@@ -40,21 +47,13 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   if (chatBackBtn) {
-    function goBackToContacts(): void {
-      console.log("Going back to contact list");
-      if (contactListView && chatInterface) {
-        contactListView.style.display = "block";
-        chatInterface.style.display = "none";
-      }
-    }
-
-    chatBackBtn.addEventListener("pointerup", (e: PointerEvent) => {
+    chatBackBtn.addEventListener("click", (e: Event) => {
       e.preventDefault();
       e.stopPropagation();
       goBackToContacts();
     });
 
-    chatBackBtn.addEventListener("click", (e: MouseEvent) => {
+    chatBackBtn.addEventListener("touchstart", (e: Event) => {
       e.preventDefault();
       e.stopPropagation();
       goBackToContacts();
@@ -111,55 +110,58 @@ document.addEventListener("DOMContentLoaded", () => {
   const sendBtn = document.getElementById("chat-send-btn");
   const messagesContainer = document.getElementById("chat-messages");
 
-  if (messageInput && sendBtn && messagesContainer) {
-    async function sendMessage(): Promise<void> {
-      const messageText = messageInput.value.trim();
-      if (messageText) {
-        const messageDiv = document.createElement("div");
-        messageDiv.className = "message sent";
+  // Send message function
+  const sendMessage = async (): Promise<void> => {
+    if (!messageInput || !messagesContainer) return;
+    
+    const messageText = messageInput.value.trim();
+    if (messageText) {
+      const messageDiv = document.createElement("div");
+      messageDiv.className = "message sent";
 
-        const messageContent = document.createElement("div");
-        messageContent.className = "message-content";
-        messageContent.textContent = messageText;
+      const messageContent = document.createElement("div");
+      messageContent.className = "message-content";
+      messageContent.textContent = messageText;
 
-        const messageTime = document.createElement("div");
-        messageTime.className = "message-time";
-        messageTime.textContent = new Date().toLocaleTimeString([], {
-          hour: "2-digit",
-          minute: "2-digit",
-        });
-
-        messageDiv.appendChild(messageContent);
-        messageDiv.appendChild(messageTime);
-        messagesContainer.appendChild(messageDiv);
-
-        messageInput.value = "";
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
-      }
-
-      const bodyJson = {
-        PhraseList: phraseList,
-        Data: data,
-        profileID: (data as any).id, // adjust this if you define `data` type
-        senderID: currentChatBuddyPublicId,
-        message: messageText,
-      };
-
-      const response = await fetch("/sendMessage", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(bodyJson),
+      const messageTime = document.createElement("div");
+      messageTime.className = "message-time";
+      messageTime.textContent = new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
       });
 
-      const results = await response.json();
+      messageDiv.appendChild(messageContent);
+      messageDiv.appendChild(messageTime);
+      messagesContainer.appendChild(messageDiv);
 
-      if (results._res === "success") {
-        // Optional: handle success case
-      }
+      messageInput.value = "";
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
 
+    const bodyJson = {
+      PhraseList: phraseList,
+      Data: data,
+      profileID: (data as any).id, // adjust this if you define `data` type
+      senderID: currentChatBuddyPublicId,
+      message: messageText,
+    };
+
+    const response = await fetch("/sendMessage", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(bodyJson),
+    });
+
+    const results = await response.json();
+
+    if (results._res === "success") {
+      // Optional: handle success case
+    }
+  };
+
+  if (messageInput && sendBtn && messagesContainer) {
     sendBtn.addEventListener("click", sendMessage);
 
     messageInput.addEventListener("keypress", (e: KeyboardEvent) => {
