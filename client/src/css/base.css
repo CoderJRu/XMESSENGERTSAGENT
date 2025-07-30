@@ -1308,7 +1308,7 @@ margin: auto -40px;
   margin: 0;
   gap: 0;
   background: rgba(14, 16, 19, 1);
-  padding: 0 20px;
+  padding: 0 30px;
 }
 
 .contact-item {
@@ -1325,6 +1325,7 @@ margin: auto -40px;
 .contact-item:hover {
   background: rgba(255, 255, 255, 0.05);
   transform: translateX(2px);
+  border-radius: 12px;
 }
 
 .contact-item:last-child {
@@ -1393,7 +1394,7 @@ margin: auto -40px;
 .search-div {
   text-align: center;
   width: 100%;
-  padding: 20px;
+  padding: 20px 30px;
   height: auto;
   display: flex;
   flex-direction: column;
