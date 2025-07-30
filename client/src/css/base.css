@@ -1299,62 +1299,21 @@ margin: auto -40px;
 @media (max-width: 768px) {
   .chat-interface {
     height: 100vh;
-    height: 100dvh; /* Use dynamic viewport height for mobile */
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1000;
     overflow: hidden;
   }
   
   .chat-header {
-    padding: 12px 16px;
-    min-height: 60px;
-    position: sticky;
-    top: 0;
-    z-index: 10;
+    padding: 14px 18px;
+    min-height: 65px;
   }
   
   .chat-messages {
-    flex: 1;
-    overflow-y: auto;
-    padding: 16px;
-    padding-bottom: 80px; /* Space for input bar */
-    min-height: 0;
-    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+    padding: 18px;
   }
   
   .chat-input-bar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 12px 16px;
-    background: rgba(14, 16, 19, 0.95);
-    backdrop-filter: blur(20px);
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    z-index: 10;
-    min-height: 60px;
-  }
-  
-  .chat-back-container {
-    width: 36px;
-    height: 36px;
-  }
-  
-  .chat-user-avatar {
-    width: 40px;
-    height: 40px;
-  }
-  
-  .chat-user-info h3 {
-    font-size: 14px;
-  }
-  
-  .chat-user-info p {
-    font-size: 11px;
+    padding: 14px 18px;
+    min-height: 65px;
   }
 }
 
