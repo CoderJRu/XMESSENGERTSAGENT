@@ -181,16 +181,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!contactListContainer) return;
 
     if (users.length === 0) {
-      const noResultsDiv = document.createElement("div");
-      noResultsDiv.className = "search-result no-results";
-      noResultsDiv.innerHTML = `
-        <div class="names-disp">
-          <p style="text-align: center; color: #666; padding: 20px;">
-            No users found
-          </p>
-        </div>
-      `;
-      contactListContainer.appendChild(noResultsDiv);
+      // Don't show "No users found" message, just keep it clean
       return;
     }
 
