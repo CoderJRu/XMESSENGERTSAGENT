@@ -789,89 +789,11 @@ html{
   border-color: rgba(255, 255, 255, 0.3);
   transform: scale(1.05);
 }
+
 /* Chat Interface Styles */
 .chat-plane{
   z-index: 0;
   opacity: 0;
-}
-
-.chat-container {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  max-width: 500px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.chat-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 20px;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  margin-bottom: 30px;
-  margin-top: 5px;
-}
-
-.chat-header-left {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.chat-user-avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-}
-
-.chat-user-info h3 {
-  color: #FFF;
-  font-size: 16px;
-  font-weight: 600;
-  margin: 0;
-}
-
-.chat-user-info p {
-  color: #9AA0A6;
-  font-size: 12px;
-  margin: 0;
-}
-
-.chat-menu-dropdown {
-  position: relative;
-}
-
-.chat-menu-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 8px;
-  border-radius: 50%;
-  transition: background 0.2s;
-}
-
-.chat-menu-btn:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.chat-dropdown-content {
-  display: none;
-  position: absolute;
-  right: 0;
-  top: 100%;
-  background: rgba(14, 16, 19, 0.95);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  min-width: 150px;
-  z-index: 1000;
-}
-
-.chat-dropdown-content.show {
-  display: block;
 }
 
 .chat-dropdown-item {
@@ -1126,6 +1048,7 @@ html{
     height: 40px;
     padding: 0 12px;
     font-size: 16px;
+    top: -30px;
   }
   
   .names-disp {
@@ -1139,35 +1062,46 @@ html{
   }
   
   .offsetmod {
-    margin: -60px auto;
+    margin: -40px auto 0;
     gap: 16px;
     padding-top: 20px;
   }
 }
 
-/* Duplicate removed - using modern version above */
+.offsetmod{
+  text-align:center;
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: -50px auto 0;
+  gap: 20px;
+  padding-top: 20px;
+}
 
 .search-div{
   text-align:center;
   width: 80%;
-  padding-top: 150px;
+  padding-top: 100px;
   height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   margin: auto;
-  gap: 30px;
+  gap: 20px;
 }
 .search-msgs{
   width: 100%;
-  height: 44px;
+  height: 40px;
   position: relative;
   margin: auto;
   display: block;
-  top: -120px;
+  top: -50px;
   color: #FFFFFF;
-  border-radius: 16px;
+  border-radius: 12px;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.06) 100%);
   border: 1px solid rgba(255, 255, 255, 0.2);
   backdrop-filter: blur(20px);
@@ -1195,17 +1129,16 @@ html{
   position: fixed;
   align-items: center;
   justify-content: center;
-  right: 0;
+  right: 0;  
   left: 0;
   top: 65px;
   bottom: 0;
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #0a0a0a 100%);
+  background: rgba(14,16,19, 1);
   display: flex;
   align-items: center;
-  z-index: 10;
+  z-index: 2;
   opacity: 1;
   transition: all 0.8s ease;
-  backdrop-filter: blur(20px);
 }
 .swap-plane{
   z-index: 0;
