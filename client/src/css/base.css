@@ -496,6 +496,31 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+/* Desktop and Tablet Layout - Constrain chat width */
+@media (min-width: 769px) {
+  .chat-plane {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  
+  .chat-interface {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  
+  #contact-list-view {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+  
+  .chat-plane.active {
+    max-width: 500px;
+    left: 50%;
+    transform: translateX(-50%);
+    right: auto;
+  }
+}
+
 /* Responsive Chat Styles */
 @media (max-width: 768px) {
   .chat-header {
@@ -1048,6 +1073,8 @@ margin: auto -40px;
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .chat-interface {
@@ -1056,6 +1083,8 @@ margin: auto -40px;
   flex-direction: column;
   background: rgba(14, 16, 19, 1);
   position: relative;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .chat-header {
@@ -1434,7 +1463,6 @@ margin: auto -40px;
 }
 .chat-plane.active{
   text-align:center;
-
   margin: 0px auto;
   position: fixed;
   align-items: center;
@@ -1449,7 +1477,8 @@ margin: auto -40px;
   align-items:center;
   z-index: 1;
   opacity: 1;
-   transition: 1.2s;
+  transition: 1.2s;
+  max-width: 600px;
 }
 .swap-plane{
   z-index: 0;
