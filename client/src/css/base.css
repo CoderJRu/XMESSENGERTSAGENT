@@ -1043,7 +1043,7 @@ margin: auto -40px;
 /* Modern Chat Interface Styles */
 .chat-plane {
   height: 100vh;
-  background: #000000;
+  background: rgba(14, 16, 19, 1);
   color: #ffffff;
   display: flex;
   flex-direction: column;
@@ -1054,7 +1054,7 @@ margin: auto -40px;
   height: 100vh;
   display: flex;
   flex-direction: column;
-  background: #000000;
+  background: rgba(14, 16, 19, 1);
   position: relative;
 }
 
@@ -1136,7 +1136,7 @@ margin: auto -40px;
   display: flex;
   flex-direction: column;
   gap: 20px;
-  background: #000000;
+  background: rgba(14, 16, 19, 1);
   min-height: 0;
 }
 
@@ -1307,7 +1307,7 @@ margin: auto -40px;
   justify-content: flex-start;
   margin: 0;
   gap: 0;
-  background: #000000;
+  background: rgba(14, 16, 19, 1);
   padding: 0 20px;
 }
 
@@ -1401,7 +1401,7 @@ margin: auto -40px;
   justify-content: flex-start;
   margin: 0;
   gap: 0;
-  background: #000000;
+  background: rgba(14, 16, 19, 1);
 }
 
 .search-msgs {
