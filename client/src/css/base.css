@@ -877,11 +877,8 @@ html {
   background-color: rgba(14, 16, 19, 0.19);
   display: flex;
   align-items: center;
-  z-index: 0;
+  z-index: -10;
   opacity: 1;
-  /* iPhone Safari fixes */
-  -webkit-transform: translateZ(0);
-  transform: translateZ(0);
 
   transition: 1.2s;
 }
@@ -893,15 +890,8 @@ html {
   background-size: contain;
   background-repeat: no-repeat;
   background-image: url('../img/mask.png');
-  background-position: center;
   width: 680px;
   height: 680px;
-  z-index: 1;
-  /* Safari/iPhone specific fixes */
-  -webkit-background-size: contain;
-  -webkit-transform: translateZ(0);
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
 
 }
 
@@ -1060,56 +1050,7 @@ html {
   }
 }
 
-/* iPhone Safari specific fixes */
-@supports (-webkit-touch-callout: none) {
-  .home-div-content {
-    -webkit-transform: translate3d(0, 0, 0) !important;
-    transform: translate3d(0, 0, 0) !important;
-    -webkit-backface-visibility: hidden !important;
-    backface-visibility: hidden !important;
-    -webkit-perspective: 1000px !important;
-    perspective: 1000px !important;
-    position: fixed !important;
-    top: 0 !important;
-    left: 0 !important;
-    width: 100% !important;
-    height: 100% !important;
-    z-index: 1 !important;
-    background-attachment: scroll !important;
-    display: block !important;
-    opacity: 1 !important;
-    visibility: visible !important;
-    pointer-events: none !important;
-  }
-  
-  .home-div {
-    -webkit-transform: translate3d(0, 0, 0) !important;
-    transform: translate3d(0, 0, 0) !important;
-    z-index: 2 !important;
-    position: relative !important;
-  }
-}
 
-/* Alternative approach using pseudo-element for iPhone */
-@media screen and (-webkit-min-device-pixel-ratio: 2) {
-  .home-div::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('../img/mask.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    z-index: -1;
-    opacity: 0.8;
-    pointer-events: none;
-    -webkit-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
-  }
-}
 
 /* Smooth scroll behavior for entire app */
 html {
@@ -3894,21 +3835,7 @@ input:checked+.toggle-slider:before {
   }
 
   .home-div-content {
-    display: block;
-    position: relative;
-    right: 0;
-    bottom: 0;
-    width: 100vw;
-    height: 100vh;
-    background-size: cover;
-    background-position: center;
-    background-attachment: scroll;
-    z-index: 1;
-    /* iPhone Safari specific fixes */
-    -webkit-background-size: cover;
-    -webkit-transform: translate3d(0, 0, 0);
-    transform: translate3d(0, 0, 0);
-    will-change: transform;
+    display: none;
   }
 
 
