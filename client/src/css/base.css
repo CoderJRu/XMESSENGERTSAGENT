@@ -404,10 +404,12 @@ input,
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 12px;
   min-width: 160px;
+  max-width: 200px;
   z-index: 999999;
   box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
   animation: dropdownFadeIn 0.2s ease-out;
   overflow: hidden;
+  pointer-events: auto;
 }
 
 @keyframes dropdownFadeIn {
@@ -423,6 +425,7 @@ input,
 
 .chat-dropdown-content.show {
   display: block;
+
 }
 
 .chat-dropdown-item {
@@ -434,6 +437,7 @@ input,
   font-weight: 500;
   transition: all 0.2s ease;
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+ 
 }
 
 .chat-dropdown-item:last-child {
@@ -1368,14 +1372,17 @@ textarea:focus {
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 12px;
   min-width: 160px;
+  max-width: 200px;
   z-index: 999999;
   box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
   animation: dropdownFadeIn 0.2s ease-out;
   overflow: hidden;
+  pointer-events: auto;
 }
 
 .chat-dropdown-content.show {
   display: block;
+
 }
 
 .chat-dropdown-item {
