@@ -1150,7 +1150,7 @@ textarea:focus {
   bottom: 0;
   margin: auto;
   background: rgba(14, 16, 19, .5);
-  backdrop-filter: blur(10px);
+ 
   display: flex;
   align-items: center;
   z-index: 1;
