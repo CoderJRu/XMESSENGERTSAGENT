@@ -378,7 +378,6 @@ input,
 
 .chat-menu-dropdown {
   position: relative;
-  z-index: 100000;
 }
 
 .chat-menu-btn {
@@ -396,20 +395,14 @@ input,
 
 .chat-dropdown-content {
   display: none;
-  position: fixed;
-  right: 8px;
-  top: 70px;
-  background: rgba(28, 30, 33, 0.98);
-  backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 12px;
-  min-width: 160px;
-  max-width: 200px;
-  z-index: 999999;
-  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
-  animation: dropdownFadeIn 0.2s ease-out;
-  overflow: hidden;
-  pointer-events: auto;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background: #2a2a2a;
+  border: 1px solid #333;
+  border-radius: 8px;
+  min-width: 150px;
+  z-index: 1000;
 }
 
 @keyframes dropdownFadeIn {
@@ -1346,7 +1339,6 @@ textarea:focus {
 
 .chat-menu-dropdown {
   position: relative;
-  z-index: 100000;
 }
 
 .chat-menu-btn {
@@ -1364,20 +1356,14 @@ textarea:focus {
 
 .chat-dropdown-content {
   display: none;
-  position: fixed;
-  right: 8px;
-  top: 70px;
-  background: rgba(28, 30, 33, 0.98);
-  backdrop-filter: blur(15px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 12px;
-  min-width: 160px;
-  max-width: 200px;
-  z-index: 999999;
-  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
-  animation: dropdownFadeIn 0.2s ease-out;
-  overflow: hidden;
-  pointer-events: auto;
+  position: absolute;
+  right: 0;
+  top: 100%;
+  background: rgba(14, 16, 19, 0.95);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  min-width: 150px;
+  z-index: 1000;
 }
 
 .chat-dropdown-content.show {

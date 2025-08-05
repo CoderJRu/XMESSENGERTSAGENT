@@ -79,25 +79,6 @@ document.addEventListener("DOMContentLoaded", () => {
     chatMenuToggle.addEventListener("click", (e: MouseEvent) => {
       e.preventDefault();
       e.stopPropagation();
-      
-      // Calculate button position
-      const buttonRect = chatMenuToggle.getBoundingClientRect();
-      const viewportWidth = window.innerWidth;
-      const dropdownWidth = 160; // min-width from CSS
-      
-      // Position dropdown to avoid overlap
-      let rightPosition = viewportWidth - buttonRect.right + 8;
-      let topPosition = buttonRect.bottom + 8;
-      
-      // Ensure dropdown doesn't go off-screen
-      if (rightPosition + dropdownWidth > viewportWidth) {
-        rightPosition = viewportWidth - dropdownWidth - 8;
-      }
-      
-      // Apply calculated position
-      chatDropdown.style.right = rightPosition + 'px';
-      chatDropdown.style.top = topPosition + 'px';
-      
       chatDropdown.classList.toggle("show");
     });
 
