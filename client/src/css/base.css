@@ -3128,11 +3128,11 @@ input:checked+.toggle-slider:before {
   justify-content: center;
   right: 0;
   left: 0;
-  top: 80px;
+  top: 100px;
   border-radius: 5px;
   background-color: rgb(14, 16, 19, 0.69);
   width: 100%;
-  height: calc(100% - 100px);
+  height: calc(100% - 120px);
   z-index: 1;
   padding-bottom: 20px;
   box-sizing: border-box;
@@ -3148,12 +3148,12 @@ input:checked+.toggle-slider:before {
   justify-content: center;
   right: 0;
   left: 0;
-  top: 100px;
+  top: 120px;
   border-radius: 10px;
   border: 1px solid var(--Border-Primary, #FFF);
   background-color: rgb(14, 16, 19, 0.71);
   width: 80%;
-  height: calc(85% - 100px);
+  height: calc(85% - 120px);
   overflow-y: auto;
   padding-bottom: 20px;
   box-sizing: border-box;
@@ -3843,24 +3843,24 @@ input:checked+.toggle-slider:before {
   }
 
   .home-div {
-    top: 100px;
-    height: calc(100% - 100px);
+    top: 120px;
+    height: calc(100% - 120px);
     padding-top: 20px;
   }
 
   .modern-wallet-overlay {
-    padding-top: 100px;
+    padding-top: 120px;
     padding-bottom: 20px;
   }
 
   .greyedBackground {
-    top: 100px;
-    height: calc(100% - 120px);
+    top: 120px;
+    height: calc(100% - 140px);
   }
 
   .create-wallet-section {
-    top: 120px;
-    height: calc(85% - 120px);
+    top: 140px;
+    height: calc(85% - 140px);
     padding-bottom: 20px;
   }
 
@@ -4311,7 +4311,7 @@ input:checked+.toggle-slider:before {
   opacity: 0;
   visibility: hidden;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  padding: 80px 20px 20px 20px;
+  padding: 100px 20px 20px 20px;
   box-sizing: border-box;
 }
 
