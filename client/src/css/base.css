@@ -1,3 +1,90 @@
+/* Global Smooth Transitions */
+*,
+*::before,
+*::after {
+  transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
+}
+
+/* Specific transition overrides for performance */
+.phrase-word,
+.phrase-item,
+button,
+input,
+.modal-content,
+.home-contents,
+.pending-transaction-panel,
+.nav-item,
+.hamburger,
+.menu-item {
+  transition: all 0.3s ease;
+}
+
+/* Enhanced page transitions */
+.page-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.page-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.page-exit-active {
+  opacity: 0;
+  transform: translateY(-20px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Stagger animations for lists */
+.stagger-animation {
+  animation: slideInStagger 0.6s ease forwards;
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+@keyframes slideInStagger {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stagger-animation:nth-child(1) { animation-delay: 0.1s; }
+.stagger-animation:nth-child(2) { animation-delay: 0.2s; }
+.stagger-animation:nth-child(3) { animation-delay: 0.3s; }
+.stagger-animation:nth-child(4) { animation-delay: 0.4s; }
+.stagger-animation:nth-child(5) { animation-delay: 0.5s; }
+.stagger-animation:nth-child(6) { animation-delay: 0.6s; }
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transform: none !important;
+  }
+  
+  .stagger-animation,
+  .fade-in,
+  .scale-in,
+  .float-animation,
+  .pulse-animation {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
 /* Success Popup Styles */
 .success-popup-overlay {
   position: fixed;
@@ -823,11 +910,179 @@ html {
   bottom: 0;
   margin: auto;
   background: rgba(14, 16, 19, 1);
+  backdrop-filter: blur(15px);
   display: flex;
   align-items: center;
   z-index: 5;
   opacity: 1;
   overflow-y: scroll;
+  animation: slideInFromBottom 0.5s ease-out;
+}
+
+@keyframes slideInFromBottom {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Floating animation for interactive elements */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.float-animation {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Pulse animation for important elements */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 122, 255, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(0, 122, 255, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 122, 255, 0);
+  }
+}
+
+.pulse-animation {
+  animation: pulse 2s infinite;
+}
+
+/* Smooth fade-in for newly loaded content */
+.fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Enhanced loading spinner animation */
+.loading-spinner {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Smooth scale animation for modals */
+.scale-in {
+  animation: scaleIn 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  transform: scale(0.8);
+  opacity: 0;
+}
+
+@keyframes scaleIn {
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Ripple effect for buttons */
+.ripple {
+  position: relative;
+  overflow: hidden;
+}
+
+.ripple::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.ripple:active::before {
+  width: 300px;
+  height: 300px;
+}
+
+/* Mobile-specific smooth touch interactions */
+@media (max-width: 768px) {
+  .phrase-item:hover,
+  .phrase-item:active {
+    transform: scale(1.05);
+    transition: transform 0.2s ease;
+  }
+  
+  .connect-wallet:active,
+  .create-wallet:active {
+    transform: scale(0.98);
+    transition: transform 0.1s ease;
+  }
+  
+  .wallet-btn:active {
+    transform: scale(0.96);
+    transition: transform 0.1s ease;
+  }
+}
+
+/* Smooth scroll behavior for entire app */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Enhanced focus states with smooth transitions */
+button:focus,
+input:focus,
+textarea:focus {
+  outline: 3px solid rgba(0, 122, 255, 0.3);
+  outline-offset: 2px;
+  transition: outline 0.2s ease;
+}
+
+/* Loading state animations */
+.loading {
+  pointer-events: none;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid transparent;
+  border-top: 2px solid #007AFF;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
 }
 
 .back-arrow {
@@ -895,16 +1150,20 @@ html {
   bottom: 0;
   margin: auto;
   background: rgba(14, 16, 19, .5);
+  backdrop-filter: blur(10px);
   display: flex;
   align-items: center;
   z-index: 1;
   opacity: 1;
-  transition: 1.2s;
+  transform: scale(1);
+  transition: opacity 0.4s ease, transform 0.4s ease, backdrop-filter 0.4s ease;
 }
 
 .home-contents {
   z-index: 0;
   opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 0.4s ease, transform 0.4s ease;
 }
 
 .slippage-button {
@@ -2642,7 +2901,7 @@ input:checked+.toggle-slider:before {
   color: var(--Text-Dark, var(--Black, #ffffff));
   text-align: center;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 
   /* Button Text */
   font-family: "Helvetica Neue";
@@ -2656,8 +2915,13 @@ input:checked+.toggle-slider:before {
 .create-wallet:hover {
   background-color: rgba(255, 255, 255, 0.1);
   border-color: #ffffff;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 12px 25px rgba(255, 255, 255, 0.25);
+}
+
+.create-wallet:active {
+  transform: translateY(-1px) scale(1.01);
+  transition: all 0.1s ease;
 }
 
 .connect-wallet {
@@ -2675,7 +2939,7 @@ input:checked+.toggle-slider:before {
   color: var(--Text-Dark, var(--Black, #0E1013));
   text-align: center;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 
   /* Button Text */
   font-family: "Helvetica Neue";
@@ -2687,10 +2951,15 @@ input:checked+.toggle-slider:before {
 }
 
 .connect-wallet:hover {
-  background-color: #f0f0f0;
+  background-color: #f8f8f8;
   border-color: #ffffff;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.3);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 12px 25px rgba(255, 255, 255, 0.35);
+}
+
+.connect-wallet:active {
+  transform: translateY(-1px) scale(1.01);
+  transition: all 0.1s ease;
 }
 
 .connect-para {
@@ -2711,7 +2980,8 @@ input:checked+.toggle-slider:before {
   position: fixed;
   top: 10px;
   left: 0;
-  transition: 0.5s;
+  transform: rotate(180deg);
+  transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
 .nav-title {
@@ -4108,9 +4378,15 @@ input:checked+.toggle-slider:before {
 }
 
 .phrase-item:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.2);
-  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.1);
+}
+
+.phrase-item:active {
+  transform: translateY(0) scale(1);
+  transition: all 0.1s ease;
 }
 
 .phrase-number {
@@ -4157,7 +4433,13 @@ input:checked+.toggle-slider:before {
 .copy-phrases-btn:hover {
   background: rgba(255, 255, 255, 0.2);
   border-color: rgba(255, 255, 255, 0.4);
-  transform: translateY(-1px);
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.15);
+}
+
+.copy-phrases-btn:active {
+  transform: translateY(0) scale(1);
+  transition: all 0.1s ease;
 }
 
 .copy-phrases-btn svg {
@@ -4245,14 +4527,18 @@ input:checked+.toggle-slider:before {
   line-height: 1.6;
   resize: none;
   outline: none;
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
   box-sizing: border-box;
+  transform: translateY(0);
 }
 
 .modern-phrase-input:focus {
   border-color: #007AFF;
-  background: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 0 0 4px rgba(0, 122, 255, 0.1);
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 
+    0 0 0 4px rgba(0, 122, 255, 0.15),
+    0 8px 25px rgba(0, 122, 255, 0.1);
+  transform: translateY(-2px);
 }
 
 .modern-phrase-input::placeholder {
