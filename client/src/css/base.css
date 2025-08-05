@@ -885,14 +885,11 @@ html {
 
 .home-div-content {
   position: relative;
-  right: -221.5px;
-  bottom: -50px;
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-image: url('../img/mask.png');
-  width: 680px;
-  height: 680px;
-
+  right: 0;
+  bottom: 0;
+  background: none;
+  width: 100%;
+  height: 100%;
 }
 
 ::-webkit-scrollbar {
@@ -3832,47 +3829,40 @@ input:checked+.toggle-slider:before {
   }
 
   .home-div-content {
+    display: block;
     position: relative;
     right: 0;
     bottom: 0;
     width: 100%;
-    height: 300px;
-    background-size: contain;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-image: url('../img/mask.png');
+    height: 100%;
+    background: none;
   }
 
   .home-div {
-    top: 60px;
-    height: calc(100% - 60px);
+    top: 80px;
+    height: calc(100% - 80px);
     padding-top: 20px;
   }
 
   .modern-wallet-overlay {
-    padding-top: 70px;
+    padding-top: 80px;
   }
 
   .greyedBackground {
-    top: 70px;
-    height: calc(100% - 70px);
+    top: 80px;
+    height: calc(100% - 80px);
   }
 
   .create-wallet-section {
-    top: 90px;
-    height: calc(90% - 90px);
+    top: 100px;
+    height: calc(90% - 100px);
   }
 
 
 
 
   html {
-    background-color: rgba(14, 16, 19, 0.99);
-    /*
-    filter:blur(8px);
-    -webkit-filter:blur(8px);
-
-    */
+    background-color: rgba(14, 16, 19, 1);
     overflow-y: hidden;
     overflow-x: hidden;
     background-position: right;
@@ -3881,11 +3871,9 @@ input:checked+.toggle-slider:before {
     background-size: fixed;
     background-attachment: fixed;
     background-image: url('../img/mask_background.png');
-
     scroll-behavior: smooth;
     -ms-overflow-style: none;
     scrollbar-width: none;
-
   }
 
   .search-div {
@@ -4290,7 +4278,7 @@ input:checked+.toggle-slider:before {
   opacity: 0;
   visibility: hidden;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  padding-top: 60px;
+  padding-top: 80px;
   box-sizing: border-box;
 }
 
