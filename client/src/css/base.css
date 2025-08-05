@@ -3152,7 +3152,7 @@ input:checked+.toggle-slider:before {
   border-radius: 10px;
   border: 1px solid var(--Border-Primary, #FFF);
   background-color: rgb(14, 16, 19, 0.71);
-  width: 80%;
+  width: 90%;
   height: calc(85% - 120px);
   overflow-y: auto;
   padding-bottom: 20px;
@@ -3862,6 +3862,7 @@ input:checked+.toggle-slider:before {
     top: 140px;
     height: calc(85% - 140px);
     padding-bottom: 20px;
+    width: 95%;
   }
 
   .wallet-actions {
@@ -3880,6 +3881,8 @@ input:checked+.toggle-slider:before {
   .modern-wallet-modal {
     max-height: calc(100vh - 160px);
     padding-bottom: 40px;
+    width: 98%;
+    max-width: none;
   }
 
   .phrase-grid {
@@ -4325,8 +4328,8 @@ input:checked+.toggle-slider:before {
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 24px;
   padding: 32px;
-  max-width: 500px;
-  width: 90%;
+  max-width: 600px;
+  width: 95%;
   max-height: calc(100vh - 140px);
   overflow-y: auto;
   transform: scale(0.9) translateY(20px);
