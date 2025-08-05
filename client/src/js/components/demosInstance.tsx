@@ -9,7 +9,7 @@ export async function connectSdk() {
   // var result = await demos.connect("http://84.247.128.61:53550");
   //console.log("nodes results ", result.connected);
   const demos = new Demos();
-  await demos.connect("https://demosnode.discus.sh");
+  await demos.connect("https://nodes.cruxdecussata.com/");
 
   console.log("connected to rpc:", demos.connected);
 }

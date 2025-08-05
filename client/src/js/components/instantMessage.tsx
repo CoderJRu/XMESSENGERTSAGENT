@@ -3,7 +3,7 @@ import { encryption } from "@kynesyslabs/demosdk";
 
 const unifiedCrypto = encryption.ucrypto;
 
-export async function setupMessenger(mlKemAes:any, id:any) {
+export async function setupMessenger(mlKemAes: any, id: any) {
     // Generate identities
     /* NOTE: This part is not necessary when using a SDK instance 
     that has already generated identities */
@@ -14,8 +14,7 @@ export async function setupMessenger(mlKemAes:any, id:any) {
 
     // Create and connect peer
     const peer = new instantMessaging.MessagingPeer({
-        serverUrl:
-            "http://84.247.128.61:3005",
+        serverUrl: "https://nodes.cruxdecussata.com:3002",
         clientId: "xm_user-" + id,
         publicKey: mlKemAes.publicKey,
     });
