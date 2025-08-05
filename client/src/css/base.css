@@ -376,39 +376,59 @@ input,
   text-overflow: ellipsis;
 }
 
+/* Modern Chat Dropdown Styles */
 .chat-menu-dropdown {
   position: relative;
 }
 
 .chat-menu-btn {
-  background: none;
+  background: transparent;
   border: none;
   cursor: pointer;
-  padding: 8px;
-  border-radius: 4px;
-  transition: background 0.2s;
+  padding: 10px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 40px;
+  height: 40px;
 }
 
 .chat-menu-btn:hover {
-  background: #333;
+  background: rgba(255, 255, 255, 0.1);
+  transform: scale(1.05);
 }
 
-.chat-dropdown-content {
+.chat-menu-btn:active {
+  transform: scale(0.95);
+}
+
+.modern-chat-dropdown {
   display: none;
   position: absolute;
   right: 0;
-  top: 100%;
-  background: #2a2a2a;
-  border: 1px solid #333;
-  border-radius: 8px;
-  min-width: 150px;
+  top: calc(100% + 8px);
+  background: rgba(30, 35, 41, 0.95);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  min-width: 180px;
   z-index: 1000;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 
+              0 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
-@keyframes dropdownFadeIn {
+.modern-chat-dropdown.show {
+  display: block;
+  animation: modernDropdownFadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes modernDropdownFadeIn {
   from {
     opacity: 0;
-    transform: translateY(-8px) scale(0.95);
+    transform: translateY(-12px) scale(0.9);
   }
   to {
     opacity: 1;
@@ -416,9 +436,81 @@ input,
   }
 }
 
-.chat-dropdown-content.show {
-  display: block;
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  color: #e9edef;
+  font-size: 14px;
+  font-weight: 500;
+  position: relative;
+  overflow: hidden;
+}
 
+.dropdown-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(0, 122, 255, 0.1) 0%, rgba(0, 122, 255, 0.05) 100%);
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dropdown-item:hover::before {
+  width: 100%;
+}
+
+.dropdown-item:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+  transform: translateX(4px);
+}
+
+.dropdown-item:active {
+  transform: translateX(2px) scale(0.98);
+}
+
+.dropdown-item.danger {
+  color: #ff6b6b;
+}
+
+.dropdown-item.danger:hover {
+  background: rgba(255, 107, 107, 0.1);
+  color: #ff8a8a;
+}
+
+.dropdown-item.danger::before {
+  background: linear-gradient(90deg, rgba(255, 107, 107, 0.15) 0%, rgba(255, 107, 107, 0.05) 100%);
+}
+
+.dropdown-icon {
+  color: inherit;
+  flex-shrink: 0;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dropdown-item:hover .dropdown-icon {
+  transform: scale(1.1);
+}
+
+.dropdown-label {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  letter-spacing: -0.01em;
+}
+
+.dropdown-divider {
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(255, 255, 255, 0.1) 20%, 
+    rgba(255, 255, 255, 0.1) 80%, 
+    transparent 100%);
+  margin: 8px 0;
 }
 
 .chat-dropdown-item {
