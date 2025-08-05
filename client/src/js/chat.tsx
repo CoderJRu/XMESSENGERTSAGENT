@@ -106,9 +106,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const messageInput = document.getElementById(
     "chat-message-input",
-  ) as HTMLInputElement | null;
+  ) as HTMLTextAreaElement | null;
   const sendBtn = document.getElementById("chat-send-btn");
   const messagesContainer = document.getElementById("chat-messages");
+
+  // Auto-resize textarea function
+  const resizeTextarea = (): void => {
+    if (messageInput) {
+      messageInput.style.height = 'auto';
+      messageInput.style.height = messageInput.scrollHeight + 'px';
+      
+      // Update container height to match
+      const container = messageInput.parentElement;
+      if (container) {
+        const newHeight = Math.min(Math.max(messageInput.scrollHeight + 4, 40), 120);
+        container.style.height = newHeight + 'px';
+      }
+    }
+  };
 
   // Send message function
   const sendMessage = async (): Promise<void> => {
@@ -135,6 +150,7 @@ document.addEventListener("DOMContentLoaded", () => {
       messagesContainer.appendChild(messageDiv);
 
       messageInput.value = "";
+      resizeTextarea(); // Reset textarea height
       messagesContainer.scrollTop = messagesContainer.scrollHeight;
     }
 
@@ -164,11 +180,18 @@ document.addEventListener("DOMContentLoaded", () => {
   if (messageInput && sendBtn && messagesContainer) {
     sendBtn.addEventListener("click", sendMessage);
 
-    messageInput.addEventListener("keypress", (e: KeyboardEvent) => {
-      if (e.key === "Enter") {
+    // Auto-resize on input
+    messageInput.addEventListener("input", resizeTextarea);
+    
+    // Handle Enter key (send on Enter, new line on Shift+Enter)
+    messageInput.addEventListener("keydown", (e: KeyboardEvent) => {
+      if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault();
         sendMessage();
       }
     });
+    
+    // Initial resize
+    resizeTextarea();
   }
 });
