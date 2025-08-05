@@ -44,73 +44,249 @@
         <div class="home-div-content"></div>
       </div>
 
-      <div hidden id="grey-background-id" class="greyedBackground">
-        <div class="create-wallet-section">
-          <p class="greyedBackground-header">Create Wallet</p>
-          <div class="phrase-div grid">
-            <div class="grid-item"><p class="phrase-para">cloth</p></div>
-            <div class="grid-item"><p class="phrase-para">table</p></div>
-            <div class="grid-item"><p class="phrase-para">horse</p></div>
-            <div class="grid-item"><p class="phrase-para">clown</p></div>
-            <div class="grid-item"><p class="phrase-para">cup</p></div>
-            <!---->
-            <div class="grid-item"><p class="phrase-para">pencil</p></div>
-            <div class="grid-item"><p class="phrase-para">motor</p></div>
-            <div class="grid-item"><p class="phrase-para">house</p></div>
-            <div class="grid-item"><p class="phrase-para">roof</p></div>
-            <div class="grid-item"><p class="phrase-para">marble</p></div>
-            <div class="grid-item"><p class="phrase-para">ripple</p></div>
-            <div class="grid-item"><p class="phrase-para">effect</p></div>
+      <div hidden id="grey-background-id" class="modern-wallet-overlay">
+        <div class="modern-wallet-modal">
+          <div class="wallet-modal-header">
+            <div class="wallet-icon-container">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v5m16 0v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5m16 0H8m13 0a2.5 2.5 0 0 1 0 5H8"></path>
+              </svg>
+            </div>
+            <h2 class="wallet-modal-title">Create New Wallet</h2>
+            <p class="wallet-modal-subtitle">Your recovery phrase is the key to your wallet</p>
           </div>
-          <p class="mid-para">
-            keep this phrase safe as this would be required to retrieve your
-            accounts
-          </p>
-          <div class="button-group-0">
-            <button id="create-wallet-button-id" class="connect-wallet">
-              Create Account
+          
+          <div class="recovery-phrase-container">
+            <div class="security-notice">
+              <div class="security-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+              </div>
+              <span>Keep this phrase secure and private</span>
+            </div>
+            
+            <div class="phrase-grid">
+              <div class="phrase-item">
+                <span class="phrase-number">1</span>
+                <span class="phrase-word">cloth</span>
+              </div>
+              <div class="phrase-item">
+                <span class="phrase-number">2</span>
+                <span class="phrase-word">table</span>
+              </div>
+              <div class="phrase-item">
+                <span class="phrase-number">3</span>
+                <span class="phrase-word">horse</span>
+              </div>
+              <div class="phrase-item">
+                <span class="phrase-number">4</span>
+                <span class="phrase-word">clown</span>
+              </div>
+              <div class="phrase-item">
+                <span class="phrase-number">5</span>
+                <span class="phrase-word">cup</span>
+              </div>
+              <div class="phrase-item">
+                <span class="phrase-number">6</span>
+                <span class="phrase-word">pencil</span>
+              </div>
+              <div class="phrase-item">
+                <span class="phrase-number">7</span>
+                <span class="phrase-word">motor</span>
+              </div>
+              <div class="phrase-item">
+                <span class="phrase-number">8</span>
+                <span class="phrase-word">house</span>
+              </div>
+              <div class="phrase-item">
+                <span class="phrase-number">9</span>
+                <span class="phrase-word">roof</span>
+              </div>
+              <div class="phrase-item">
+                <span class="phrase-number">10</span>
+                <span class="phrase-word">marble</span>
+              </div>
+              <div class="phrase-item">
+                <span class="phrase-number">11</span>
+                <span class="phrase-word">ripple</span>
+              </div>
+              <div class="phrase-item">
+                <span class="phrase-number">12</span>
+                <span class="phrase-word">effect</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="wallet-warning">
+            <div class="warning-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                <line x1="12" y1="9" x2="12" y2="13"></line>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
+            </div>
+            <div class="warning-text">
+              <p class="warning-title">Store this phrase safely</p>
+              <p class="warning-description">Anyone with this phrase can access your wallet. Never share it with anyone.</p>
+            </div>
+          </div>
+          
+          <div class="wallet-modal-actions">
+            <button id="cancel-wallet-button-id" class="wallet-btn wallet-btn-secondary">
+              <span>Cancel</span>
             </button>
-            <button id="cancel-wallet-button-id" class="connect-wallet">
-              Cancel
+            <button id="create-wallet-button-id" class="wallet-btn wallet-btn-primary">
+              <span>Create Wallet</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9,18 15,12 9,6"></polyline>
+              </svg>
             </button>
           </div>
         </div>
       </div>
 
-      <div hidden id="grey-background-id-connect" class="greyedBackground">
-        <div class="create-wallet-section">
-          <p class="greyedBackground-header">Connect Wallet</p>
-          <div class="phrase-div">
-            <textarea
-              class="phrase-input"
-              placeholder="Enter all 12 recovery phrases separated by spaces"
-            ></textarea>
+      <div hidden id="grey-background-id-connect" class="modern-wallet-overlay">
+        <div class="modern-wallet-modal">
+          <div class="wallet-modal-header">
+            <div class="wallet-icon-container connect-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 12l2 2 4-4"></path>
+                <path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"></path>
+                <path d="M3 12c1 0 3-1 3-3s-2-3-3-3-3 1-3 3 2 3 3 3"></path>
+                <path d="M13 12h1"></path>
+                <path d="M11 12h-1"></path>
+              </svg>
+            </div>
+            <h2 class="wallet-modal-title">Connect Wallet</h2>
+            <p class="wallet-modal-subtitle">Enter your recovery phrase to restore your wallet</p>
           </div>
-          <p class="mid-para">
-            input the phrases accurately and orderly to retrieve your accounts
-          </p>
-          <div class="button-group-0">
-            <button id="connect-wallet-button-id" class="connect-wallet">
-              Connect Account
+          
+          <div class="recovery-phrase-input-container">
+            <div class="input-label">
+              <span>Recovery Phrase</span>
+              <div class="input-hint">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M9,9h0a3,3,0,0,1,6,0c0,2-3,3-3,3"></path>
+                  <path d="M12,17h.01"></path>
+                </svg>
+                <span>12 words separated by spaces</span>
+              </div>
+            </div>
+            <div class="modern-input-container">
+              <textarea
+                class="modern-phrase-input"
+                placeholder="Enter your 12-word recovery phrase..."
+                rows="4"
+              ></textarea>
+              <div class="input-decoration"></div>
+            </div>
+          </div>
+          
+          <div class="wallet-security-tips">
+            <div class="security-tip">
+              <div class="tip-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M9 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-4m-8 0V7a4 4 0 1 1 8 0v4m-8 0h8"></path>
+                </svg>
+              </div>
+              <span>Your phrase is encrypted and never stored</span>
+            </div>
+            <div class="security-tip">
+              <div class="tip-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+              </div>
+              <span>Make sure you're on the correct website</span>
+            </div>
+          </div>
+          
+          <div class="wallet-modal-actions">
+            <button id="cancel-connect-wallet-button-id" class="wallet-btn wallet-btn-secondary">
+              <span>Cancel</span>
             </button>
-            <button id="cancel-connect-wallet-button-id" class="connect-wallet">
-              Cancel
+            <button id="connect-wallet-button-id" class="wallet-btn wallet-btn-primary">
+              <span>Connect Wallet</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9,18 15,12 9,6"></polyline>
+              </svg>
             </button>
           </div>
         </div>
       </div>
 
-      <div class="home-content-group">
-        <img class="union" src="src/img/Union.png" />
-        <h1 class="xm-para">XMESSENGER</h1>
-        <p class="sig-para">By CruxDecussata</p>
-        <p class="connect-para">Connect your wallet to continue.</p>
-        <button id="connect-button-id" class="connect-wallet">
-          Connect Wallet
-        </button>
-        <button id="create-button-id" class="create-wallet">
-          Create Wallet
-        </button>
+      <div class="modern-home-container">
+        <div class="brand-section">
+          <div class="brand-logo">
+            <div class="logo-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                <path d="M14 9h.01"></path>
+                <path d="M10 9h.01"></path>
+                <path d="M6 9h.01"></path>
+              </svg>
+            </div>
+          </div>
+          <h1 class="brand-title">XMESSENGER</h1>
+          <p class="brand-subtitle">Secure Web3 Communication</p>
+          <div class="brand-author">By CruxDecussata</div>
+        </div>
+        
+        <div class="welcome-section">
+          <h2 class="welcome-title">Welcome Back</h2>
+          <p class="welcome-description">Connect your wallet to access secure messaging and blockchain features.</p>
+        </div>
+        
+        <div class="wallet-actions">
+          <button id="connect-button-id" class="main-wallet-btn connect-btn">
+            <div class="btn-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 12l2 2 4-4"></path>
+                <path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"></path>
+                <path d="M3 12c1 0 3-1 3-3s-2-3-3-3-3 1-3 3 2 3 3 3"></path>
+              </svg>
+            </div>
+            <div class="btn-content">
+              <span class="btn-title">Connect Wallet</span>
+              <span class="btn-subtitle">Use existing recovery phrase</span>
+            </div>
+            <div class="btn-arrow">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9,18 15,12 9,6"></polyline>
+              </svg>
+            </div>
+          </button>
+          
+          <button id="create-button-id" class="main-wallet-btn create-btn">
+            <div class="btn-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="16"></line>
+                <line x1="8" y1="12" x2="16" y2="12"></line>
+              </svg>
+            </div>
+            <div class="btn-content">
+              <span class="btn-title">Create New Wallet</span>
+              <span class="btn-subtitle">Generate new recovery phrase</span>
+            </div>
+            <div class="btn-arrow">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9,18 15,12 9,6"></polyline>
+              </svg>
+            </div>
+          </button>
+        </div>
+        
+        <div class="security-footer">
+          <div class="security-badge">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+            <span>Secured by blockchain technology</span>
+          </div>
+        </div>
       </div>
     </section>
 
