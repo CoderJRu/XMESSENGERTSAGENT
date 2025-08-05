@@ -2641,6 +2641,8 @@ input:checked+.toggle-slider:before {
   top: 10px;
   color: var(--Text-Dark, var(--Black, #ffffff));
   text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
 
   /* Button Text */
   font-family: "Helvetica Neue";
@@ -2651,6 +2653,13 @@ input:checked+.toggle-slider:before {
   /* 142.857% */
 }
 
+.create-wallet:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.2);
+}
+
 .connect-wallet {
   width: 85%;
   color: black;
@@ -2659,11 +2668,14 @@ input:checked+.toggle-slider:before {
   margin: 12px -50px;
   border: 1px solid #fdfdd3;
   border-radius: 17px;
+  background-color: #ffffff;
   height: 45px;
   position: relative;
   top: 10px;
   color: var(--Text-Dark, var(--Black, #0E1013));
   text-align: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
 
   /* Button Text */
   font-family: "Helvetica Neue";
@@ -2672,6 +2684,13 @@ input:checked+.toggle-slider:before {
   font-weight: 700;
   line-height: 20px;
   /* 142.857% */
+}
+
+.connect-wallet:hover {
+  background-color: #f0f0f0;
+  border-color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.3);
 }
 
 .connect-para {
@@ -4284,15 +4303,15 @@ input:checked+.toggle-slider:before {
 }
 
 .wallet-btn-primary {
-  background: linear-gradient(135deg, #007AFF 0%, #0056CC 100%);
-  color: #ffffff;
-  box-shadow: 0 4px 16px rgba(0, 122, 255, 0.3);
+  background: #ffffff;
+  color: #000000;
+  box-shadow: 0 4px 16px rgba(255, 255, 255, 0.2);
 }
 
 .wallet-btn-primary:hover {
-  background: linear-gradient(135deg, #0056CC 0%, #003D99 100%);
+  background: #f0f0f0;
   transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(0, 122, 255, 0.4);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
 }
 
 
