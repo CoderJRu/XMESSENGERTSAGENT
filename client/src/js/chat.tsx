@@ -110,34 +110,30 @@ document.addEventListener("DOMContentLoaded", () => {
   const sendBtn = document.getElementById("chat-send-btn");
   const messagesContainer = document.getElementById("chat-messages");
 
-  // WhatsApp-style auto-resize textarea function
+  // Auto-resize textarea function
   const resizeTextarea = (): void => {
     if (messageInput) {
-      // Reset height to get accurate scrollHeight
+      // Reset height to auto to get accurate scrollHeight
       messageInput.style.height = 'auto';
       
       // Get the actual content height
       const scrollHeight = messageInput.scrollHeight;
       
-      // WhatsApp-style sizing: 20px base + content, max 100px
-      const minHeight = 20;
+      // Set minimum height based on single line (around 24px) and max height
+      const minHeight = 24;
       const maxHeight = 100;
       const newHeight = Math.min(Math.max(scrollHeight, minHeight), maxHeight);
       
       messageInput.style.height = newHeight + 'px';
       
-      // Update the input wrapper container
-      const wrapper = messageInput.closest('.message-input-wrapper');
-      if (wrapper) {
-        const wrapperHeight = Math.min(Math.max(newHeight + 14, 34), 114);
-        (wrapper as HTMLElement).style.minHeight = wrapperHeight + 'px';
-      }
-      
-      // Update the main input section
-      const inputSection = messageInput.closest('.input-section');
-      if (inputSection) {
-        const sectionHeight = Math.min(Math.max(newHeight + 24, 44), 124);
-        (inputSection as HTMLElement).style.minHeight = sectionHeight + 'px';
+      // Update container height to match with padding
+      const container = messageInput.parentElement;
+      if (container) {
+        // Container needs extra padding space
+        const containerMinHeight = 40;
+        const containerMaxHeight = 120;
+        const containerHeight = Math.min(Math.max(newHeight + 16, containerMinHeight), containerMaxHeight);
+        container.style.height = containerHeight + 'px';
       }
     }
   };
