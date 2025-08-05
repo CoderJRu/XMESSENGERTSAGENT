@@ -414,7 +414,7 @@ input,
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 16px;
   min-width: 180px;
-  z-index: 1000;
+  z-index: 9999;
   overflow: hidden;
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 
               0 0 0 1px rgba(255, 255, 255, 0.05);
@@ -1599,6 +1599,8 @@ textarea:focus {
   flex-direction: column;
   max-width: 75%;
   animation: messageSlideIn 0.3s ease-out;
+  position: relative;
+  z-index: 1;
 }
 
 @keyframes messageSlideIn {
