@@ -113,15 +113,26 @@ document.addEventListener("DOMContentLoaded", () => {
   // Auto-resize textarea function
   const resizeTextarea = (): void => {
     if (messageInput) {
+      // Reset height to auto to get accurate scrollHeight
       messageInput.style.height = 'auto';
+      
+      // Get the actual content height
       const scrollHeight = messageInput.scrollHeight;
-      const newHeight = Math.min(Math.max(scrollHeight, 20), 100);
+      
+      // Set minimum height based on single line (around 24px) and max height
+      const minHeight = 24;
+      const maxHeight = 100;
+      const newHeight = Math.min(Math.max(scrollHeight, minHeight), maxHeight);
+      
       messageInput.style.height = newHeight + 'px';
       
-      // Update container height to match with proper padding
+      // Update container height to match with padding
       const container = messageInput.parentElement;
       if (container) {
-        const containerHeight = Math.min(Math.max(scrollHeight + 20, 40), 120);
+        // Container needs extra padding space
+        const containerMinHeight = 40;
+        const containerMaxHeight = 120;
+        const containerHeight = Math.min(Math.max(newHeight + 16, containerMinHeight), containerMaxHeight);
         container.style.height = containerHeight + 'px';
       }
     }
@@ -182,8 +193,15 @@ document.addEventListener("DOMContentLoaded", () => {
   if (messageInput && sendBtn && messagesContainer) {
     sendBtn.addEventListener("click", sendMessage);
 
-    // Auto-resize on input
+    // Auto-resize on input and paste
     messageInput.addEventListener("input", resizeTextarea);
+    messageInput.addEventListener("paste", () => {
+      // Delay resize to allow paste content to be processed
+      setTimeout(resizeTextarea, 10);
+    });
+    
+    // Also resize on keyup to handle deletions properly
+    messageInput.addEventListener("keyup", resizeTextarea);
     
     // Handle Enter key (send on Enter, new line on Shift+Enter)
     messageInput.addEventListener("keydown", (e: KeyboardEvent) => {
@@ -193,7 +211,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
     
-    // Initial resize
+    // Initial resize and focus handling
     resizeTextarea();
+    
+    // Reset size when input is cleared or on focus
+    messageInput.addEventListener("focus", resizeTextarea);
   }
 });
