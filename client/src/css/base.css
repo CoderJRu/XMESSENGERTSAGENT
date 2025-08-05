@@ -396,18 +396,18 @@ input,
 
 .chat-dropdown-content {
   display: none;
-  position: absolute;
-  right: 0;
-  top: calc(100% + 8px);
-  background: rgba(42, 42, 42, 0.95);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: fixed;
+  right: 8px;
+  top: 70px;
+  background: rgba(28, 30, 33, 0.98);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 12px;
   min-width: 160px;
-  z-index: 99999;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  z-index: 999999;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
   animation: dropdownFadeIn 0.2s ease-out;
-  margin-top: 4px;
+  overflow: hidden;
 }
 
 @keyframes dropdownFadeIn {
@@ -1360,18 +1360,18 @@ textarea:focus {
 
 .chat-dropdown-content {
   display: none;
-  position: absolute;
-  right: 0;
-  top: calc(100% + 8px);
-  background: rgba(42, 42, 42, 0.95);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  position: fixed;
+  right: 8px;
+  top: 70px;
+  background: rgba(28, 30, 33, 0.98);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 12px;
   min-width: 160px;
-  z-index: 99999;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  z-index: 999999;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.6);
   animation: dropdownFadeIn 0.2s ease-out;
-  margin-top: 4px;
+  overflow: hidden;
 }
 
 .chat-dropdown-content.show {
