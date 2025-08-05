@@ -3128,12 +3128,14 @@ input:checked+.toggle-slider:before {
   justify-content: center;
   right: 0;
   left: 0;
-  top: 60px;
+  top: 80px;
   border-radius: 5px;
   background-color: rgb(14, 16, 19, 0.69);
   width: 100%;
-  height: calc(100% - 60px);
+  height: calc(100% - 100px);
   z-index: 1;
+  padding-bottom: 20px;
+  box-sizing: border-box;
 }
 
 .create-wallet-section {
@@ -3146,13 +3148,15 @@ input:checked+.toggle-slider:before {
   justify-content: center;
   right: 0;
   left: 0;
-  top: 80px;
+  top: 100px;
   border-radius: 10px;
   border: 1px solid var(--Border-Primary, #FFF);
   background-color: rgb(14, 16, 19, 0.71);
   width: 80%;
-  height: calc(90% - 80px);
+  height: calc(85% - 100px);
   overflow-y: auto;
+  padding-bottom: 20px;
+  box-sizing: border-box;
   overflow-x: hidden;
 }
 
@@ -3839,23 +3843,52 @@ input:checked+.toggle-slider:before {
   }
 
   .home-div {
-    top: 80px;
-    height: calc(100% - 80px);
+    top: 100px;
+    height: calc(100% - 100px);
     padding-top: 20px;
   }
 
   .modern-wallet-overlay {
-    padding-top: 80px;
+    padding-top: 100px;
+    padding-bottom: 20px;
   }
 
   .greyedBackground {
-    top: 80px;
-    height: calc(100% - 80px);
+    top: 100px;
+    height: calc(100% - 120px);
   }
 
   .create-wallet-section {
-    top: 100px;
-    height: calc(90% - 100px);
+    top: 120px;
+    height: calc(85% - 120px);
+    padding-bottom: 20px;
+  }
+
+  .wallet-actions {
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+  }
+
+  .wallet-btn,
+  .wallet-btn-primary,
+  .wallet-btn-secondary {
+    margin-bottom: 12px;
+    width: 100%;
+    max-width: none;
+  }
+
+  .modern-wallet-modal {
+    max-height: calc(100vh - 160px);
+    padding-bottom: 40px;
+  }
+
+  .phrase-grid {
+    margin-bottom: 20px;
+  }
+
+  .wallet-modal-footer {
+    padding-top: 20px;
+    padding-bottom: 20px;
   }
 
 
@@ -4278,7 +4311,7 @@ input:checked+.toggle-slider:before {
   opacity: 0;
   visibility: hidden;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  padding-top: 80px;
+  padding: 80px 20px 20px 20px;
   box-sizing: border-box;
 }
 
@@ -4294,7 +4327,7 @@ input:checked+.toggle-slider:before {
   padding: 32px;
   max-width: 500px;
   width: 90%;
-  max-height: 85vh;
+  max-height: calc(100vh - 140px);
   overflow-y: auto;
   transform: scale(0.9) translateY(20px);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
