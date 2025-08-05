@@ -114,13 +114,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const resizeTextarea = (): void => {
     if (messageInput) {
       messageInput.style.height = 'auto';
-      messageInput.style.height = messageInput.scrollHeight + 'px';
+      const scrollHeight = messageInput.scrollHeight;
+      const newHeight = Math.min(Math.max(scrollHeight, 20), 100);
+      messageInput.style.height = newHeight + 'px';
       
-      // Update container height to match
+      // Update container height to match with proper padding
       const container = messageInput.parentElement;
       if (container) {
-        const newHeight = Math.min(Math.max(messageInput.scrollHeight + 4, 40), 120);
-        container.style.height = newHeight + 'px';
+        const containerHeight = Math.min(Math.max(scrollHeight + 20, 40), 120);
+        container.style.height = containerHeight + 'px';
       }
     }
   };
