@@ -80,7 +80,7 @@ showLoading();
 document
   .getElementById("connect-wallet-button-id")
   ?.addEventListener("click", async () => {
-    const gridInput = document.querySelector<HTMLInputElement>(".phrase-input");
+    const gridInput = document.querySelector<HTMLInputElement>(".modern-phrase-input");
     const tempPhrase = gridInput?.value.trim() ?? "";
 
     console.log(tempPhrase);
@@ -125,22 +125,82 @@ function copyPhrasesToClipboard(): void {
   const phrases = phraseList.join(" ");
   navigator.clipboard
     .writeText(phrases)
-    .then(() => console.log("Phrases copied to clipboard"))
+    .then(() => {
+      console.log("Phrases copied to clipboard");
+      // Show visual feedback
+      const copyBtn = document.querySelector('.copy-phrases-btn') as HTMLElement;
+      if (copyBtn) {
+        const originalText = copyBtn.innerHTML;
+        copyBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="20,6 9,17 4,12"></polyline>
+        </svg>Copied!`;
+        copyBtn.style.background = 'rgba(76, 175, 80, 0.3)';
+        setTimeout(() => {
+          copyBtn.innerHTML = originalText;
+          copyBtn.style.background = 'rgba(255, 255, 255, 0.1)';
+        }, 2000);
+      }
+    })
     .catch((err) => console.error("Failed to copy phrases:", err));
 }
 
+// Make function globally available
+(window as any).copyPhrasesToClipboard = copyPhrasesToClipboard;
+
 function handlePhraseClick(event: Event): void {
   const phraseElement = event.currentTarget as HTMLElement;
-  phraseElement.style.borderColor = getRandomColor();
+  const phraseItem = phraseElement.closest('.phrase-item') as HTMLElement;
+  if (phraseItem) {
+    // Add visual feedback
+    phraseItem.style.borderColor = getRandomColor();
+    phraseItem.style.background = 'rgba(255, 255, 255, 0.15)';
+    
+    // Reset after a short delay
+    setTimeout(() => {
+      phraseItem.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+      phraseItem.style.background = 'rgba(255, 255, 255, 0.05)';
+    }, 200);
+  }
   copyPhrasesToClipboard();
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  const phraseParas = document.querySelectorAll<HTMLElement>(".phrase-para");
+  console.log("Connecting wallet event listeners...");
+  
+  const phraseParas = document.querySelectorAll<HTMLElement>(".phrase-word");
+  console.log("Found phrase words:", phraseParas.length);
   phraseParas.forEach((para) => {
     para.style.cursor = "pointer";
     para.addEventListener("click", handlePhraseClick);
   });
+  
+  // Also add click handlers to phrase items for better UX
+  const phraseItems = document.querySelectorAll<HTMLElement>(".phrase-item");
+  console.log("Found phrase items:", phraseItems.length);
+  phraseItems.forEach((item) => {
+    item.style.cursor = "pointer";
+    item.addEventListener("click", handlePhraseClick);
+  });
+  
+  // Add event listener for dynamic content
+  const observer = new MutationObserver(() => {
+    const newPhraseParas = document.querySelectorAll<HTMLElement>(".phrase-word:not([data-listener])");
+    const newPhraseItems = document.querySelectorAll<HTMLElement>(".phrase-item:not([data-listener])");
+    
+    newPhraseParas.forEach((para) => {
+      para.style.cursor = "pointer";
+      para.addEventListener("click", handlePhraseClick);
+      para.setAttribute("data-listener", "true");
+    });
+    
+    newPhraseItems.forEach((item) => {
+      item.style.cursor = "pointer";
+      item.addEventListener("click", handlePhraseClick);
+      item.setAttribute("data-listener", "true");
+    });
+  });
+  
+  observer.observe(document.body, { childList: true, subtree: true });
 });
 
 document
@@ -165,7 +225,7 @@ document
     keypair = results._keypair;
     console.log("public key is", publicKey);
 
-    const gridItems = document.querySelectorAll<HTMLElement>(".phrase-para");
+    const gridItems = document.querySelectorAll<HTMLElement>(".phrase-word");
     gridItems.forEach((item, index) => {
       item.innerHTML = phrases[index] ?? "";
     });
@@ -215,7 +275,7 @@ document
       .getElementById("grey-background-id")
       ?.setAttribute("hidden", "true");
 
-    const gridItems = document.querySelectorAll<HTMLElement>(".phrase-para");
+    const gridItems = document.querySelectorAll<HTMLElement>(".phrase-word");
     gridItems.forEach((item) => {
       item.innerHTML = "NULL";
     });

@@ -4110,6 +4110,7 @@ input:checked+.toggle-slider:before {
 .phrase-item:hover {
   background: rgba(255, 255, 255, 0.08);
   border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
 }
 
 .phrase-number {
@@ -4131,6 +4132,36 @@ input:checked+.toggle-slider:before {
   font-size: 14px;
   font-weight: 500;
   flex: 1;
+}
+
+.copy-phrases-container {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.copy-phrases-btn {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  padding: 12px 20px;
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.copy-phrases-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.4);
+  transform: translateY(-1px);
+}
+
+.copy-phrases-btn svg {
+  opacity: 0.8;
 }
 
 /* Warning Section */
