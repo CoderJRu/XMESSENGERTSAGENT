@@ -378,7 +378,7 @@ input,
 
 .chat-menu-dropdown {
   position: relative;
-  z-index: 10000;
+  z-index: 100000;
 }
 
 .chat-menu-btn {
@@ -396,17 +396,18 @@ input,
 
 .chat-dropdown-content {
   display: none;
-  position: fixed;
-  right: 16px;
-  top: 60px;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
   background: rgba(42, 42, 42, 0.95);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   min-width: 160px;
-  z-index: 9999;
+  z-index: 99999;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   animation: dropdownFadeIn 0.2s ease-out;
+  margin-top: 4px;
 }
 
 @keyframes dropdownFadeIn {
@@ -1341,7 +1342,7 @@ textarea:focus {
 
 .chat-menu-dropdown {
   position: relative;
-  z-index: 10000;
+  z-index: 100000;
 }
 
 .chat-menu-btn {
@@ -1359,17 +1360,18 @@ textarea:focus {
 
 .chat-dropdown-content {
   display: none;
-  position: fixed;
-  right: 16px;
-  top: 60px;
+  position: absolute;
+  right: 0;
+  top: calc(100% + 8px);
   background: rgba(42, 42, 42, 0.95);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 12px;
   min-width: 160px;
-  z-index: 9999;
+  z-index: 99999;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   animation: dropdownFadeIn 0.2s ease-out;
+  margin-top: 4px;
 }
 
 .chat-dropdown-content.show {
