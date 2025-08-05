@@ -879,7 +879,7 @@ html {
   align-items: center;
   z-index: -10;
   opacity: 1;
-
+  padding-top: 60px;
   transition: 1.2s;
 }
 
@@ -3131,12 +3131,11 @@ input:checked+.toggle-slider:before {
   justify-content: center;
   right: 0;
   left: 0;
-  top: 50px;
+  top: 60px;
   border-radius: 5px;
-
   background-color: rgb(14, 16, 19, 0.69);
   width: 100%;
-  height: 100%;
+  height: calc(100% - 60px);
   z-index: 1;
 }
 
@@ -3150,12 +3149,12 @@ input:checked+.toggle-slider:before {
   justify-content: center;
   right: 0;
   left: 0;
-  top: 70px;
+  top: 80px;
   border-radius: 10px;
   border: 1px solid var(--Border-Primary, #FFF);
   background-color: rgb(14, 16, 19, 0.71);
   width: 80%;
-  height: 90%;
+  height: calc(90% - 80px);
   overflow-y: auto;
   overflow-x: hidden;
 }
@@ -3833,7 +3832,35 @@ input:checked+.toggle-slider:before {
   }
 
   .home-div-content {
-    display: none;
+    position: relative;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 300px;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url('../img/mask.png');
+  }
+
+  .home-div {
+    top: 60px;
+    height: calc(100% - 60px);
+    padding-top: 20px;
+  }
+
+  .modern-wallet-overlay {
+    padding-top: 70px;
+  }
+
+  .greyedBackground {
+    top: 70px;
+    height: calc(100% - 70px);
+  }
+
+  .create-wallet-section {
+    top: 90px;
+    height: calc(90% - 90px);
   }
 
 
@@ -4263,6 +4290,8 @@ input:checked+.toggle-slider:before {
   opacity: 0;
   visibility: hidden;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding-top: 60px;
+  box-sizing: border-box;
 }
 
 .modern-wallet-overlay:not([hidden]) {
