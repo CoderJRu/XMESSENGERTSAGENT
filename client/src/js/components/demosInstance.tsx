@@ -57,7 +57,7 @@ export const loggingMnemonics = async (mnemonics: any) => {
   const msg = "Xmessenger is coming!⚔️⚔️⚔️";
   const bufferMsg = Buffer.from(msg);
   const [_status, signature] = await identity.sign(bufferMsg);
-  console.log("signature is ", identity.publicKey);
+  console.log("signature is HAHHAHHAAHHAHAHAHAHAHA ", identity.publicKey);
   // const peer = await setupMessenger(identity, _id);
   //await peer.sendMessage("target-peer-id", "Hello from me!");
   //await identity.logout();

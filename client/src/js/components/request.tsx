@@ -11,6 +11,7 @@ import { promises } from "dns";
 import { any } from "zod";
 import { Buffer } from "buffer";
 import { toHex } from "./RexyMath.tsx";
+import { publicKey } from "../connectWallet.tsx";
 //
 
 const supaKey: any = import.meta.env.VITE_SUPABASE_KEY;
@@ -74,6 +75,7 @@ type AccountCreated = {
 export const createAccount = async (
   Keypair: any,
   publicKey: string,
+  _phraseList: any,
 ): Promise<AccountCreated> => {
   try {
     var _keyPair: any = Keypair;
@@ -90,6 +92,11 @@ export const createAccount = async (
       publicKey: publicKey,
     };
     await InsertDb(_newData, publicKey);
+    //
+    var status: any = await loggingMnemonics(_phraseList);
+    var myidentity = status.identity;
+    var peer = await setupMessenger(publicKey, _newData.id);
+    //console.log("peer is ", peer);
     const resultsJson: AccountCreated = {
       status: "success",
       data: _newData,
@@ -105,6 +112,9 @@ export const createAccount = async (
   }
 };
 
+type usersResult = {
+  status: string;
+};
 type LoggedAccount = {
   status: string;
   data: any;
@@ -129,7 +139,11 @@ export const loginPhrase = async (PhraseList: any): Promise<LoggedAccount> => {
     if (myData.length > 0) {
       var fetchedData = myData[0].data;
       var myidentity = status.identity;
-      // var peer = await setupMessenger(myidentity, fetchedData.id);
+      
+      var peer = await setupMessenger(
+        toHex(status.keypair.publicKey),
+        fetchedData.id,
+      );
       // console.log("peer is ", peer);
 
       //ceate a message recieve promise of the logged data
@@ -174,3 +188,5 @@ export const generatePhrases = async (): Promise<KeypairResult> => {
   console.log(resultsjson);
   return resultsjson;
 };
+
+export const searchUsers = async (): Promise<usersResult> => {};

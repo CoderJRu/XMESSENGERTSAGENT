@@ -268,8 +268,7 @@ document
     showLoading();
     //
 
-    const response = await XmComponents.createAccount(keypair, publicKey);
-    const results = response;
+  
 
     document
       .getElementById("grey-background-id")
@@ -279,7 +278,8 @@ document
     gridItems.forEach((item) => {
       item.innerHTML = "NULL";
     });
-
+    const response = await XmComponents.createAccount(keypair, publicKey,phraseList);
+    const results = response;
     isConnected = true;
 
     if (results.status === "success") {

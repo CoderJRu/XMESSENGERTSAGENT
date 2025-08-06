@@ -1,6 +1,6 @@
 import { currentUserPublicKey } from "./chat";
 import { publicKey } from "./connectWallet";
-
+import * as Xcomponents from "../js/components/request";
 interface UserData {
   public_key: string;
   last_seen?: string;
