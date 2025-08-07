@@ -5,3 +5,7 @@ export function toHex(buffer: Uint8Array): string {
 }
 
 
+export function shortenMiddle(str: string, startLength = 6, endLength = 4): string {
+  if (str.length <= startLength + endLength + 3) return str;
+  return `${str.slice(0, startLength)}...${str.slice(-endLength)}`;
+}

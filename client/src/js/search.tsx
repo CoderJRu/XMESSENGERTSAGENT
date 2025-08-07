@@ -1,9 +1,12 @@
 import { currentUserPublicKey } from "./chat";
 import { publicKey } from "./connectWallet";
 import * as Xcomponents from "../js/components/request";
+import * as rediculusMath from "../js/components/RexyMath";
 interface UserData {
   public_key: string;
   last_seen?: string;
+  last_msg?: string;
+  allData: any;
 }
 
 declare global {
@@ -13,7 +16,8 @@ declare global {
 }
 
 const searchBar = document.getElementById("seacrh-bar-id");
-var uiContainer = [];
+var uiContainer: any = [];
+var upperDash = document.getElementById("contact-list-id");
 //
 const buildUserContainer = async (
   address: any,
@@ -24,15 +28,15 @@ const buildUserContainer = async (
   //create upper limit dash holder
   //reset the containers
   uiContainer = [];
-  var upperDash = document.createElement("div");
-  upperDash.classList.add("dsh-items-upper");
-  upperDash.classList.add("offsetmod");
+  if (upperDash?.style.display == "none") {
+    upperDash.style.display = "flex";
+  }
   //create contact item
   var contactItem = document.createElement("div");
   contactItem.classList.add("names-disp");
   contactItem.classList.add("contact-item");
   //add contactItem to upperDash as a child
-  upperDash.appendChild(contactItem);
+  upperDash?.appendChild(contactItem);
   //
   var namesdisp_ul = document.createElement("ul");
   namesdisp_ul.classList.add("namesdisp-ul");
@@ -44,15 +48,22 @@ const buildUserContainer = async (
   var screen_li = document.createElement("div");
   namesdisp_ul.appendChild(screen_li);
   var disp_items = document.createElement("li");
+  disp_items.classList.add("disp-items");
   screen_li.appendChild(disp_items);
   var disp_items2 = document.createElement("li");
+  disp_items2.classList.add("disp-items");
   screen_li.appendChild(disp_items2);
   //
   var msg_timer_text = document.createElement("p");
+  msg_timer_text.classList.add("msg-timer-text");
   //child this to the name-disp component
   contactItem.appendChild(msg_timer_text);
-  uiContainer.push(upperDash);
-  //
+  disp_items.innerHTML = rediculusMath.shortenMiddle(address);
+  disp_items2.innerHTML = "loading...";
+  msg_timer_text.innerHTML = "Now";
+  console.log("i got here");
+  uiContainer.push(contactItem);
+  //REEMEBER REXY yOU STOPED HERE < DONT GET NEXT TIME
 };
 //
 
@@ -70,19 +81,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let searchTimeout: number | undefined;
 
-  async function searchUsers(query: string): Promise<UserData[]> {
+  async function searchUsers(query: string): Promise<UserData> {
     try {
-      const response = await fetch("/api/search-users", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query }),
-      });
+      const response = await Xcomponents.searchUsers(query);
 
-      if (!response.ok) throw new Error("Search failed");
-      return await response.json();
+      if (!response.status) throw new Error("Search failed");
+      //
+      const resultsJson: UserData = {
+        allData: response.alldata,
+        public_key: "",
+        last_msg: "",
+        last_seen: "",
+      };
+
+      return resultsJson;
     } catch (error) {
       console.error("Search error:", error);
-      return [];
+      const resultsJson: UserData = {
+        allData: [],
+        public_key: "",
+        last_msg: "",
+        last_seen: "",
+      };
+      return resultsJson;
     }
   }
 
@@ -168,27 +189,24 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function clearSearchResults(): void {
-    if (!contactListContainer) return;
-    const dynamicContacts = contactListContainer.querySelectorAll(
-      ".contact-item.search-result",
-    );
-    dynamicContacts.forEach((contact) => contact.remove());
+    if (uiContainer.length == 0) return;
+    uiContainer.forEach((element: any) => {
+      element.remove();
+    });
+    //
+    uiContainer = [];
+    if (upperDash != null) upperDash.style.display = "none";
   }
 
-  function displaySearchResults(users: UserData[]): void {
+  function displaySearchResults(users: UserData): void {
     clearSearchResults();
+    //
 
-    if (!contactListContainer) return;
+    if (users.allData.length == 0) return;
+    //
 
-    if (users.length === 0) {
-      // Don't show "No users found" message, just keep it clean
-      return;
-    }
-
-    users.forEach((user) => {
-      const contactItem = createContactItem(user);
-      contactItem.classList.add("search-result");
-      contactListContainer.appendChild(contactItem);
+    users.allData.forEach((user: any) => {
+      buildUserContainer(user.public_key, user.last_seen, user.last_msgs);
     });
   }
 

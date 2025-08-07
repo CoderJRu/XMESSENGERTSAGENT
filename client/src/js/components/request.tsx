@@ -47,6 +47,17 @@ const UpdateDb = async (
     .eq(target, targetValue);
 };
 
+const FetchAll = async (table: any, row: any) => {
+  try {
+    const { data: _allData } = await supabase.from(table).select(row);
+    //
+    return _allData;
+  } catch (err) {
+    console.log(err);
+    return null;
+  }
+};
+
 const FetchDb = async (table: any, target: any, targetValue: any) => {
   const { data: _data } = await supabase
     .from(table)
@@ -55,6 +66,11 @@ const FetchDb = async (table: any, target: any, targetValue: any) => {
   return _data;
 };
 //generate phrases
+
+type fetchedAllData = {
+  status: any;
+  alldata: any;
+};
 
 type KeypairResult = {
   _mnemonics: string;
@@ -95,7 +111,7 @@ export const createAccount = async (
     //
     var status: any = await loggingMnemonics(_phraseList);
     var myidentity = status.identity;
-    var peer = await setupMessenger(publicKey, _newData.id);
+    // var peer = await setupMessenger(publicKey, _newData.id);
     //console.log("peer is ", peer);
     const resultsJson: AccountCreated = {
       status: "success",
@@ -112,9 +128,6 @@ export const createAccount = async (
   }
 };
 
-type usersResult = {
-  status: string;
-};
 type LoggedAccount = {
   status: string;
   data: any;
@@ -139,11 +152,12 @@ export const loginPhrase = async (PhraseList: any): Promise<LoggedAccount> => {
     if (myData.length > 0) {
       var fetchedData = myData[0].data;
       var myidentity = status.identity;
-      
+      /*
       var peer = await setupMessenger(
         toHex(status.keypair.publicKey),
         fetchedData.id,
       );
+      */
       // console.log("peer is ", peer);
 
       //ceate a message recieve promise of the logged data
@@ -189,4 +203,42 @@ export const generatePhrases = async (): Promise<KeypairResult> => {
   return resultsjson;
 };
 
-export const searchUsers = async (): Promise<usersResult> => {};
+export const searchUsers = async (query: string): Promise<fetchedAllData> => {
+  try {
+    const _alldata = await FetchAll("user", "api");
+
+    //
+    console.log("your supabase data is ", _alldata);
+    var dataList: any = [];
+    if (_alldata != null)
+      if (_alldata.length > 0) {
+        for (let i = 0; i < _alldata.length; ++i) {
+          if (_alldata[i].api.includes(query)) {
+            const _modAllData = {
+              public_key: _alldata[i].api,
+              last_seen: "",
+              last_msgs: "",
+            };
+            //
+            dataList.push(_modAllData);
+          }
+        }
+      }
+    const resultsJson: fetchedAllData = {
+      status: true,
+      alldata: dataList,
+    };
+    //
+    console.log(resultsJson);
+    return resultsJson;
+  } catch (err) {
+    console.log(err);
+    const resultsJson: fetchedAllData = {
+      status: false,
+      alldata: null,
+    };
+    //
+    console.log(resultsJson);
+    return resultsJson;
+  }
+};
