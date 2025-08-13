@@ -94,6 +94,13 @@ document.addEventListener("DOMContentLoaded", () => {
     chatDropdown.addEventListener("click", (e: MouseEvent) => {
       const target = e.target as HTMLElement;
       const dropdownItem = target.closest('[data-action]') as HTMLElement;
+      const dropdownContent = target.closest('.dropdown-content') as HTMLElement;
+      
+      // If clicking outside dropdown content, close dropdown
+      if (!dropdownContent) {
+        chatDropdown.classList.remove("show");
+        return;
+      }
       
       if (dropdownItem) {
         const action = dropdownItem.getAttribute('data-action');
