@@ -73,7 +73,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const chatMenuToggle = document.getElementById("chat-menu-toggle");
   const chatDropdown = document.getElementById("chat-dropdown");
-  const mobileBackOption = document.getElementById("mobile-back-option");
 
   if (chatMenuToggle && chatDropdown) {
     chatMenuToggle.addEventListener("click", (e: MouseEvent) => {
@@ -90,16 +89,39 @@ document.addEventListener("DOMContentLoaded", () => {
         chatDropdown.classList.remove("show");
       }
     });
-  }
 
-  if (mobileBackOption) {
-    mobileBackOption.addEventListener("click", (e: MouseEvent) => {
-      e.preventDefault();
-      console.log("Mobile back option clicked");
-      if (chatDropdown) chatDropdown.classList.remove("show");
-      if (contactListView && chatInterface) {
-        contactListView.style.display = "block";
-        chatInterface.style.display = "none";
+    // Handle dropdown item clicks
+    chatDropdown.addEventListener("click", (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      const dropdownItem = target.closest('[data-action]') as HTMLElement;
+      
+      if (dropdownItem) {
+        const action = dropdownItem.getAttribute('data-action');
+        e.preventDefault();
+        e.stopPropagation();
+        
+        switch (action) {
+          case 'back':
+            goBackToContacts();
+            break;
+          case 'profile':
+            // Handle profile view
+            console.log('View profile clicked');
+            break;
+          case 'clear':
+            // Handle clear chat
+            if (messagesContainer) {
+              messagesContainer.innerHTML = '';
+            }
+            console.log('Clear chat clicked');
+            break;
+          case 'block':
+            // Handle block user
+            console.log('Block user clicked');
+            break;
+        }
+        
+        chatDropdown.classList.remove("show");
       }
     });
   }
