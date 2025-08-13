@@ -411,7 +411,7 @@ input,
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 10000;
+  z-index: 999999;
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(8px);
 }
@@ -428,6 +428,7 @@ input,
   overflow: hidden;
   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), 
               0 0 0 1px rgba(255, 255, 255, 0.08);
+  z-index: 999999;
 }
 
 .modern-chat-dropdown.show {
@@ -1611,7 +1612,6 @@ textarea:focus {
   width: fit-content;
   animation: messageSlideIn 0.3s ease-out;
   position: relative;
-  z-index: 1;
 }
 
 @keyframes messageSlideIn {
