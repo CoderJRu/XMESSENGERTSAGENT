@@ -1687,8 +1687,7 @@ textarea:focus {
 }
 
 .message-input-container:focus-within {
-  border-color: rgba(0, 122, 255, 0.5);
-  box-shadow: 0 2px 20px rgba(0, 122, 255, 0.15), 0 0 0 3px rgba(0, 122, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.15);
   background: rgba(30, 35, 42, 0.9);
 }
 
