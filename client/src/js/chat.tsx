@@ -116,11 +116,21 @@ document.addEventListener("DOMContentLoaded", () => {
       // Reset height to auto to get accurate scrollHeight
       messageInput.style.height = 'auto';
       
+      // Check if input is empty and reset to minimum if so
+      if (!messageInput.value.trim()) {
+        messageInput.style.height = '20px';
+        const container = messageInput.parentElement;
+        if (container) {
+          container.style.height = '44px'; // Reset to original min-height
+        }
+        return;
+      }
+      
       // Get the actual content height
       const scrollHeight = messageInput.scrollHeight;
       
       // Set minimum height based on single line (around 24px) and max height
-      const minHeight = 24;
+      const minHeight = 20;
       const maxHeight = 100;
       const newHeight = Math.min(Math.max(scrollHeight, minHeight), maxHeight);
       
@@ -130,9 +140,9 @@ document.addEventListener("DOMContentLoaded", () => {
       const container = messageInput.parentElement;
       if (container) {
         // Container needs extra padding space
-        const containerMinHeight = 40;
+        const containerMinHeight = 44;
         const containerMaxHeight = 120;
-        const containerHeight = Math.min(Math.max(newHeight + 16, containerMinHeight), containerMaxHeight);
+        const containerHeight = Math.min(Math.max(newHeight + 20, containerMinHeight), containerMaxHeight);
         container.style.height = containerHeight + 'px';
       }
     }

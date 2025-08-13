@@ -1689,6 +1689,7 @@ textarea:focus {
 .message-input-container:focus-within {
   border-color: rgba(255, 255, 255, 0.15);
   background: rgba(30, 35, 42, 0.9);
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.2) !important;
 }
 
 .chat-message-input {
@@ -1708,11 +1709,18 @@ textarea:focus {
   max-height: 100px;
   line-height: 1.45;
   letter-spacing: -0.01em;
+  box-shadow: none !important;
 }
 
 .chat-message-input::placeholder {
   color: #8b95a1;
   font-weight: 400;
+}
+
+.chat-message-input:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
 }
 
 .chat-input-btn {
