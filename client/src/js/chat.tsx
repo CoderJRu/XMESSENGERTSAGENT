@@ -72,63 +72,138 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const chatMenuToggle = document.getElementById("chat-menu-toggle");
-  const chatDropdown = document.getElementById("chat-dropdown");
+  let chatDropdown: HTMLElement | null = null;
 
-  if (chatMenuToggle && chatDropdown) {
+  // Create dropdown portal element
+  const createDropdownPortal = (): HTMLElement => {
+    const dropdown = document.createElement('div');
+    dropdown.id = 'chat-dropdown-portal';
+    dropdown.className = 'modern-chat-dropdown';
+    dropdown.innerHTML = `
+      <div class="dropdown-content">
+        <div class="dropdown-item" data-action="back">
+          <svg class="dropdown-icon" width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="m15 18-6-6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="dropdown-label">Back</span>
+        </div>
+        <div class="dropdown-divider"></div>
+        <div class="dropdown-item" data-action="profile">
+          <svg class="dropdown-icon" width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          <span class="dropdown-label">View Profile</span>
+        </div>
+        <div class="dropdown-item" data-action="clear">
+          <svg class="dropdown-icon" width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <path d="M3 6h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <line x1="10" y1="11" x2="10" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            <line x1="14" y1="11" x2="14" y2="17" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <span class="dropdown-label">Clear Chat</span>
+        </div>
+        <div class="dropdown-divider"></div>
+        <div class="dropdown-item danger" data-action="block">
+          <svg class="dropdown-icon" width="18" height="18" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+            <path d="m4.9 4.9 14.2 14.2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span class="dropdown-label">Block User</span>
+        </div>
+      </div>
+    `;
+    return dropdown;
+  };
+
+  // Show dropdown function
+  const showDropdown = () => {
+    // Remove existing dropdown if present
+    const existingDropdown = document.getElementById('chat-dropdown-portal');
+    if (existingDropdown) {
+      existingDropdown.remove();
+    }
+
+    // Create new dropdown and append to body
+    chatDropdown = createDropdownPortal();
+    document.body.appendChild(chatDropdown);
+    chatDropdown.classList.add('show');
+  };
+
+  // Hide dropdown function
+  const hideDropdown = () => {
+    if (chatDropdown) {
+      chatDropdown.classList.remove('show');
+      setTimeout(() => {
+        if (chatDropdown && chatDropdown.parentNode) {
+          chatDropdown.parentNode.removeChild(chatDropdown);
+        }
+        chatDropdown = null;
+      }, 300); // Wait for animation to complete
+    }
+  };
+
+  if (chatMenuToggle) {
     chatMenuToggle.addEventListener("click", (e: MouseEvent) => {
       e.preventDefault();
       e.stopPropagation();
-      chatDropdown.classList.toggle("show");
+      
+      if (chatDropdown && chatDropdown.classList.contains('show')) {
+        hideDropdown();
+      } else {
+        showDropdown();
+      }
     });
 
+    // Global click handler for closing dropdown
     document.addEventListener("click", (e: MouseEvent) => {
-      if (
-        !chatMenuToggle.contains(e.target as Node) &&
-        !chatDropdown.contains(e.target as Node)
-      ) {
-        chatDropdown.classList.remove("show");
+      if (chatDropdown && chatDropdown.classList.contains('show')) {
+        const target = e.target as HTMLElement;
+        const dropdownContent = target.closest('.dropdown-content') as HTMLElement;
+        
+        // If clicking outside dropdown content or on menu toggle, close dropdown
+        if (!dropdownContent || chatMenuToggle.contains(target)) {
+          hideDropdown();
+        }
       }
     });
 
-    // Handle dropdown item clicks
-    chatDropdown.addEventListener("click", (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      const dropdownItem = target.closest('[data-action]') as HTMLElement;
-      const dropdownContent = target.closest('.dropdown-content') as HTMLElement;
-      
-      // If clicking outside dropdown content, close dropdown
-      if (!dropdownContent) {
-        chatDropdown.classList.remove("show");
-        return;
-      }
-      
-      if (dropdownItem) {
-        const action = dropdownItem.getAttribute('data-action');
-        e.preventDefault();
-        e.stopPropagation();
+    // Global event delegation for dropdown actions
+    document.addEventListener("click", (e: MouseEvent) => {
+      if (chatDropdown && chatDropdown.classList.contains('show')) {
+        const target = e.target as HTMLElement;
+        const dropdownItem = target.closest('[data-action]') as HTMLElement;
         
-        switch (action) {
-          case 'back':
-            goBackToContacts();
-            break;
-          case 'profile':
-            // Handle profile view
-            console.log('View profile clicked');
-            break;
-          case 'clear':
-            // Handle clear chat
-            if (messagesContainer) {
-              messagesContainer.innerHTML = '';
-            }
-            console.log('Clear chat clicked');
-            break;
-          case 'block':
-            // Handle block user
-            console.log('Block user clicked');
-            break;
+        if (dropdownItem && chatDropdown.contains(dropdownItem)) {
+          const action = dropdownItem.getAttribute('data-action');
+          e.preventDefault();
+          e.stopPropagation();
+          
+          switch (action) {
+            case 'back':
+              goBackToContacts();
+              break;
+            case 'profile':
+              // Handle profile view
+              console.log('View profile clicked');
+              break;
+            case 'clear':
+              // Handle clear chat
+              if (messagesContainer) {
+                messagesContainer.innerHTML = '';
+              }
+              console.log('Clear chat clicked');
+              break;
+            case 'block':
+              // Handle block user
+              console.log('Block user clicked');
+              break;
+          }
+          
+          hideDropdown();
         }
-        
-        chatDropdown.classList.remove("show");
       }
     });
   }
