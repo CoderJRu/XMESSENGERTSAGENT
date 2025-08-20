@@ -3336,6 +3336,48 @@ input:checked+.toggle-slider:before {
   display: none !important;
 }
 
+/* Move other top elements to the very top when chat is active */
+.chat-active .mobile-menu-profile {
+  top: 0px !important;
+}
+
+.chat-active .greyedBackground {
+  top: 0px !important;
+}
+
+.chat-active .create-wallet-section {
+  top: 0px !important;
+}
+
+/* Move all main content planes to the top when chat is active */
+.chat-active .chat-plane.active {
+  top: 0px !important;
+}
+
+.chat-active .dashboard-plane.active {
+  top: 0px !important;
+}
+
+.chat-active .swap-plane.active {
+  top: 0px !important;
+}
+
+.chat-active .nodes-plane.active {
+  top: 0px !important;
+}
+
+.chat-active .treasury-plane.active {
+  top: 0px !important;
+}
+
+.chat-active .validator-plane.active {
+  top: 0px !important;
+}
+
+.chat-active .home-contents.active {
+  top: 0px !important;
+}
+
 .mobile-menu-profile svg {
   width: 20px;
   height: 20px;
