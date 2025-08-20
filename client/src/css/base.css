@@ -3364,6 +3364,29 @@ input:checked+.toggle-slider:before {
   display: none !important;
 }
 
+/* Position chat header at top when hamburger is hidden */
+.chat-active .chat-header {
+  margin-top: 0 !important;
+  padding-top: env(safe-area-inset-top, 20px) !important;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1200;
+  background: rgba(14, 16, 19, 0.95) !important;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Adjust chat container when header is fixed */
+.chat-active .chat-container {
+  padding-top: calc(65px + env(safe-area-inset-top, 20px)) !important;
+}
+
+.chat-active .chat-messages {
+  margin-top: 0 !important;
+}
+
 /* Mobile/iPhone specific responsive fixes */
 @media only screen and (max-width: 768px) {
   /* Ensure proper scaling on all mobile devices */
