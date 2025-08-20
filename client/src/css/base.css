@@ -272,7 +272,7 @@ input,
   transition: 0.2s;
   position: fixed;
   left: 20px;
-  top: 30px;
+  top: 35px;
   z-index: 1001;
 }
 
@@ -3120,16 +3120,21 @@ input:checked+.toggle-slider:before {
 }
 
 .hamburger {
-  margin: auto 10px;
+  margin: 0;
+  padding: 8px;
   transition: 0.5s;
   z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .Header-bar {
   display: block;
   position: fixed;
   left: 20px;
-  top: 30px;
+  top: 35px;
   transition: 1.2s;
   z-index: 1001;
 }
