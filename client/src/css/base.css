@@ -3263,6 +3263,10 @@ input:checked+.toggle-slider:before {
 /* Hamburger active state - when menu is open */
 .hamburger.active {
   z-index: 2100;
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Transform hamburger bars into X when active */
@@ -3297,7 +3301,7 @@ input:checked+.toggle-slider:before {
 /* Modern Mobile Menu Profile Icon */
 .mobile-menu-profile {
   position: fixed;
-  top: 30px;
+  top: 20px;
   right: 20px;
   width: 40px;
   height: 40px;
