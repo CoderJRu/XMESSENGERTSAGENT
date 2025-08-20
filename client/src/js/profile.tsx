@@ -203,3 +203,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 });
+
+// Listen for custom profile event from mobile menu
+document.addEventListener('showProfileSettings', () => {
+  showProfileSettings();
+});
