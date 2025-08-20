@@ -266,93 +266,9 @@ input,
   margin: auto 10px;
 }
 
-/* Mobile Header Panel */
-.mobile-header-panel {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 60px;
-  background: rgba(14, 16, 19, 0.95);
-  backdrop-filter: blur(20px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  z-index: 2000;
-  display: flex;
-  align-items: center;
-}
-
-.mobile-header-content {
-  width: 100%;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 16px;
-}
-
-.mobile-header-left,
-.mobile-header-right {
-  display: flex;
-  align-items: center;
-}
-
-/* Update hamburger and profile positioning */
-.mobile-header-panel .hamburger {
-  margin: 0;
-  cursor: pointer;
-  padding: 8px;
-  border-radius: 8px;
-  transition: background 0.2s ease;
-}
-
-.mobile-header-panel .hamburger:hover {
-  background: rgba(255, 255, 255, 0.1);
-}
-
-.mobile-header-panel .account-drop-down-window {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 12px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.mobile-header-panel .account-drop-down-window:hover {
-  background: rgba(255, 255, 255, 0.15);
-  transform: translateY(-1px);
-}
-
-.mobile-header-panel .name-disp {
-  color: white;
-  font-size: 14px;
-  font-weight: 500;
-  margin: 0;
-  max-width: 120px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
 .Header-bar {
   display: none;
   transition: 0.2s;
-}
-
-/* Make header bar visible in mobile header panel */
-.mobile-header-panel .Header-bar {
-  display: block !important;
-}
-
-/* Adjust content areas for header panel */
-.chat-plane {
-  padding-top: 60px;
-}
-
-.dsh-items-upper {
-  padding-top: 60px;
 }
 
 /* Chat Interface Styles */
@@ -364,7 +280,7 @@ input,
   background: var(--background-color, #1a1a1a);
   position: relative;
   overflow: hidden;
-  top: 60px; /* Adjusted for header panel */
+  top: 20px;
   z-index: 1100;
 }
 
