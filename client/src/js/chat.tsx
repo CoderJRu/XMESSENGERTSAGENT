@@ -22,12 +22,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const chatUsername = document.getElementById("chat-username");
   const chatLastSeen = document.getElementById("chat-last-seen");
 
+  // Check if chat interface is initially active
+  if (chatInterface && chatInterface.style.display === "flex") {
+    document.body.classList.add("chat-active");
+  }
+
   // Function to go back to contacts
   const goBackToContacts = (): void => {
     console.log("Going back to contact list");
     if (contactListView && chatInterface) {
       contactListView.style.display = "block";
       chatInterface.style.display = "none";
+      // Remove chat-active class when leaving chat
+      document.body.classList.remove("chat-active");
     }
   };
 
@@ -42,6 +49,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (contactListView && chatInterface) {
         contactListView.style.display = "none";
         chatInterface.style.display = "flex";
+        // Add chat-active class when entering chat
+        document.body.classList.add("chat-active");
       }
     });
   });

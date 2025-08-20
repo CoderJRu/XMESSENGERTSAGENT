@@ -3327,6 +3327,15 @@ input:checked+.toggle-slider:before {
   display: flex;
 }
 
+/* Hide hamburger when chat is active */
+.chat-active .Header-bar {
+  display: none !important;
+}
+
+.chat-active .hamburger {
+  display: none !important;
+}
+
 .mobile-menu-profile svg {
   width: 20px;
   height: 20px;
