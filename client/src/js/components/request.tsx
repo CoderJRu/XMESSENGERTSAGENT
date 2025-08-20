@@ -111,8 +111,8 @@ export const createAccount = async (
     //
     var status: any = await loggingMnemonics(_phraseList);
     var myidentity = status.identity;
-    var peer = await setupMessenger(publicKey, _newData.id);
-    console.log("peer is ", peer);
+    //var peer = await setupMessenger(publicKey, _newData.id);
+   // console.log("peer is ", peer);
     const resultsJson: AccountCreated = {
       status: "success",
       data: _newData,
