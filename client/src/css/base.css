@@ -3355,12 +3355,12 @@ input:checked+.toggle-slider:before {
   display: flex;
 }
 
-/* Hide hamburger when chat is active */
-.chat-active .Header-bar {
+/* Hide hamburger only when body has chat-active class (properly managed by JS) */
+body.chat-active .Header-bar {
   display: none !important;
 }
 
-.chat-active .hamburger {
+body.chat-active .hamburger {
   display: none !important;
 }
 
