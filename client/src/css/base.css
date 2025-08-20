@@ -268,8 +268,12 @@ input,
 }
 
 .Header-bar {
-  display: none;
+  display: block;
   transition: 0.2s;
+  position: fixed;
+  left: 15px;
+  top: 20px;
+  z-index: 1001;
 }
 
 /* Chat Interface Styles */
@@ -3256,17 +3260,15 @@ input:checked+.toggle-slider:before {
   /* 137.5% */
 }
 
+/* Hamburger active state - when menu is open */
 .hamburger.active {
   z-index: 2100;
-  position: fixed;
-  top: 30px;
-  left: 20px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Transform hamburger into X when active */
+/* Transform hamburger bars into X when active */
 .hamburger.active .bar:nth-child(1) {
   transform: rotate(45deg) translate(5px, 5px);
+  background-color: white;
 }
 
 .hamburger.active .bar:nth-child(2) {
@@ -3275,6 +3277,12 @@ input:checked+.toggle-slider:before {
 
 .hamburger.active .bar:nth-child(3) {
   transform: rotate(-45deg) translate(7px, -6px);
+  background-color: white;
+}
+
+/* Ensure Header-bar is visible when active */
+.Header-bar.active {
+  z-index: 2100;
 }
 
 /* Remove duplicate hamburger bar styling since it's already defined above */

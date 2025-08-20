@@ -8,6 +8,7 @@ const hamburger = document.querySelector<HTMLElement>(".hamburger");
 const hamburgerPlane = document.querySelector<HTMLElement>(".hamburger-plane");
 const xmUlMenu = document.querySelector<HTMLElement>(".xm-ul-menu");
 const mobileProfileIcon = document.querySelector<HTMLElement>("#mobile-profile-icon");
+const headerBar = document.querySelector<HTMLElement>(".Header-bar");
 
 hamburger?.addEventListener("click", async () => {
   open = !open;
@@ -22,13 +23,14 @@ mobileProfileIcon?.addEventListener("click", () => {
 });
 
 export function ToggleHamburger(): void {
-  if (!hamburger || !hamburgerPlane || !xmUlMenu || !mobileProfileIcon) return;
+  if (!hamburger || !hamburgerPlane || !xmUlMenu || !mobileProfileIcon || !headerBar) return;
 
   if (open) {
     hamburger.classList.add("active");
     hamburgerPlane.classList.add("active");
     xmUlMenu.classList.add("active");
     mobileProfileIcon.classList.add("active");
+    headerBar.classList.add("active");
     // Prevent body scroll when menu is open
     document.body.style.overflow = 'hidden';
   } else {
@@ -36,6 +38,7 @@ export function ToggleHamburger(): void {
     hamburgerPlane.classList.remove("active");
     xmUlMenu.classList.remove("active");
     mobileProfileIcon.classList.remove("active");
+    headerBar.classList.remove("active");
     // Restore body scroll when menu is closed
     document.body.style.overflow = '';
   }
