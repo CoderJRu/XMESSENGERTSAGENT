@@ -254,12 +254,13 @@ input,
 
 .bar {
   display: block;
-  width: 26px;
-  height: 2.5px;
-  margin: 4.5px auto;
+  width: 25px;
+  height: 3px;
+  margin: 5px auto;
   webkit-transition: all 0.3s ease-in-out;
   transition: all 0.3s ease-in-out;
   background-color: #ffffff;
+  border-radius: 2px;
 }
 
 .hamburger {
@@ -3260,8 +3261,29 @@ input:checked+.toggle-slider:before {
   position: fixed;
   top: 30px;
   left: 20px;
-  transform: rotate(180deg);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Transform hamburger into X when active */
+.hamburger.active .bar:nth-child(1) {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger.active .bar:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.active .bar:nth-child(3) {
+  transform: rotate(-45deg) translate(7px, -6px);
+}
+
+/* Remove duplicate hamburger bar styling since it's already defined above */
+
+/* Hide old profile icon on mobile screens */
+@media (max-width: 768px) {
+  .account-drop-down-window {
+    display: none !important;
+  }
 }
 
 /* Modern Mobile Menu Profile Icon */
