@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const chatLastSeen = document.getElementById("chat-last-seen");
 
   // Check if chat interface is initially active
-  if (chatInterface && getComputedStyle(chatInterface).display === "flex") {
+  if (chatInterface && chatInterface.style.display === "flex") {
     document.body.classList.add("chat-active");
   }
 
