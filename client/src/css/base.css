@@ -1,3 +1,31 @@
+/* iOS/iPhone Compatibility Fixes */
+* {
+  box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  height: 100%;
+}
+
+body {
+  -webkit-overflow-scrolling: touch;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+/* Fix for iOS Safari 100vh issue */
+@supports (-webkit-touch-callout: none) {
+  .full-height {
+    height: -webkit-fill-available;
+  }
+}
+
 /* Global Smooth Transitions */
 *,
 *::before,
@@ -3334,6 +3362,62 @@ input:checked+.toggle-slider:before {
 
 .chat-active .hamburger {
   display: none !important;
+}
+
+/* Mobile/iPhone specific responsive fixes */
+@media only screen and (max-width: 768px) {
+  /* Ensure proper scaling on all mobile devices */
+  html, body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+  
+  /* Fix for iOS Safari bottom bar */
+  .container {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  /* Ensure touch targets are large enough */
+  button, .hamburger, .mobile-menu-profile {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Fix for iOS Safari zoom on input focus */
+  input, textarea, select {
+    font-size: 16px;
+    -webkit-appearance: none;
+    border-radius: 0;
+  }
+  
+  /* Fix for mobile Safari scrolling issues */
+  .home-contents, .container {
+    -webkit-overflow-scrolling: touch;
+    transform: translate3d(0,0,0);
+    -webkit-transform: translate3d(0,0,0);
+  }
+  
+  /* Fix for iOS status bar overlap */
+  .container {
+    padding-top: env(safe-area-inset-top);
+  }
+  
+  /* Ensure hamburger menu works on mobile */
+  .hamburger-plane {
+    -webkit-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
+  }
+  
+  /* Fix backdrop blur on iOS */
+  @supports (-webkit-backdrop-filter: blur(10px)) {
+    .mobile-menu-profile,
+    .hamburger-plane,
+    .xm-ul-menu li {
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+    }
+  }
 }
 
 .mobile-menu-profile svg {
