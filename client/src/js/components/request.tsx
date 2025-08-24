@@ -15,6 +15,7 @@ import { publicKey } from "../connectWallet.tsx";
 //
 
 const supaKey: any = import.meta.env.VITE_SUPABASE_KEY;
+export var demos: any = null;
 const supaUrl: any = import.meta.env.VITE_SUPABASE_URL;
 const supabase: any = createClient(supaUrl, supaKey);
 
@@ -28,7 +29,7 @@ export const InsertDb = async (newData: any, pubKey: any) => {
 };
 
 const connectMe = async () => {
-  await connectSdk();
+ demos =  await connectSdk();
 };
 // connects the app to demos nodes :)
 connectMe();
@@ -109,9 +110,9 @@ export const createAccount = async (
     };
     await InsertDb(_newData, publicKey);
     //
-    var status: any = await loggingMnemonics(_phraseList);
+    var status: any = await loggingMnemonics(_phraseList, demos);
     var myidentity = status.identity;
-    //var peer = await setupMessenger(publicKey, _newData.id);
+    //var peer = await setupMessenger(status.publicKeyObject, _newData.id);
     //console.log("peer is ", peer);
     const resultsJson: AccountCreated = {
       status: "success",
@@ -137,7 +138,7 @@ type LoggedAccount = {
 export const loginPhrase = async (PhraseList: any): Promise<LoggedAccount> => {
   try {
     var _phraseList: any = PhraseList;
-    var status: any = await loggingMnemonics(_phraseList);
+    var status: any = await loggingMnemonics(_phraseList,demos);
 
     const decoder: any = new TextDecoder();
     console.log(

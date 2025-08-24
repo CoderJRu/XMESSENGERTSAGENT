@@ -12,6 +12,7 @@ export async function connectSdk() {
   await demos.connect("https://nodes.cruxdecussata.com/");
 
   console.log("connected to rpc:", demos.connected);
+  return demos;
 }
 
 //me();
@@ -50,7 +51,7 @@ export const generateKeypair = async () => {
 
 //generateKeypair();
 
-export const loggingMnemonics = async (mnemonics: any) => {
+export const loggingMnemonics = async (mnemonics: any, demos: any) => {
   const seed = bip39.mnemonicToSeedSync(mnemonics);
   const keypair = DemosWebAuth.keyPairFromMnemonic(seed);
   const [status, message] = await identity.login(keypair.privateKey);
@@ -58,6 +59,11 @@ export const loggingMnemonics = async (mnemonics: any) => {
   const bufferMsg = Buffer.from(msg);
   const [_status, signature] = await identity.sign(bufferMsg);
   console.log("signature is HAHHAHHAAHHAHAHAHAHAHA ", identity.publicKey);
+  const publicKeyObject = await demos.connectWallet(mnemonics, {
+    algorithm: "ed25519",
+  });
+  console.log("public key object: ", publicKeyObject);
+  console.log ("connected pub key: ", demos.getAddress());
   // const peer = await setupMessenger(identity, _id);
   //await peer.sendMessage("target-peer-id", "Hello from me!");
   //await identity.logout();
@@ -65,6 +71,7 @@ export const loggingMnemonics = async (mnemonics: any) => {
     status: status,
     keypair: keypair,
     identity: identity,
+    publicKeyObject: publicKeyObject,
   };
 };
 //
