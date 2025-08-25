@@ -5132,3 +5132,199 @@ input:checked+.toggle-slider:before {
   
 
 }
+
+/* Ethereum Wallet Modal Specific Styles */
+.ethereum-icon {
+  background: linear-gradient(135deg, #627EEA 0%, #4A5FCC 100%) !important;
+}
+
+.ethereum-features {
+  margin: 24px 0;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16px;
+  gap: 12px;
+}
+
+.feature-item:last-child {
+  margin-bottom: 0;
+}
+
+.feature-icon {
+  width: 40px;
+  height: 40px;
+  background: rgba(98, 126, 234, 0.2);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #627EEA;
+  flex-shrink: 0;
+}
+
+.feature-text h4 {
+  color: var(--Text-Primary, #FFF);
+  font-family: "Helvetica Neue";
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 4px 0;
+}
+
+.feature-text p {
+  color: var(--Text-Secondary, #9AA0A6);
+  font-family: "Helvetica Neue";
+  font-size: 12px;
+  font-weight: 400;
+  margin: 0;
+  line-height: 1.4;
+}
+
+.supported-wallets {
+  margin: 20px 0;
+}
+
+.supported-wallets h4 {
+  color: var(--Text-Primary, #FFF);
+  font-family: "Helvetica Neue";
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 12px 0;
+}
+
+.wallet-logos {
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.wallet-logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  flex: 1;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.wallet-logo:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.wallet-logo span {
+  color: var(--Text-Secondary, #9AA0A6);
+  font-family: "Helvetica Neue";
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.wallet-logo svg {
+  color: var(--Text-Primary, #FFF);
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 8px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--Text-Secondary, #9AA0A6);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal-close-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--Text-Primary, #FFF);
+}
+
+/* Multi-wallet profile styling */
+.wallet-section {
+  margin-bottom: 20px;
+}
+
+.wallet-type-label {
+  color: var(--Text-Primary, #FFF);
+  font-family: "Helvetica Neue";
+  font-size: 12px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wallet-type-icon {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.demos-icon {
+  background: linear-gradient(135deg, #FF6B6B 0%, #FF5252 100%);
+}
+
+.ethereum-icon-small {
+  background: linear-gradient(135deg, #627EEA 0%, #4A5FCC 100%);
+}
+
+.wallet-address-container {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.wallet-address {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  padding: 12px;
+  color: var(--Text-Primary, #FFF);
+  font-family: "Roboto Mono", monospace;
+  font-size: 11px;
+  word-break: break-all;
+  overflow-wrap: break-word;
+}
+
+.copy-wallet-btn {
+  background: rgba(76, 175, 80, 0.2);
+  border: 1px solid rgba(76, 175, 80, 0.3);
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: #4CAF50;
+  font-family: "Helvetica Neue";
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.copy-wallet-btn:hover {
+  background: rgba(76, 175, 80, 0.3);
+  border-color: rgba(76, 175, 80, 0.4);
+}

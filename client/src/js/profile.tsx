@@ -1,4 +1,4 @@
-import { isConnected, data, updateUserData } from './connectWallet';
+import { isConnected, data, updateUserData, ethereumWallet } from './connectWallet';
 
 // Create and style the profile popup
 const profilePopup = document.createElement('div');
@@ -53,11 +53,10 @@ function handleImageUpload(file: File): void {
   reader.readAsDataURL(file);
 }
 
-// Copy public key to clipboard
-function copyPublicKey(): void {
-  const publicKey = data.publicKey || '';
-  navigator.clipboard.writeText(publicKey).then(() => {
-    const copyBtn = document.querySelector('.copy-key-btn') as HTMLElement;
+// Copy wallet address to clipboard
+function copyWalletAddress(address: string, buttonClass: string): void {
+  navigator.clipboard.writeText(address).then(() => {
+    const copyBtn = document.querySelector(buttonClass) as HTMLElement;
     if (copyBtn) {
       const originalText = copyBtn.textContent;
       copyBtn.textContent = 'Copied!';
@@ -68,7 +67,7 @@ function copyPublicKey(): void {
       }, 2000);
     }
   }).catch(() => {
-    alert('Failed to copy public key');
+    alert('Failed to copy address');
   });
 }
 
@@ -137,11 +136,34 @@ function showProfileSettings(): void {
           <input type="text" class="profile-input username-input" value="${currentUsername}" placeholder="Enter your username">
         </div>
 
-        <div class="profile-field">
-          <label class="profile-label">Public Key</label>
-          <div class="public-key-field">
-            <div class="public-key-display">${data.publicKey || 'Not Connected'}</div>
-            <button class="copy-key-btn">Copy</button>
+        <div class="wallet-section">
+          <div class="wallet-type-label">
+            <div class="wallet-type-icon demos-icon">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="white">
+                <circle cx="12" cy="12" r="10"></circle>
+              </svg>
+            </div>
+            Demos Wallet
+          </div>
+          <div class="wallet-address-container">
+            <div class="wallet-address">${data.publicKey || 'Not Connected'}</div>
+            <button class="copy-wallet-btn copy-demos-btn">Copy</button>
+          </div>
+        </div>
+
+        <div class="wallet-section">
+          <div class="wallet-type-label">
+            <div class="wallet-type-icon ethereum-icon-small">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="white">
+                <polygon points="12 2 3 7 12 12 21 7 12 2"></polygon>
+                <polygon points="12 17 3 12 12 17 21 12 12 17"></polygon>
+              </svg>
+            </div>
+            Ethereum Wallet
+          </div>
+          <div class="wallet-address-container">
+            <div class="wallet-address">${ethereumWallet.address || 'Not Connected'}</div>
+            <button class="copy-wallet-btn copy-ethereum-btn" ${!ethereumWallet.address ? 'disabled' : ''}>Copy</button>
           </div>
         </div>
 
@@ -162,7 +184,8 @@ function showProfileSettings(): void {
   const saveButton = profilePopup.querySelector('.profile-btn-primary') as HTMLElement;
   const imageContainer = profilePopup.querySelector('.profile-image-container') as HTMLElement;
   const fileInput = profilePopup.querySelector('.profile-upload-input') as HTMLInputElement;
-  const copyButton = profilePopup.querySelector('.copy-key-btn') as HTMLElement;
+  const copyDemosButton = profilePopup.querySelector('.copy-demos-btn') as HTMLElement;
+  const copyEthereumButton = profilePopup.querySelector('.copy-ethereum-btn') as HTMLElement;
 
   const hideProfile = () => {
     profilePopup.classList.remove('show');
@@ -174,7 +197,8 @@ function showProfileSettings(): void {
   closeButton?.addEventListener('click', hideProfile);
   cancelButton?.addEventListener('click', hideProfile);
   saveButton?.addEventListener('click', saveProfile);
-  copyButton?.addEventListener('click', copyPublicKey);
+  copyDemosButton?.addEventListener('click', () => copyWalletAddress(data.publicKey || '', '.copy-demos-btn'));
+  copyEthereumButton?.addEventListener('click', () => copyWalletAddress(ethereumWallet.address || '', '.copy-ethereum-btn'));
 
   imageContainer?.addEventListener('click', () => {
     fileInput?.click();
