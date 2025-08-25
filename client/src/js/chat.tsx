@@ -297,7 +297,7 @@ document.addEventListener("DOMContentLoaded", () => {
       senderID: currentChatBuddyPublicId,
       message: messageText,
     };
-
+/*
     const response = await fetch("/sendMessage", {
       method: "POST",
       headers: {
@@ -311,6 +311,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (results._res === "success") {
       // Optional: handle success case
     }
+    */
   };
 
   if (messageInput && sendBtn && messagesContainer) {
