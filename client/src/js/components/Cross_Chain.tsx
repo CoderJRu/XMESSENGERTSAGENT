@@ -1,4 +1,4 @@
-import { EVM, BTC, TON, XRPL } from "@kynesyslabs/demosdk/xm-websdk";
+import { EVM, BTC, TON, XRPL, NEAR, IBC } from "@kynesyslabs/demosdk/xm-websdk";
 import { getHttpEndpoint } from "@orbs-network/ton-access";
 import { clusterApiUrl } from "@solana/web3.js";
 import { SOLANA } from "@kynesyslabs/demosdk/xm-<localsdk|websdk>";
@@ -14,24 +14,27 @@ enum ChainType {
   APTOS,
   _TON,
   XRPL,
+  IBC,
+  NEAR,
 }
 
 export var currentChainType: ChainType = ChainType.EVM;
-const evm_rpc = "https://sepolia.infura.io/v3/YOUR-PROJECT-ID";
+//const evm_rpc = "https://sepolia.infura.io/v3/YOUR-PROJECT-ID";
 const btc_rpc = "https://blockstream.info/testnet/api";
 const network = BTC.networks.testnet;
 const testnet = clusterApiUrl("testnet");
 const xrp_rpc_url = "wss://s.altnet.rippletest.net:51233";
 const with_reconnect = false;
+const ibc_rpc_url = "https://rpc.elgafar-1.stargaze-apis.com";
+const near_rpc_url = "https://rpc.testnet.near.org";
+const networkId = "testnet";
 // const devnet = clusterApiUrl("devnet")
 // const mainnet = clusterApiUrl("mainnet-beta")
 
 export const getInstance = async (rpc_url: string) => {
   var instance: any = null;
-  var rpc_url: string = "";
   switch (currentChainType) {
     case ChainType.EVM:
-      rpc_url = evm_rpc;
       instance = await EVM.create(rpc_url);
       break;
     case ChainType.BTC:
@@ -60,6 +63,12 @@ export const getInstance = async (rpc_url: string) => {
       instance = new XRPL(xrp_rpc_url);
       await instance.connect(with_reconnect);
       break;
+    case ChainType.IBC:
+      instance = await IBC.create(ibc_rpc_url);
+      break;
+    case ChainType.NEAR:
+      instance = await NEAR.create(near_rpc_url);
+      break;
   }
 
   return instance;
@@ -68,6 +77,25 @@ export const getInstance = async (rpc_url: string) => {
 export const connectWallet = async (instance: any, privateKey: any) => {
   var instance: any = null;
   await instance.connectWallet(privateKey);
+  return instance;
+};
+
+export const connectIBCWallet = async (
+  instance: any,
+  privateKey: any,
+  mnemonic: any,
+) => {
+  await instance.connectWallet(mnemonic, {
+    prefix: "stars",
+    gasPrice: "0.012ustars",
+  });
+  return instance;
+};
+
+export const connectNEARWallet = async (instance: any, privateKey: any) => {
+  await instance.connectWallet(privateKey, {
+    accountId: "cwilvx.testnet",
+  });
   return instance;
 };
 
@@ -93,15 +121,34 @@ export const makeTransfer = async (
   instance: any,
   demos: any,
 ) => {
-  const signedTx = await instance.preparePay(recipientAddress, amount);
+  const tx = await instance.preparePay(recipientAddress, amount);
+  const signedTx = await demos.sign(tx);
+  console.log("signed tx: ", signedTx);
+};
+
+export const makeIBCTransfer = async (
+  instance: any,
+  address: string,
+  amount: string,
+  demos: any,
+) => {
+  const tx = await instance.preparePay(address, amount, {
+    denom: "ustars",
+  });
+  //
+  const signedTx = await demos.sign(tx);
+  console.log("signed tx: ", signedTx);
 };
 
 export const makeTONTransfer = async (
   address: string,
   amount: string,
   instance: any,
+  demos: any,
 ) => {
   const tx = await instance.prepareTransfer(address, amount);
+  const signedTx = await demos.sign(tx);
+  console.log("signed tx: ", signedTx);
 };
 
 export const makeAPTOSTransfer = async (
