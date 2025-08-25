@@ -204,10 +204,26 @@ function showProfileSettings(): void {
   copyDemosButton?.addEventListener('click', () => copyWalletAddress(data.publicKey || '', '.copy-demos-btn'));
   copyEthereumButton?.addEventListener('click', () => copyWalletAddress(ethereumWallet.address || '', '.copy-ethereum-btn'));
   connectEthereumLaterButton?.addEventListener('click', () => {
+    console.log('Connect Ethereum button clicked in profile');
     hideProfile();
     // Call the global connectPrivyLater function from connectWallet.tsx
-    (window as any).connectPrivyLater();
+    if (typeof (window as any).connectPrivyLater === 'function') {
+      console.log('Calling connectPrivyLater function');
+      (window as any).connectPrivyLater();
+    } else {
+      console.error('connectPrivyLater function not found');
+      // Fallback to showing the modal directly
+      showEthereumWalletModal();
+    }
   });
+  
+  // Helper function to show Ethereum wallet modal
+  function showEthereumWalletModal() {
+    const modal = document.getElementById("ethereum-wallet-modal");
+    if (modal) {
+      modal.removeAttribute("hidden");
+    }
+  }
 
   imageContainer?.addEventListener('click', () => {
     fileInput?.click();

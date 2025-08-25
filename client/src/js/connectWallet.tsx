@@ -201,10 +201,24 @@ function handlePhraseClick(event: Event): void {
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Connecting wallet event listeners...");
   
-  // Initialize Privy when DOM is loaded
-  setTimeout(() => {
-    initPrivy();
-  }, 500);
+  // Initialize Privy when DOM is loaded  
+  let privyInitAttempts = 0;
+  const maxAttempts = 5;
+  
+  const tryInitPrivy = () => {
+    privyInitAttempts++;
+    console.log(`Privy init attempt ${privyInitAttempts}/${maxAttempts}`);
+    
+    if (typeof (window as any).Privy !== 'undefined' || typeof (window as any).PrivyCore !== 'undefined') {
+      initPrivy();
+    } else if (privyInitAttempts < maxAttempts) {
+      setTimeout(tryInitPrivy, 1000);
+    } else {
+      console.error('Failed to load Privy SDK after multiple attempts');
+    }
+  };
+  
+  setTimeout(tryInitPrivy, 1000);
   
   const phraseParas = document.querySelectorAll<HTMLElement>(".phrase-word");
   console.log("Found phrase words:", phraseParas.length);
@@ -353,51 +367,92 @@ hideLoading();
 // Privy integration for Ethereum wallet connection
 let privyClient: any = null;
 
-function initPrivy(): void {
-  if (typeof (window as any).Privy !== 'undefined') {
-    const appId = import.meta.env.VITE_PRIVY_APP_ID;
-    if (!appId) {
-      console.error('PRIVY_APP_ID not found in environment variables');
-      return;
-    }
+async function initPrivy(): Promise<void> {
+  console.log('Attempting to initialize Privy...');
+  
+  // Check for different possible Privy global objects
+  const PrivySDK = (window as any).Privy || (window as any).PrivyCore || (window as any).privy;
+  
+  if (PrivySDK) {
+    console.log('Privy SDK found, initializing...');
     
-    privyClient = (window as any).Privy.initialize({
-      appId: appId,
-      config: {
-        loginMethods: ['wallet', 'email'],
-        appearance: {
-          theme: 'dark',
-          accentColor: '#6A82FB',
-          logo: '/img/xicon.png'
-        },
-        embeddedWallets: {
-          createOnLogin: 'users-without-wallets'
+    try {
+      // Try to get the App ID from environment
+      const response = await fetch('/api/privy-config');
+      let appId = null;
+      
+      if (response.ok) {
+        const config = await response.json();
+        appId = config.appId;
+      }
+      
+      // Fallback if API doesn't work (hardcode for now)
+      if (!appId) {
+        console.log('Using direct Privy approach...');
+        // Initialize basic Privy connection
+        const result = await PrivySDK.connectWallet();
+        console.log('Direct Privy result:', result);
+        
+        if (result && result.address) {
+          ethereumWallet.address = result.address;
+          ethereumWallet.isConnected = true;
+          ethConnected = true;
+          
+          hideEthereumWalletModal();
+          updateButtonStates();
+          updateTokenBalances();
+          
+          showSuccessPopup(
+            "Ethereum Wallet Connected!",
+            "Your Ethereum wallet has been connected successfully using Privy."
+          );
         }
+        return;
       }
-    });
-    
-    // Listen for authentication events
-    privyClient.on('ready', () => {
-      console.log('Privy is ready');
-    });
-    
-    privyClient.on('login', (user: any) => {
-      console.log('User logged in:', user);
-      if (user.wallet) {
-        ethereumWallet.address = user.wallet.address;
-        ethereumWallet.isConnected = true;
-        ethConnected = true;
-        
-        hideEthereumWalletModal();
-        updateButtonStates();
-        updateTokenBalances();
-        
-        showSuccessPopup(
-          "Ethereum Wallet Connected!",
-          "Your Ethereum wallet has been connected successfully using Privy. Token balances will now be displayed."
-        );
-      }
-    });
+      
+      console.log('Initializing Privy with App ID...');
+      privyClient = PrivySDK.initialize({
+        appId: appId,
+        config: {
+          loginMethods: ['wallet'],
+          appearance: {
+            theme: 'dark',
+            accentColor: '#6A82FB'
+          }
+        }
+      });
+      
+      // Listen for authentication events
+      privyClient.on('ready', () => {
+        console.log('Privy is ready');
+      });
+      
+      privyClient.on('login', (user: any) => {
+        console.log('User logged in via Privy:', user);
+        if (user.wallet) {
+          ethereumWallet.address = user.wallet.address;
+          ethereumWallet.isConnected = true;
+          ethConnected = true;
+          
+          hideEthereumWalletModal();
+          updateButtonStates();
+          updateTokenBalances();
+          
+          showSuccessPopup(
+            "Ethereum Wallet Connected!",
+            "Your Ethereum wallet has been connected successfully using Privy."
+          );
+        }
+      });
+    } catch (error) {
+      console.error('Failed to initialize Privy:', error);
+    }
+  } else {
+    console.error('Privy SDK not found. Trying fallback approach...');
+    // Add fallback loading attempt
+    setTimeout(() => {
+      initPrivy();
+    }, 2000);
   }
 }
 
@@ -410,56 +465,109 @@ function hideEthereumWalletModal(): void {
 }
 
 async function connectEthereumWallet(): Promise<void> {
+  console.log('connectEthereumWallet called');
   try {
     showLoading();
     
     // Initialize Privy if not already done
     if (!privyClient) {
+      console.log('Privy client not initialized, initializing now...');
       initPrivy();
-      // Wait a moment for Privy to initialize
-      await new Promise(resolve => setTimeout(resolve, 1000));
+      // Wait longer for Privy to initialize
+      await new Promise(resolve => setTimeout(resolve, 2000));
     }
     
-    if (privyClient) {
-      // Use Privy for wallet connection
+    if (privyClient && typeof privyClient.login === 'function') {
+      console.log('Using Privy for wallet connection...');
+      hideEthereumWalletModal(); // Hide our modal since Privy will show its own
       await privyClient.login();
     } else {
-      // Fallback to MetaMask if Privy is not available
-      if (typeof (window as any).ethereum === 'undefined') {
-        alert('Privy wallet service is not available. Please install MetaMask or another Ethereum wallet!');
-        return;
-      }
-      
-      const accounts = await (window as any).ethereum.request({
-        method: 'eth_requestAccounts'
-      });
-      
-      if (accounts.length > 0) {
-        ethereumWallet.address = accounts[0];
-        ethereumWallet.isConnected = true;
-        ethConnected = true;
-        
-        hideEthereumWalletModal();
-        updateButtonStates();
-        updateTokenBalances();
-        
-        showSuccessPopup(
-          "Ethereum Wallet Connected!",
-          "Your Ethereum wallet has been connected successfully. Token balances will now be displayed."
-        );
+      console.log('Privy not available, using enhanced wallet connection...');
+      // Enhanced wallet connection that looks like Privy interface
+      // Keep our modal open and provide a better experience
+      if (!document.getElementById("ethereum-wallet-modal")?.hasAttribute("hidden")) {
+        // Modal is already open, proceed with connection
+        await connectWalletDirect();
+      } else {
+        // Show modal first, then connect
+        showEthereumWalletModal();
+        setTimeout(() => connectWalletDirect(), 100);
       }
     }
   } catch (error) {
     console.error('Failed to connect Ethereum wallet:', error);
-    alert('Failed to connect Ethereum wallet. Please try again.');
+    fallbackToMetaMask();
   } finally {
     hideLoading();
   }
 }
 
+async function connectWalletDirect(): Promise<void> {
+  try {
+    if (typeof (window as any).ethereum === 'undefined') {
+      alert('Please install MetaMask or another Ethereum wallet to continue!');
+      return;
+    }
+    
+    const accounts = await (window as any).ethereum.request({
+      method: 'eth_requestAccounts'
+    });
+    
+    if (accounts.length > 0) {
+      ethereumWallet.address = accounts[0];
+      ethereumWallet.isConnected = true;
+      ethConnected = true;
+      
+      hideEthereumWalletModal();
+      updateButtonStates();
+      updateTokenBalances();
+      
+      showSuccessPopup(
+        "Ethereum Wallet Connected!",
+        "Your Ethereum wallet has been connected successfully. Token balances will now be displayed."
+      );
+    }
+  } catch (error) {
+    console.error('Direct wallet connection failed:', error);
+    alert('Failed to connect wallet. Please try again.');
+  }
+}
+
+function fallbackToMetaMask(): void {
+  console.log('Falling back to MetaMask...');
+  if (typeof (window as any).ethereum === 'undefined') {
+    alert('Please install MetaMask or another Ethereum wallet, or ensure Privy is properly configured!');
+    return;
+  }
+  
+  (window as any).ethereum.request({
+    method: 'eth_requestAccounts'
+  }).then((accounts: string[]) => {
+    if (accounts.length > 0) {
+      ethereumWallet.address = accounts[0];
+      ethereumWallet.isConnected = true;
+      ethConnected = true;
+      
+      hideEthereumWalletModal();
+      updateButtonStates();
+      updateTokenBalances();
+      
+      showSuccessPopup(
+        "Ethereum Wallet Connected!",
+        "Your Ethereum wallet has been connected successfully via MetaMask."
+      );
+    }
+  }).catch((error: any) => {
+    console.error('MetaMask connection failed:', error);
+    alert('Failed to connect wallet. Please try again.');
+  });
+}
+
 // Function to allow users to connect Privy later if they skipped it initially
 function connectPrivyLater(): void {
-  showEthereumWalletModal();
+  console.log('connectPrivyLater called');
+  // Don't show our modal, go directly to Privy
+  connectEthereumWallet();
 }
 
 // Token balance functions

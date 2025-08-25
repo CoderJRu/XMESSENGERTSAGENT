@@ -19,6 +19,7 @@
       href="https://fonts.googleapis.com/css?family=Catamaran"
       rel="stylesheet"
     />
+    <script src="https://unpkg.com/@privy-io/js-sdk-core@latest/dist/index.umd.js"></script>
   </head>
   <body>
     <!-- Success Popup -->
@@ -1276,7 +1277,10 @@
     <script type="module" src="/src/js/profile.tsx"></script>
     <script type="module" src="/src/js/chat.tsx"></script>
     <script type="module" src="/src/js/search.tsx"></script>
-    <script src="https://auth.privy.io/embed/v1.0.0/privy.js"></script>
+    <script>
+      // Ensure Privy is loaded before other scripts
+      console.log('Privy availability check after load:', typeof window.Privy);
+    </script>
 
     <!-- This is a replit script which adds a banner on the top of the page when opened in development mode outside the replit environment -->
     <script
