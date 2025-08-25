@@ -163,7 +163,10 @@ function showProfileSettings(): void {
           </div>
           <div class="wallet-address-container">
             <div class="wallet-address">${ethereumWallet.address || 'Not Connected'}</div>
-            <button class="copy-wallet-btn copy-ethereum-btn" ${!ethereumWallet.address ? 'disabled' : ''}>Copy</button>
+            ${ethereumWallet.address ? 
+              `<button class="copy-wallet-btn copy-ethereum-btn">Copy</button>` :
+              `<button class="copy-wallet-btn connect-ethereum-later-btn" style="background: rgba(106, 130, 251, 0.2); border-color: rgba(106, 130, 251, 0.3); color: #6A82FB;">Connect</button>`
+            }
           </div>
         </div>
 
@@ -186,6 +189,7 @@ function showProfileSettings(): void {
   const fileInput = profilePopup.querySelector('.profile-upload-input') as HTMLInputElement;
   const copyDemosButton = profilePopup.querySelector('.copy-demos-btn') as HTMLElement;
   const copyEthereumButton = profilePopup.querySelector('.copy-ethereum-btn') as HTMLElement;
+  const connectEthereumLaterButton = profilePopup.querySelector('.connect-ethereum-later-btn') as HTMLElement;
 
   const hideProfile = () => {
     profilePopup.classList.remove('show');
@@ -199,6 +203,11 @@ function showProfileSettings(): void {
   saveButton?.addEventListener('click', saveProfile);
   copyDemosButton?.addEventListener('click', () => copyWalletAddress(data.publicKey || '', '.copy-demos-btn'));
   copyEthereumButton?.addEventListener('click', () => copyWalletAddress(ethereumWallet.address || '', '.copy-ethereum-btn'));
+  connectEthereumLaterButton?.addEventListener('click', () => {
+    hideProfile();
+    // Call the global connectPrivyLater function from connectWallet.tsx
+    (window as any).connectPrivyLater();
+  });
 
   imageContainer?.addEventListener('click', () => {
     fileInput?.click();
