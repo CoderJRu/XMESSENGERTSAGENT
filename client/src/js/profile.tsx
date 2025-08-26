@@ -1,108 +1,184 @@
+import React, { useState, useRef } from 'react';
+import { createRoot } from 'react-dom/client';
 import { isConnected, data, updateUserData } from "./connectWallet";
-
-// Create and style the profile popup
-const profilePopup = document.createElement("div");
-profilePopup.className = "profile-popup";
-document.body.appendChild(profilePopup);
 
 // Profile state
 let currentProfileImage = "src/img/person-img.png";
 let currentUsername = "";
 
-// Image upload functionality
-function handleImageUpload(file: File): void {
-  // Validate file size (3MB max)
-  const maxSize = 3 * 1024 * 1024; // 3MB in bytes
-  if (file.size > maxSize) {
-    alert("Image size must be less than 3MB");
-    return;
-  }
+// Create the profile popup container
+const profilePopup = document.createElement("div");
+profilePopup.className = "profile-popup";
+document.body.appendChild(profilePopup);
 
-  // Validate file type
-  if (!file.type.startsWith("image/")) {
-    alert("Please select a valid image file");
-    return;
-  }
+// Create React root for the popup
+const root = createRoot(profilePopup);
 
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    const img = new Image();
-    img.onload = () => {
-      // Create canvas to resize image
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
+// React Profile Settings Component
+interface ProfileSettingsProps {
+  onClose: () => void;
+}
 
-      // Set canvas size to 1024x1024
-      canvas.width = 1024;
-      canvas.height = 1024;
+const ProfileSettings: React.FC<ProfileSettingsProps> = ({ onClose }) => {
+  const [profileImage, setProfileImage] = useState(currentProfileImage);
+  const [username, setUsername] = useState(currentUsername);
+  const [copying, setCopying] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-      // Draw and resize image
-      ctx?.drawImage(img, 0, 0, 1024, 1024);
+  // Image upload functionality
+  const handleImageUpload = (file: File): void => {
+    // Validate file size (3MB max)
+    const maxSize = 3 * 1024 * 1024; // 3MB in bytes
+    if (file.size > maxSize) {
+      alert("Image size must be less than 3MB");
+      return;
+    }
 
-      // Get resized image as data URL
-      currentProfileImage = canvas.toDataURL("image/jpeg", 0.8);
+    // Validate file type
+    if (!file.type.startsWith("image/")) {
+      alert("Please select a valid image file");
+      return;
+    }
 
-      // Update the displayed image
-      const profileImg = document.querySelector(
-        ".profile-image",
-      ) as HTMLImageElement;
-      if (profileImg) {
-        profileImg.src = currentProfileImage;
-      }
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        // Create canvas to resize image
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+
+        // Set canvas size to 1024x1024
+        canvas.width = 1024;
+        canvas.height = 1024;
+
+        // Draw and resize image
+        ctx?.drawImage(img, 0, 0, 1024, 1024);
+
+        // Get resized image as data URL
+        const newImage = canvas.toDataURL("image/jpeg", 0.8);
+        currentProfileImage = newImage;
+        setProfileImage(newImage);
+      };
+      img.src = e.target?.result as string;
     };
-    img.src = e.target?.result as string;
+    reader.readAsDataURL(file);
   };
-  reader.readAsDataURL(file);
-}
 
-// Copy wallet address to clipboard
-function copyWalletAddress(address: string, buttonClass: string): void {
-  navigator.clipboard
-    .writeText(address)
-    .then(() => {
-      const copyBtn = document.querySelector(buttonClass) as HTMLElement;
-      if (copyBtn) {
-        const originalText = copyBtn.textContent;
-        copyBtn.textContent = "Copied!";
-        copyBtn.style.background = "rgba(76, 175, 80, 0.4)";
-        setTimeout(() => {
-          copyBtn.textContent = originalText;
-          copyBtn.style.background = "rgba(76, 175, 80, 0.2)";
-        }, 2000);
-      }
-    })
-    .catch(() => {
-      alert("Failed to copy address");
-    });
-}
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      handleImageUpload(file);
+    }
+  };
 
-// Save profile changes
-function saveProfile(): void {
-  const usernameInput = document.querySelector(
-    ".username-input",
-  ) as HTMLInputElement;
-  if (usernameInput) {
-    const newUsername = usernameInput.value.trim();
+  const copyWalletAddress = (address: string, type: string): void => {
+    navigator.clipboard
+      .writeText(address)
+      .then(() => {
+        setCopying(type);
+        setTimeout(() => setCopying(null), 2000);
+      })
+      .catch(() => {
+        alert("Failed to copy address");
+      });
+  };
+
+  const saveProfile = (): void => {
+    const newUsername = username.trim();
     if (newUsername && newUsername !== currentUsername) {
       currentUsername = newUsername;
       updateUserData(newUsername, data.publicKey);
-
-      // Show success feedback
-      const saveBtn = document.querySelector(
-        ".profile-btn-primary",
-      ) as HTMLElement;
-      if (saveBtn) {
-        const originalText = saveBtn.textContent;
-        saveBtn.textContent = "Saved!";
-        saveBtn.style.background =
-          "linear-gradient(135deg, #4CAF50 0%, #45a049 100%)";
-        setTimeout(() => {
-          saveBtn.textContent = originalText;
-        }, 2000);
-      }
     }
-  }
-}
+    onClose();
+  };
+
+  const handleBackdropClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
+  return (
+    <div className="profile-popup show" onClick={handleBackdropClick}>
+      <div className="profile-content">
+        <div className="profile-header">
+          <h3>Profile Settings</h3>
+          <button className="close-profile" onClick={onClose}>&times;</button>
+        </div>
+        
+        <div className="profile-avatar-section">
+          <div className="profile-image-container" onClick={() => fileInputRef.current?.click()}>
+            <img src={profileImage} alt="Profile" className="profile-image" />
+            <div className="profile-image-overlay">
+              <div>
+                <div className="upload-icon">📷</div>
+                <div className="upload-text">Change Photo</div>
+              </div>
+            </div>
+          </div>
+          <input 
+            type="file" 
+            className="profile-upload-input" 
+            accept="image/*" 
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            style={{ display: 'none' }}
+          />
+          <div className="image-upload-note">
+            Click to upload image<br />
+            Max 3MB • 1024×1024px recommended
+          </div>
+        </div>
+
+        <div className="profile-form">
+          <div className="profile-field">
+            <label className="profile-label">Username</label>
+            <input 
+              type="text" 
+              className="profile-input username-input" 
+              value={username} 
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Enter your username" 
+            />
+          </div>
+
+          <div className="wallet-section">
+            <div className="wallet-type-label">
+              <div className="wallet-type-icon demos-icon">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="white">
+                  <circle cx="12" cy="12" r="10"></circle>
+                </svg>
+              </div>
+              Demos Wallet
+            </div>
+            <div className="wallet-address-container">
+              <div className="wallet-address">{data.publicKey || "Not Connected"}</div>
+              <button 
+                className="copy-wallet-btn copy-demos-btn"
+                onClick={() => copyWalletAddress(data.publicKey || '', 'demos')}
+                style={{ 
+                  background: copying === 'demos' ? 'rgba(76, 175, 80, 0.4)' : 'rgba(76, 175, 80, 0.2)' 
+                }}
+              >
+                {copying === 'demos' ? 'Copied!' : 'Copy'}
+              </button>
+            </div>
+          </div>
+
+          <div className="profile-actions">
+            <button className="profile-btn profile-btn-primary" onClick={saveProfile}>
+              Save Changes
+            </button>
+            <button className="profile-btn profile-btn-secondary" onClick={onClose}>
+              Cancel
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 // Show the profile settings popup
 function showProfileSettings(): void {
@@ -116,147 +192,15 @@ function showProfileSettings(): void {
   // Initialize current values
   currentUsername = data.username || "";
 
-  profilePopup.innerHTML = `
-    <div class="profile-content">
-      <div class="profile-header">
-        <h3>Profile Settings</h3>
-        <button class="close-profile">&times;</button>
-      </div>
-      
-      <div class="profile-avatar-section">
-        <div class="profile-image-container">
-          <img src="${currentProfileImage}" alt="Profile" class="profile-image">
-          <div class="profile-image-overlay">
-            <div>
-              <div class="upload-icon">📷</div>
-              <div class="upload-text">Change Photo</div>
-            </div>
-          </div>
-        </div>
-        <input type="file" class="profile-upload-input" accept="image/*">
-        <div class="image-upload-note">
-          Click to upload image<br>
-          Max 3MB • 1024×1024px recommended
-        </div>
-      </div>
-
-      <div class="profile-form">
-        <div class="profile-field">
-          <label class="profile-label">Username</label>
-          <input type="text" class="profile-input username-input" value="${currentUsername}" placeholder="Enter your username">
-        </div>
-
-        <div class="wallet-section">
-          <div class="wallet-type-label">
-            <div class="wallet-type-icon demos-icon">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="white">
-                <circle cx="12" cy="12" r="10"></circle>
-              </svg>
-            </div>
-            Demos Wallet
-          </div>
-          <div class="wallet-address-container">
-            <div class="wallet-address">${data.publicKey || "Not Connected"}</div>
-            <button class="copy-wallet-btn copy-demos-btn">Copy</button>
-          </div>
-        </div>
-
-
-        <div class="wallet-section">
-          <div class="wallet-type-label">
-            <div class="wallet-type-icon demos-icon">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="white">
-                <circle cx="12" cy="12" r="10"></circle>
-              </svg>
-            </div>
-            Ethereum Wallet
-          </div>
-          <div class="wallet-address-container">
-            <div  class="eth-wallet-address wallet-address ">${data.eth_pubKey || "Not Connected"}</div>
-            <button  id="privy-login-btn" class="copy-wallet-btn copy-eth-btn">Copy</button>
-          </div>
-        </div>
-
-
-        <div class="profile-actions">
-          <button class="profile-btn profile-btn-primary">Save Changes</button>
-          <button class="profile-btn profile-btn-secondary">Cancel</button>
-        </div>
-      </div>
-    </div>
-  `;
-
-  profilePopup.style.display = "flex";
-  setTimeout(() => profilePopup.classList.add("show"), 10);
-
-  // Event listeners
-  const closeButton = profilePopup.querySelector(
-    ".close-profile",
-  ) as HTMLElement;
-  const copyEthButton = profilePopup.querySelector(
-    ".copy-eth-btn",
-  ) as HTMLElement;
-  const ethWalletAddress = profilePopup.querySelector(
-    ".eth-wallet-address",
-  ) as HTMLElement;
-  const cancelButton = profilePopup.querySelector(
-    ".profile-btn-secondary",
-  ) as HTMLElement;
-  const saveButton = profilePopup.querySelector(
-    ".profile-btn-primary",
-  ) as HTMLElement;
-  const imageContainer = profilePopup.querySelector(
-    ".profile-image-container",
-  ) as HTMLElement;
-  const fileInput = profilePopup.querySelector(
-    ".profile-upload-input",
-  ) as HTMLInputElement;
-  const copyDemosButton = profilePopup.querySelector(
-    ".copy-demos-btn",
-  ) as HTMLElement;
-
   const hideProfile = () => {
-    profilePopup.classList.remove("show");
-    setTimeout(() => {
-      profilePopup.style.display = "none";
-    }, 300);
+    root.render(<div></div>);
+    profilePopup.style.display = "none";
   };
 
-  closeButton?.addEventListener("click", hideProfile);
-  cancelButton?.addEventListener("click", hideProfile);
-  saveButton?.addEventListener("click", saveProfile);
-  copyDemosButton?.addEventListener("click", () =>
-    copyWalletAddress(data.publicKey || "", ".copy-demos-btn"),
-  );
-  copyEthButton?.addEventListener("click", () => {
-    if (ethWalletAddress.innerHTML == "Not Connected") {
-     
-    } else copyWalletAddress(data.eth_pubKey || "", ".copy-eth-btn");
-  });
-  //check if eth_pubkey is defined
-  //CreateWalletButton(copyEthButton);
-  if (ethWalletAddress.innerHTML == "Not Connected") {
-    console.log("i got herre");
-    copyEthButton.innerHTML = "connect";
-  } else {
-    copyEthButton.innerHTML = "copy";
-  }
-  imageContainer?.addEventListener("click", () => {
-    fileInput?.click();
-  });
-
-  fileInput?.addEventListener("change", (e) => {
-    const file = (e.target as HTMLInputElement).files?.[0];
-    if (file) {
-      handleImageUpload(file);
-    }
-  });
-
-  profilePopup.addEventListener("click", (event: MouseEvent) => {
-    if (event.target === profilePopup) {
-      hideProfile();
-    }
-  });
+  profilePopup.style.display = "flex";
+  
+  // Render the React component
+  root.render(<ProfileSettings onClose={hideProfile} />);
 }
 
 // Attach event to dropdown trigger
