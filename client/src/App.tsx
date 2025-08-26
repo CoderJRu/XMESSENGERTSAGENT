@@ -4,9 +4,8 @@ const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
 console.log("VITE_SUPABASE_URL:", supabaseUrl);
 console.log("VITE_SUPABASE_KEY:", supabaseKey ? "✓ Present" : "✗ Missing");*/
 import { useEffect } from "react";
-import { usePrivy, useWallets} from "./lib/mockPrivy";
+import { usePrivy, useWallets} from "@privy-io/react-auth";
 import ProfileSettings from "./js/profile.tsx";
-import { data } from "./js/connectWallet";
 /*
 import { ethers } from "ethers";
 
@@ -70,13 +69,9 @@ export default function App() {
     return () => window.removeEventListener("privy-login", handler);
   }, [login]);
 
-  const handleCloseProfile = () => {
-    console.log("Profile closed");
-  };
-
   return (
     <div>
-      <ProfileSettings _data={data} login={login} onClose={handleCloseProfile} />
+      <ProfileSettings />
     </div>
   );
   /*
