@@ -196,7 +196,6 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ onClose }) => {
                 if (data.eth_pubKey) {
                   copyWalletAddress(data.eth_pubKey, 'ethereum');
                 } else {
-                  // Handle connection logic here
                   console.log("Connect Ethereum wallet");
                 }
               }}
