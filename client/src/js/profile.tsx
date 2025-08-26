@@ -279,8 +279,13 @@ function showProfileSettings(): void {
   // Show the popup container
   profilePopup.style.display = "flex";
 
+  // Mock login function for this context
+  const mockLogin = () => {
+    console.log("Mock login called from profile settings");
+  };
+
   // Render the React component
-  root.render(<ProfileSettings onClose={hideProfile} />);
+  root.render(<ProfileSettings _data={data} login={mockLogin} onClose={hideProfile} />);
 
   // Add backdrop click handler
   profilePopup.onclick = (event) => {
