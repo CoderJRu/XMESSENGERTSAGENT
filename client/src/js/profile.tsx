@@ -2,7 +2,6 @@ import React, { useState, useRef } from "react";
 import { createRoot } from "react-dom/client";
 import { isConnected, data, updateUserData } from "./connectWallet";
 
-
 // Profile state
 let currentProfileImage = "src/img/person-img.png";
 let currentUsername = "";
@@ -17,12 +16,10 @@ const root = createRoot(profilePopup);
 
 // React Profile Settings Component
 interface ProfileSettingsProps {
-  _data: any; // whatever you already use
-  login: () => void; // add login from privy
   onClose: () => void;
 }
 
-const ProfileSettings: React.FC<ProfileSettingsProps> = ({ onClose,_data, login }) => {
+const ProfileSettings: React.FC<ProfileSettingsProps> = ({ onClose }) => {
   const [profileImage, setProfileImage] = useState(currentProfileImage);
   const [username, setUsername] = useState(currentUsername);
   const [copying, setCopying] = useState<string | null>(null);
@@ -179,11 +176,12 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ onClose,_data, login 
           </div>
         </div>
 
+
         <div className="wallet-section">
           <div className="wallet-type-label">
             <div className="wallet-type-icon">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="white">
-                <path d="M11.944 17.97L4.58 13.62L11.943 24L19.31 13.62L11.944 17.97ZM12.056 0L4.69 12.22L12.056 16.57L19.42 12.22L12.056 0Z" />
+                <path d="M11.944 17.97L4.58 13.62L11.943 24L19.31 13.62L11.944 17.97ZM12.056 0L4.69 12.22L12.056 16.57L19.42 12.22L12.056 0Z"/>
               </svg>
             </div>
             Ethereum Wallet
@@ -196,39 +194,26 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ onClose,_data, login 
               className="copy-wallet-btn eth-connect-btn"
               onClick={() => {
                 if (data.eth_pubKey) {
-                  copyWalletAddress(data.eth_pubKey, "ethereum");
+                  copyWalletAddress(data.eth_pubKey, 'ethereum');
                 } else {
-                  console.log("🔵 Dispatching privy-login event");
-                  window.dispatchEvent(new Event("privy-login"));
                   console.log("Connect Ethereum wallet");
                 }
               }}
               style={{
-                background: data.eth_pubKey
-                  ? copying === "ethereum"
-                    ? "rgba(76, 175, 80, 0.4)"
-                    : "rgba(76, 175, 80, 0.2)"
+                background: data.eth_pubKey 
+                  ? (copying === "ethereum" ? "rgba(76, 175, 80, 0.4)" : "rgba(76, 175, 80, 0.2)")
                   : "rgba(59, 130, 246, 0.2)",
                 display: "flex",
                 alignItems: "center",
-                gap: "6px",
+                gap: "6px"
               }}
             >
               {data.eth_pubKey ? (
-                copying === "ethereum" ? (
-                  "Copied!"
-                ) : (
-                  "Copy"
-                )
+                copying === "ethereum" ? "Copied!" : "Copy"
               ) : (
                 <>
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                  >
-                    <path d="M11.944 17.97L4.58 13.62L11.943 24L19.31 13.62L11.944 17.97ZM12.056 0L4.69 12.22L12.056 16.57L19.42 12.22L12.056 0Z" />
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M11.944 17.97L4.58 13.62L11.943 24L19.31 13.62L11.944 17.97ZM12.056 0L4.69 12.22L12.056 16.57L19.42 12.22L12.056 0Z"/>
                   </svg>
                   Connect
                 </>
@@ -236,7 +221,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ onClose,_data, login 
             </button>
           </div>
         </div>
-
+      
         <div className="profile-actions">
           <button
             className="profile-btn profile-btn-primary"
@@ -311,5 +296,3 @@ document.addEventListener("DOMContentLoaded", () => {
 document.addEventListener("showProfileSettings", () => {
   showProfileSettings();
 });
-
-export default ProfileSettings;
