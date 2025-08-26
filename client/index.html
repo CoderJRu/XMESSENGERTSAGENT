@@ -2,12 +2,1290 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"
+    />
     <link rel="icon" type="image/x-icon" href="/img/xicon.png" />
-    <title>Multi-Wallet Connection</title>
+    <title>Xmessenger</title>
+    <link rel="stylesheet" href="src/css/base.css" />
+    <link rel="stylesheet" href="css/mobile.css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Roboto Mono|Sarpanch"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Catamaran"
+      rel="stylesheet"
+    />
   </head>
   <body>
+    <!-- Success Popup -->
+    <div id="success-popup-overlay" class="success-popup-overlay">
+      <div class="success-popup">
+        <div class="success-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20,6 9,17 4,12"></polyline>
+          </svg>
+        </div>
+        <h2 class="success-title" id="success-title">Success!</h2>
+        <p class="success-message" id="success-message">Your wallet has been connected successfully.</p>
+        <button class="success-close-btn" id="success-close-btn">Continue</button>
+      </div>
+    </div>
+
+    <section class="desktop-blocker">
+      <h2>Figma design not avialable</h2>
+    </section>
+
+    <section class="home-contents">
+      <div class="home-div">
+        <div class="home-div-content"></div>
+      </div>
+
+      <div hidden id="grey-background-id" class="modern-wallet-overlay">
+        <div class="modern-wallet-modal">
+          <div class="wallet-modal-header">
+            <div class="wallet-icon-container">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v5m16 0v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5m16 0H8m13 0a2.5 2.5 0 0 1 0 5H8"></path>
+              </svg>
+            </div>
+            <h2 class="wallet-modal-title">Create New Wallet</h2>
+            <p class="wallet-modal-subtitle">Your recovery phrase is the key to your wallet</p>
+          </div>
+          
+          <div class="recovery-phrase-container">
+            <div class="security-notice">
+              <div class="security-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+              </div>
+              <span>Keep this phrase secure and private</span>
+            </div>
+            
+            <div class="phrase-grid">
+              <div class="phrase-item stagger-animation" title="Click to copy all phrases">
+                <span class="phrase-number">1</span>
+                <span class="phrase-word">cloth</span>
+              </div>
+              <div class="phrase-item stagger-animation" title="Click to copy all phrases">
+                <span class="phrase-number">2</span>
+                <span class="phrase-word">table</span>
+              </div>
+              <div class="phrase-item stagger-animation" title="Click to copy all phrases">
+                <span class="phrase-number">3</span>
+                <span class="phrase-word">horse</span>
+              </div>
+              <div class="phrase-item stagger-animation" title="Click to copy all phrases">
+                <span class="phrase-number">4</span>
+                <span class="phrase-word">clown</span>
+              </div>
+              <div class="phrase-item stagger-animation" title="Click to copy all phrases">
+                <span class="phrase-number">5</span>
+                <span class="phrase-word">cup</span>
+              </div>
+              <div class="phrase-item stagger-animation" title="Click to copy all phrases">
+                <span class="phrase-number">6</span>
+                <span class="phrase-word">pencil</span>
+              </div>
+              <div class="phrase-item stagger-animation" title="Click to copy all phrases">
+                <span class="phrase-number">7</span>
+                <span class="phrase-word">motor</span>
+              </div>
+              <div class="phrase-item stagger-animation" title="Click to copy all phrases">
+                <span class="phrase-number">8</span>
+                <span class="phrase-word">house</span>
+              </div>
+              <div class="phrase-item stagger-animation" title="Click to copy all phrases">
+                <span class="phrase-number">9</span>
+                <span class="phrase-word">roof</span>
+              </div>
+              <div class="phrase-item stagger-animation" title="Click to copy all phrases">
+                <span class="phrase-number">10</span>
+                <span class="phrase-word">marble</span>
+              </div>
+              <div class="phrase-item stagger-animation" title="Click to copy all phrases">
+                <span class="phrase-number">11</span>
+                <span class="phrase-word">ripple</span>
+              </div>
+              <div class="phrase-item stagger-animation" title="Click to copy all phrases">
+                <span class="phrase-number">12</span>
+                <span class="phrase-word">effect</span>
+              </div>
+            </div>
+            
+            <div class="copy-phrases-container">
+              <button class="copy-phrases-btn ripple" onclick="copyPhrasesToClipboard()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                </svg>
+                Copy All Phrases
+              </button>
+            </div>
+          </div>
+          
+          <div class="wallet-warning">
+            <div class="warning-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                <line x1="12" y1="9" x2="12" y2="13"></line>
+                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+              </svg>
+            </div>
+            <div class="warning-text">
+              <p class="warning-title">Store this phrase safely</p>
+              <p class="warning-description">Anyone with this phrase can access your wallet. Never share it with anyone.</p>
+            </div>
+          </div>
+          
+          <div class="wallet-modal-actions">
+            <button id="cancel-wallet-button-id" class="wallet-btn wallet-btn-secondary">
+              <span>Cancel</span>
+            </button>
+            <button id="create-wallet-button-id" class="wallet-btn wallet-btn-primary ripple">
+              <span>Create Wallet</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9,18 15,12 9,6"></polyline>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div hidden id="grey-background-id-connect" class="modern-wallet-overlay">
+        <div class="modern-wallet-modal">
+          <div class="wallet-modal-header">
+            <div class="wallet-icon-container connect-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 12l2 2 4-4"></path>
+                <path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"></path>
+                <path d="M3 12c1 0 3-1 3-3s-2-3-3-3-3 1-3 3 2 3 3 3"></path>
+                <path d="M13 12h1"></path>
+                <path d="M11 12h-1"></path>
+              </svg>
+            </div>
+            <h2 class="wallet-modal-title">Connect Wallet</h2>
+            <p class="wallet-modal-subtitle">Enter your recovery phrase to restore your wallet</p>
+          </div>
+          
+          <div class="recovery-phrase-input-container">
+            <div class="input-label">
+              <span>Recovery Phrase</span>
+              <div class="input-hint">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M9,9h0a3,3,0,0,1,6,0c0,2-3,3-3,3"></path>
+                  <path d="M12,17h.01"></path>
+                </svg>
+                <span>12 words separated by spaces</span>
+              </div>
+            </div>
+            <div class="modern-input-container">
+              <textarea
+                class="modern-phrase-input"
+                placeholder="Enter your 12-word recovery phrase..."
+                rows="4"
+              ></textarea>
+              <div class="input-decoration"></div>
+            </div>
+          </div>
+          
+          <div class="wallet-security-tips">
+            <div class="security-tip">
+              <div class="tip-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M9 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-4m-8 0V7a4 4 0 1 1 8 0v4m-8 0h8"></path>
+                </svg>
+              </div>
+              <span>Your phrase is encrypted and never stored</span>
+            </div>
+            <div class="security-tip">
+              <div class="tip-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                </svg>
+              </div>
+              <span>Make sure you're on the correct website</span>
+            </div>
+          </div>
+          
+          <div class="wallet-modal-actions">
+            <button id="cancel-connect-wallet-button-id" class="wallet-btn wallet-btn-secondary">
+              <span>Cancel</span>
+            </button>
+            <button id="connect-wallet-button-id" class="wallet-btn wallet-btn-primary ripple">
+              <span>Connect Wallet</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9,18 15,12 9,6"></polyline>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Ethereum Wallet Connection Modal -->
+      <div hidden id="ethereum-wallet-modal" class="modern-wallet-overlay">
+        <div class="modern-wallet-modal">
+          <div class="wallet-modal-header">
+            <div class="wallet-icon-container ethereum-icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="12 2 3 7 12 12 21 7 12 2"></polygon>
+                <polygon points="12 17 3 12 12 17 21 12 12 17"></polygon>
+                <polygon points="12 22 3 17 12 22 21 17 12 22"></polygon>
+              </svg>
+            </div>
+            <h2 class="wallet-modal-title">Connect Ethereum Wallet</h2>
+            <p class="wallet-modal-subtitle">Connect your Ethereum wallet to view token balances and access DeFi features</p>
+          </div>
+          
+          <div class="ethereum-features">
+            <div class="feature-item">
+              <div class="feature-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="8" x2="12" y2="16"></line>
+                  <line x1="8" y1="12" x2="16" y2="12"></line>
+                </svg>
+              </div>
+              <div class="feature-text">
+                <h4>View Token Balances</h4>
+                <p>See your X Token and XNFT holdings in real-time</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                </svg>
+              </div>
+              <div class="feature-text">
+                <h4>Enhanced Security</h4>
+                <p>Your private keys remain secure in your wallet</p>
+              </div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                  <polyline points="3.27,6.96 12,12.01 20.73,6.96"></polyline>
+                  <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                </svg>
+              </div>
+              <div class="feature-text">
+                <h4>DeFi Ready</h4>
+                <p>Access swapping, staking, and trading features</p>
+              </div>
+            </div>
+          </div>
+          
+          <div class="supported-wallets">
+            <h4>Supported Wallets</h4>
+            <div class="wallet-logos">
+              <div class="wallet-logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M3 8a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8z" stroke="currentColor" stroke-width="2"></path>
+                  <path d="M9 15l3-3 3 3" stroke="currentColor" stroke-width="2"></path>
+                </svg>
+                <span>MetaMask</span>
+              </div>
+              <div class="wallet-logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"></circle>
+                  <path d="M8 12l2 2 4-4" stroke="currentColor" stroke-width="2"></path>
+                </svg>
+                <span>WalletConnect</span>
+              </div>
+              <div class="wallet-logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="2"></rect>
+                  <path d="M9 9l6 6M15 9l-6 6" stroke="currentColor" stroke-width="2"></path>
+                </svg>
+                <span>Others</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="wallet-modal-actions">
+            <button id="skip-ethereum-btn" class="wallet-btn wallet-btn-secondary">
+              <span>Skip for Now</span>
+            </button>
+            <button id="connect-ethereum-btn" class="wallet-btn wallet-btn-primary ripple">
+              <span>Connect Wallet</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="9,18 15,12 9,6"></polyline>
+              </svg>
+            </button>
+          </div>
+          
+          <button id="cancel-ethereum-btn" class="modal-close-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="home-content-group">
+        <img class="union" src="src/img/Union.png" />
+        <h1 class="xm-para">XMESSENGER</h1>
+        <p class="sig-para">By CruxDecussata</p>
+        <p class="connect-para">Connect your wallet to continue.</p>
+        <button id="connect-button-id" class="connect-wallet ripple fade-in">
+          Connect Wallet
+        </button>
+        <button id="create-button-id" class="create-wallet ripple fade-in">
+          Create Wallet
+        </button>
+      </div>
+    </section>
+
+    <!--DashBoard Frame-->
+    <section class="dashboard-plane">
+      <div class="dsh-items">
+        <div class="dash-parent-div">
+          <p class="wel-xchain-para0">Welcome to</p>
+          <p class="wel-xchain-para1">XCHAIN</p>
+        </div>
+        <hr class="hori" />
+        <div class="dash-parent-div1">
+          <p class="rewards-para">Rewards</p>
+          <p class="rewards-val-para">$10k</p>
+          <div class="pending-rewards-div">
+            <p class="pending-rewards-para">Pending rewards • $500</p>
+            <p class="claim-para">Claim</p>
+          </div>
+        </div>
+        <hr class="hori" />
+
+        <!-- Send and Swap Section - Side by Side -->
+        <div class="dash-parent-div1">
+          <div class="dual-section-container">
+            <!-- Send Section -->
+            <div class="dual-section-left">
+              <p class="rewards-para">Send</p>
+              <div class="dashboard-stats">
+                <div class="stat-item">
+                  <p class="stat-label">Total Transactions:</p>
+                  <p class="stat-value">2.49k</p>
+                </div>
+                <div class="stat-item">
+                  <p class="stat-label">24hr Volume:</p>
+                  <p class="stat-value">$19k</p>
+                </div>
+                <div class="stat-item">
+                  <p class="stat-label">Total Amount:</p>
+                  <p class="stat-value">$10k</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Vertical Divider -->
+            <div class="vertical-divider"></div>
+
+            <!-- Swap Section -->
+            <div class="dual-section-right">
+              <p class="rewards-para">Swap</p>
+              <div class="dashboard-stats">
+                <div class="stat-item">
+                  <p class="stat-label">Total Transactions:</p>
+                  <p class="stat-value">2.48k</p>
+                </div>
+                <div class="stat-item">
+                  <p class="stat-label">24hr Volume:</p>
+                  <p class="stat-value">$19k</p>
+                </div>
+                <div class="stat-item">
+                  <p class="stat-label">Total Amount:</p>
+                  <p class="stat-value">$10k</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <hr class="hori" />
+
+        <!-- Tokens and NFTs Section - Side by Side -->
+        <div class="dash-parent-div1">
+          <div class="dual-section-container">
+            <!-- Tokens Section -->
+            <div class="dual-section-left">
+              <p class="rewards-para">Total X Tokens Owned</p>
+              <p class="rewards-val-para">13.5k</p>
+            </div>
+
+            <!-- Vertical Divider -->
+            <div class="vertical-divider"></div>
+
+            <!-- NFTs Section -->
+            <div class="dual-section-right">
+              <p class="rewards-para">Total NFTs Owned</p>
+              <p class="rewards-val-para">50</p>
+            </div>
+          </div>
+        </div>
+        <hr class="hori" />
+
+        <div class="footer-boxes-div">
+          <div class="sand-box">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="25"
+              height="24"
+              viewBox="0 0 25 24"
+              fill="none"
+            >
+              <path
+                d="M4.1665 19.25V4.75L21.378 12L4.1665 19.25ZM5.6665 17L17.5165 12L5.6665 7V10.6923L11.0895 12L5.6665 13.3077V17Z"
+                fill="white"
+              />
+            </svg>
+            <p class="sand-box-txt">Send</p>
+          </div>
+          <div class="sand-box">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+              <path
+                d="M8.404 12.6538V5.373L5.56925 8.20775L4.5 7.15375L9.15375 2.5L13.8077 7.15375L12.7385 8.20775L9.90375 5.373V12.6538H8.404ZM14.8365 21.5L10.1828 16.8462L11.252 15.7923L14.0865 18.627V11.3463H15.5865V18.627L18.4212 15.7923L19.4902 16.8462L14.8365 21.5Z"
+                fill="white"
+              />
+            </svg>
+
+            <p class="sand-box-txt">Swap</p>
+          </div>
+          <div class="sand-box">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="25"
+              height="24"
+              viewBox="0 0 25 24"
+              fill="none"
+            >
+              <path
+                d="M2.83301 21.0385V4.30775C2.83301 3.80258 3.00801 3.375 3.35801 3.025C3.70801 2.675 4.13559 2.5 4.64076 2.5H20.0253C20.5304 2.5 20.958 2.675 21.308 3.025C21.658 3.375 21.833 3.80258 21.833 4.30775V15.6923C21.833 16.1974 21.658 16.625 21.308 16.975C20.958 17.325 20.5304 17.5 20.0253 17.5H6.37151L2.83301 21.0385ZM5.73301 16H20.0253C20.1023 16 20.1728 15.9679 20.2368 15.9038C20.3009 15.8398 20.333 15.7692 20.333 15.6923V4.30775C20.333 4.23075 20.3009 4.16025 20.2368 4.09625C20.1728 4.03208 20.1023 4 20.0253 4H4.64076C4.56376 4 4.49326 4.03208 4.42926 4.09625C4.36509 4.16025 4.33301 4.23075 4.33301 4.30775V17.3848L5.73301 16Z"
+                fill="white"
+              />
+            </svg>
+
+            <p class="sand-box-txt">Message</p>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!--Swap and Send Frame-->
+    <section class="swap-plane">
+      <div id="swap-reg" class="dsh-items-upper">
+        <!-- Control Header with Toggle and Settings -->
+        <div class="control-header">
+          <div class="toggle-container">
+            <span class="toggle-label">Swap</span>
+            <label class="toggle-switch">
+              <input type="checkbox" id="swap-send-toggle" />
+              <span class="toggle-slider"></span>
+            </label>
+            <span class="toggle-label">Send</span>
+          </div>
+          <button class="settings-icon-button">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="3"></circle>
+              <path
+                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
+              ></path>
+            </svg>
+          </button>
+        </div>
+
+        <div class="dsh-items">
+          <!-- swap area0--->
+          <section class="swap0">
+            <div class="swap-parent-div1">
+              <p class="swap-send-info-para">Sell</p>
+            </div>
+
+            <div class="swap-div-height-mod swap-parent-div1">
+              <div class="nodes-flex-div">
+                <div class="swap-parent-div">
+                  <p class="sell-buy-value">0</p>
+                </div>
+                <button class="sell-buy-button">
+                  <img class="sell-buy-img" src="src/img/Ellipse.png" />
+                  ETH
+                  <img class="sell-buy-img" src="src/img/down_arrow.png" />
+                </button>
+              </div>
+            </div>
+
+            <div class="sell-div-height-mod swap-parent-div1">
+              <div class="nodes-flex-div">
+                <div class="swap-parent-div">
+                  <p class="sell-buy-dollar-value">$0</p>
+                </div>
+                <p class="sell-buy-dollar-balance">Balance: 0</p>
+              </div>
+              <hr class="hori" />
+              <button class="vertswap-button">
+                <img src="src/img/swap-vert.png" />
+              </button>
+            </div>
+          </section>
+          <!-- end--->
+          <!-- swap area1--->
+          <section class="swap1">
+            <div class="swap-parent-div1">
+              <p class="swap-send-info-para">Buy</p>
+            </div>
+
+            <div class="swap-div-height-mod swap-parent-div1">
+              <div class="nodes-flex-div">
+                <div class="swap-parent-div">
+                  <p class="sell-buy-value">0</p>
+                </div>
+                <button class="sell-buy-button">
+                  <img class="sell-buy-img" src="src/img/Ellipse.png" />
+                  USDT
+                  <img class="sell-buy-img" src="src/img/down_arrow.png" />
+                </button>
+              </div>
+            </div>
+
+            <div class="sell-div-height-mod swap-parent-div1">
+              <div class="nodes-flex-div">
+                <div class="swap-parent-div">
+                  <p class="sell-buy-dollar-value">$0</p>
+                </div>
+                <p class="sell-buy-dollar-balance">Balance: 0</p>
+              </div>
+            </div>
+          </section>
+          <!-- end--->
+        </div>
+        <button class="swap-button">Swap</button>
+      </div>
+
+      <!--send region-->
+      <div hidden id="send-reg" class="dsh-items-upper">
+        <!-- Control Header with Toggle and Settings -->
+        <div class="control-header">
+          <div class="toggle-container">
+            <span class="toggle-label">Swap</span>
+            <label class="toggle-switch">
+              <input type="checkbox" id="swap-send-toggle-send" checked />
+              <span class="toggle-slider"></span>
+            </label>
+            <span class="toggle-label">Send</span>
+          </div>
+          <button class="settings-icon-button">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="12" cy="12" r="3"></circle>
+              <path
+                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
+              ></path>
+            </svg>
+          </button>
+        </div>
+
+        <div class="dsh-items">
+          <!-- send area0--->
+          <section class="swap0">
+            <div class="swap-parent-div1">
+              <p class="swap-send-info-para">Amount</p>
+            </div>
+
+            <div class="swap-div-height-mod swap-parent-div1">
+              <div class="nodes-flex-div">
+                <div class="swap-parent-div">
+                  <p class="sell-buy-value">0</p>
+                </div>
+                <button class="sell-buy-button">
+                  <img class="sell-buy-img" src="src/img/Ellipse.png" />
+                  ETH
+                  <img class="sell-buy-img" src="src/img/down_arrow.png" />
+                </button>
+              </div>
+            </div>
+
+            <div class="sell-div-height-mod swap-parent-div1">
+              <div class="nodes-flex-div">
+                <div class="swap-parent-div">
+                  <p class="sell-buy-dollar-value">$0</p>
+                </div>
+                <p class="sell-buy-dollar-balance">Balance: 0</p>
+              </div>
+              <hr class="hori" />
+              <button class="vertswap-button">
+                <img src="src/img/swap-vert.png" />
+              </button>
+            </div>
+          </section>
+          <!-- end--->
+          <!-- swap area1--->
+          <section class="swap1">
+            <div class="swap-parent-div1">
+              <p class="swap-send-info-para">From</p>
+            </div>
+
+            <div class="swap-div-height-mod swap-parent-div1">
+              <div class="nodes-flex-div">
+                <div class="swap-parent-div">
+                  <h5 class="trf-addy">0x1A23...JK8L90</h5>
+                </div>
+              </div>
+            </div>
+
+            <div class="sell-div-height-mod swap-parent-div1">
+              <div class="nodes-flex-div">
+                <div class="swap-parent-div">
+                  <p class="sell-buy-dollar-value">To</p>
+                </div>
+              </div>
+            </div>
+
+            <input
+              class="addy-input"
+              placeholder="Enter public address (0x) or ENS name"
+              type="text"
+            />
+          </section>
+          <!-- end--->
+        </div>
+        <button class="swap-button">Send</button>
+      </div>
+    </section>
+
+    <!--Messages-->
+    <section class="chat-plane">
+      <!-- Contact List View -->
+      <div class="dsh-items-upper" id="contact-list-view">
+        <div class="topdiv-margin-blend">
+          <div class="nodes-flex-div">
+            <div class="swap-parent-div"></div>
+          </div>
+
+          <div class="search-div">
+            <input class="search-msgs" type="text" placeholder="🔍 Search" />
+          </div>
+          <div id = "contact-list-id" class="offsetmod dsh-items-upper">
+            <div
+              class="names-disp contact-item"
+              data-username="Ox1a...b12c"
+              data-lastseen="Last seen 2 hours ago"
+            >
+              <ul class="namesdisp-ul">
+                <img class="userimg-disp" />
+                <div class="screen-li">
+                  <li class="disp-items">Ox1a...b12c</li>
+                  <li class="disp-items">I'm gunna get more bags.</li>
+                </div>
+              </ul>
+
+              <p class="msg-timer-text">4:28 PM</p>
+            </div>
+            
+          </div>
+          
+        </div>
+      </div>
+
+      <!-- Chat Interface View (Hidden by default) -->
+      <div class="chat-interface" id="chat-interface" style="display: none">
+        <!-- Top Menu Bar -->
+        <div class="chat-header">
+          <div class="chat-header-left">
+            <div class="chat-back-container">
+              <div class="chat-back-touch-area"></div>
+              <svg
+                class="chat-back-icon"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+              >
+                <path
+                  d="M7.373 12.75L13.0693 18.4462L12 19.5L4.5 12L12 4.5L13.0693 5.55375L7.373 11.25H19.5V12.75H7.373Z"
+                  fill="white"
+                />
+              </svg>
+            </div>
+            <img
+              class="chat-user-avatar"
+              src="src/img/person-img.png"
+              alt="User Avatar"
+            />
+            <div class="chat-user-info">
+              <h3 class="chat-username" id="chat-username">Username</h3>
+              <p class="chat-last-seen" id="chat-last-seen">Last seen</p>
+            </div>
+          </div>
+          <div class="chat-header-right">
+            <div class="chat-menu-dropdown">
+              <button class="chat-menu-btn" id="chat-menu-toggle">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="12" r="2" fill="white" />
+                  <circle cx="12" cy="5" r="2" fill="white" />
+                  <circle cx="12" cy="19" r="2" fill="white" />
+                </svg>
+              </button>
+
+            </div>
+          </div>
+        </div>
+
+        <!-- Chat Messages Area -->
+        <div class="chat-messages" id="chat-messages">
+          <div class="message received">
+            <div class="message-content">Hey, how's it going?</div>
+            <div class="message-time">4:28 PM</div>
+          </div>
+          <div class="message sent">
+            <div class="message-content">Good! Just checking the markets</div>
+            <div class="message-time">4:30 PM</div>
+          </div>
+        </div>
+
+        <!-- Bottom Input Bar -->
+        <div class="chat-input-bar">
+          <button class="chat-input-btn emoji-btn" title="Emoji">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <circle
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+              <path
+                d="M8 14s1.5 2 4 2 4-2 4-2"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+              <line
+                x1="9"
+                y1="9"
+                x2="9.01"
+                y2="9"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+              <line
+                x1="15"
+                y1="9"
+                x2="15.01"
+                y2="9"
+                stroke="currentColor"
+                stroke-width="2"
+              />
+            </svg>
+          </button>
+          <div class="message-input-container">
+            <textarea
+              class="chat-message-input"
+              id="chat-message-input"
+              placeholder="Type a message..."
+              rows="1"
+            ></textarea>
+          </div>
+          <button class="chat-input-btn options-btn" title="Options">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="12" r="1" fill="currentColor" />
+              <circle cx="19" cy="12" r="1" fill="currentColor" />
+              <circle cx="5" cy="12" r="1" fill="currentColor" />
+            </svg>
+          </button>
+          <button class="chat-send-btn" id="chat-send-btn" title="Send">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path
+                d="m22 2-7 20-4-9-9-4z"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </button>
+        </div>
+
+        ```text
+      </div>
+    </section>
+    <!--
+      <div class="footer"> </div><img class="help-desk-img" src="img/Chat_Room.png" ></img>-->
+    <!--Header Area-->
+
+    <div class="header-background"></div>
+    <nav id="container-id" class="container">
+      <!--hamburger bar-->
+      <section class="hamburger-plane">
+        <ul class="xm-ul-menu">
+          <h2 id="home-connect">XMessenger</h2>
+          <li id="dashboard-index" class="xm-list-items">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <path d="M9 9h6v6H9z"></path>
+            </svg>
+            Dashboard
+          </li>
+          <li id="crypto-transfer" class="xm-list-items">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+              <path d="M2 17l10 5 10-5"></path>
+              <path d="M2 12l10 5 10-5"></path>
+            </svg>
+            Crypto Transfer
+          </li>
+          <li id="chat" class="xm-list-items">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            Chat
+          </li>
+          <li id="nodes" class="xm-list-items">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="3"></circle>
+              <path d="M3 7v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2z"></path>
+              <polyline points="8,3 16,3 16,7 8,7 8,3"></polyline>
+            </svg>
+            Nodes
+          </li>
+          <li id="treasury" class="xm-list-items">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+              <line x1="8" y1="21" x2="16" y2="21"></line>
+              <line x1="12" y1="17" x2="12" y2="21"></line>
+            </svg>
+            Treasury
+          </li>
+          <li id="validators" class="xm-list-items">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+            Validators
+          </li>
+        </ul>
+      </section>
+      
+      <!-- Mobile Profile Icon for Menu -->
+      <div class="mobile-menu-profile" id="mobile-profile-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+      </div>
+      <div class="Header-bar">
+        <div class="hamburger">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
+        </div>
+      </div>
+      <div class="account-drop-down-window">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+        >
+          <circle cx="12" cy="12" r="12" fill="#CDCDCD" />
+        </svg>
+        <p class="name-disp"></p>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+        >
+          <path
+            d="M11.9999 15.0537L6.34619 9.39994L7.39994 8.34619L11.9999 12.9462L16.5999 8.34619L17.6537 9.39994L11.9999 15.0537Z"
+            fill="white"
+          />
+        </svg>
+      </div>
+    </nav>
+    <!--coin list shiiiiiiit-->
+    <div style="display: none" id="coin-list-id" class="swapcoin-board"></div>
+    <!--Transcation component Area-->
+
+    <!--Nodes Frame-->
+    <section class="nodes-plane">
+      <div class="nodes-container">
+        <!-- Top Stats Section -->
+        <div class="nodes-top-section">
+          <div class="nodes-stats-dual">
+            <div class="nodes-stat-col">
+              <p class="nodes-stat-label">mTPS</p>
+              <p class="nodes-stat-value-large">3147.62</p>
+              <p class="nodes-stat-desc">Mean 24hr mTPS</p>
+            </div>
+            <div class="nodes-stat-divider"></div>
+            <div class="nodes-stat-col">
+              <p class="nodes-stat-label">Latency</p>
+              <p class="nodes-stat-value-large">1%</p>
+              <p class="nodes-stat-desc">Mean 24hr latency</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nodes Chart Section -->
+        <div class="nodes-chart-wrapper">
+          <p class="nodes-section-label">Nodes</p>
+          <div class="nodes-main-chart">
+            <div class="nodes-chart-area">
+              <p class="nodes-chart-placeholder-text">Mins</p>
+            </div>
+          </div>
+          <p class="nodes-chart-caption">Mean 24hr latency</p>
+        </div>
+
+        <!-- Two Column Stats -->
+        <div class="nodes-dual-stats">
+          <div class="nodes-stat-block">
+            <p class="nodes-label">Total rounds</p>
+            <p class="nodes-value">236.13m</p>
+          </div>
+          <div class="nodes-stat-divider"></div>
+          <div class="nodes-stat-block">
+            <p class="nodes-label">Average throughput / hr</p>
+            <p class="nodes-value">11.6 GB</p>
+          </div>
+        </div>
+
+        <!-- Single Stat -->
+        <div class="nodes-single-stat">
+          <p class="nodes-label">Total throughput (24hr)</p>
+          <p class="nodes-value">278 GB</p>
+          <hr class="nodes-divider" />
+        </div>
+
+        <!-- Success Rate 1 -->
+        <div class="nodes-single-stat">
+          <p class="nodes-label">Realtime success rate (24hr)</p>
+          <p class="nodes-value">99.69%</p>
+          <hr class="nodes-divider" />
+        </div>
+
+        <!-- Success Rate 2 with Arrow -->
+        <div class="nodes-single-stat nodes-with-arrow">
+          <div class="nodes-header-row">
+            <p class="nodes-label">Precomp success rate</p>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+            >
+              <path d="M6 12L10 8L6 4" stroke="white" stroke-width="1.5" />
+            </svg>
+          </div>
+          <p class="nodes-value">94.79%</p>
+          <hr class="nodes-divider" />
+        </div>
+
+        <!-- mTPS Chart -->
+        <div class="nodes-chart-section">
+          <p class="nodes-label">mTPS (24hr)</p>
+          <div class="nodes-line-graph">
+            <svg width="100%" height="50" viewBox="0 0 280 50">
+              <polyline
+                points="20,35 70,32 120,28 170,25 220,20 270,15"
+                stroke="white"
+                stroke-width="1.5"
+                fill="none"
+              />
+            </svg>
+            <div class="nodes-x-axis">
+              <span>1</span>
+              <span>6</span>
+              <span>12</span>
+              <span>18</span>
+              <span>24</span>
+            </div>
+          </div>
+          <hr class="nodes-divider" />
+        </div>
+
+        <!-- Performance with Arrow -->
+        <div class="nodes-chart-section">
+          <div class="nodes-header-row">
+            <p class="nodes-label">Performance</p>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+            >
+              <path d="M6 12L10 8L6 4" stroke="white" stroke-width="1.5" />
+            </svg>
+          </div>
+          <div class="nodes-bars">
+            <div class="nodes-bar" style="height: 20%"></div>
+            <div class="nodes-bar" style="height: 35%"></div>
+            <div class="nodes-bar" style="height: 60%"></div>
+            <div class="nodes-bar" style="height: 85%"></div>
+            <div class="nodes-bar" style="height: 100%"></div>
+          </div>
+          <hr class="nodes-divider" />
+        </div>
+
+        <!-- Active Validators & Server Version -->
+        <div class="nodes-dual-stats">
+          <div class="nodes-stat-block">
+            <p class="nodes-label">Active validators</p>
+            <p class="nodes-value">349</p>
+            <p class="nodes-sub">5th local</p>
+          </div>
+          <div class="nodes-stat-divider"></div>
+          <div class="nodes-stat-block">
+            <p class="nodes-label">Min server version</p>
+            <p class="nodes-value">3.1.0</p>
+          </div>
+        </div>
+
+        <!-- Gateway Version -->
+        <div class="nodes-single-stat">
+          <p class="nodes-label">Min gateway version</p>
+          <p class="nodes-value">3.1.0</p>
+          <hr class="nodes-divider" />
+        </div>
+
+        <!-- Node Status Breakdown -->
+        <div class="nodes-chart-section">
+          <p class="nodes-label">Node status breakdown</p>
+          <div class="nodes-bars">
+            <div class="nodes-bar" style="height: 15%"></div>
+            <div class="nodes-bar" style="height: 30%"></div>
+            <div class="nodes-bar" style="height: 50%"></div>
+            <div class="nodes-bar" style="height: 75%"></div>
+            <div class="nodes-bar" style="height: 100%"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!--Treasury Frame-->
+    <section class="treasury-plane">
+      <div class="treasury-container">
+        <div class="treasury-header">
+          <div class="treasury-icon">
+            <svg
+              width="32"
+              height="32"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M3 21h18" />
+              <path d="M5 21V7l8-4v18" />
+              <path d="M19 21V11l-6-4" />
+              <path d="M9 9v1" />
+              <path d="M9 12v1" />
+              <path d="M9 15v1" />
+            </svg>
+          </div>
+          <h1 class="treasury-title">Treasury Dashboard</h1>
+        </div>
+
+        <div class="treasury-content">
+          <!-- Total Gas Fees Section -->
+          <div class="treasury-section">
+            <div class="treasury-section-header">
+              <h3 class="treasury-section-title">Total Gas Fees Earned</h3>
+              <p class="treasury-section-subtitle">XChain - 24hr gain</p>
+            </div>
+
+            <div class="treasury-main-value">
+              <p class="treasury-amount">$18,426.50</p>
+              <div class="treasury-gain">
+                <span class="treasury-gain-text">+12.3%</span>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                  <path d="M2 8L6 4L10 8" stroke="#00ff88" stroke-width="1.5" />
+                </svg>
+              </div>
+            </div>
+
+            <div class="treasury-chart">
+              <div class="treasury-bars">
+                <div class="treasury-bar" style="height: 25%"></div>
+                <div class="treasury-bar" style="height: 40%"></div>
+                <div class="treasury-bar" style="height: 60%"></div>
+                <div class="treasury-bar" style="height: 80%"></div>
+                <div class="treasury-bar" style="height: 100%"></div>
+                <div class="treasury-bar" style="height: 85%"></div>
+                <div class="treasury-bar" style="height: 70%"></div>
+                <div class="treasury-bar" style="height: 95%"></div>
+              </div>
+              <div class="treasury-chart-labels">
+                <span>6h</span>
+                <span>12h</span>
+                <span>18h</span>
+                <span>24h</span>
+              </div>
+            </div>
+            <hr class="treasury-divider" />
+          </div>
+
+          <!-- Total Transaction Fees Section -->
+          <div class="treasury-section">
+            <div class="treasury-section-header">
+              <h3 class="treasury-section-title">
+                Total Transaction Fees Earned
+              </h3>
+              <p class="treasury-section-subtitle">XM - 24hr gain</p>
+            </div>
+
+            <div class="treasury-main-value">
+              <p class="treasury-amount">$24,892.75</p>
+              <div class="treasury-gain">
+                <span class="treasury-gain-text">+8.7%</span>
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                  <path d="M2 8L6 4L10 8" stroke="#00ff88" stroke-width="1.5" />
+                </svg>
+              </div>
+            </div>
+
+            <div class="treasury-chart">
+              <div class="treasury-bars">
+                <div class="treasury-bar" style="height: 30%"></div>
+                <div class="treasury-bar" style="height: 55%"></div>
+                <div class="treasury-bar" style="height: 75%"></div>
+                <div class="treasury-bar" style="height: 90%"></div>
+                <div class="treasury-bar" style="height: 100%"></div>
+                <div class="treasury-bar" style="height: 80%"></div>
+                <div class="treasury-bar" style="height: 65%"></div>
+                <div class="treasury-bar" style="height: 85%"></div>
+              </div>
+              <div class="treasury-chart-labels">
+                <span>6h</span>
+                <span>12h</span>
+                <span>18h</span>
+                <span>24h</span>
+              </div>
+            </div>
+            <hr class="treasury-divider" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!--Validator Frame-->
+    <section class="validator-plane">
+      <div class="validator-container">
+        <div class="validator-header">
+          <div class="validator-icon">
+            <svg
+              width="36"
+              height="36"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M12 2L2 7l10 5 10-5-10-5z" />
+              <path d="M2 17l10 5 10-5" />
+              <path d="M2 12l10 5 10-5" />
+            </svg>
+          </div>
+          <h1 class="validator-title">Validator Network</h1>
+          <p class="validator-subtitle">Available Nodes & Capacity</p>
+        </div>
+
+        <div class="validator-content">
+          <div class="validator-list">
+            <!-- Node 1 -->
+            <div class="validator-node-item">
+              <h3 class="validator-node-title">Node 1</h3>
+              <p class="validator-node-slots">342/1000 slots</p>
+            </div>
+
+            <!-- Node 2 -->
+            <div class="validator-node-item">
+              <h3 class="validator-node-title">Node 2</h3>
+              <p class="validator-node-slots">756/1000 slots</p>
+            </div>
+
+            <!-- Node 3 -->
+            <div class="validator-node-item">
+              <h3 class="validator-node-title">Node 3</h3>
+              <p class="validator-node-slots">189/1000 slots</p>
+            </div>
+
+            <!-- Node 4 -->
+            <div class="validator-node-item">
+              <h3 class="validator-node-title">Node 4</h3>
+              <p class="validator-node-slots">923/1000 slots</p>
+            </div>
+
+            <!-- Node 5 -->
+            <div class="validator-node-item">
+              <h3 class="validator-node-title">Node 5</h3>
+              <p class="validator-node-slots">467/1000 slots</p>
+            </div>
+
+            <!-- Node 6 -->
+            <div class="validator-node-item">
+              <h3 class="validator-node-title">Node 6</h3>
+              <p class="validator-node-slots">834/1000 slots</p>
+            </div>
+
+            <!-- Node 7 -->
+            <div class="validator-node-item">
+              <h3 class="validator-node-title">Node 7</h3>
+              <p class="validator-node-slots">125/1000 slots</p>
+            </div>
+
+            <!-- Node 8 -->
+            <div class="validator-node-item">
+              <h3 class="validator-node-title">Node 8</h3>
+              <p class="validator-node-slots">678/1000 slots</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <script type="module" src="/src/js/harmburger.tsx"></script>
+    <script type="module" src="/src/js/connectWallet.tsx"></script>
+    <script type="module" src="/src/js/windowNav.tsx"></script>
+    <script type="module" src="/src/js/profile.tsx"></script>
+    <script type="module" src="/src/js/chat.tsx"></script>
+    <script type="module" src="/src/js/search.tsx"></script>
+
+    <!-- This is a replit script which adds a banner on the top of the page when opened in development mode outside the replit environment -->
+    <script
+      type="text/javascript"
+      src="https://replit.com/public/js/replit-dev-banner.js"
+    ></script>
+<!--
     <div id="root"></div>
+
     <script type="module" src="/src/main.tsx"></script>
+  -->
   </body>
 </html>

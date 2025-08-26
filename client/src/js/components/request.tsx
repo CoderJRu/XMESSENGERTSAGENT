@@ -11,8 +11,7 @@ import { promises } from "dns";
 import { any } from "zod";
 import { Buffer } from "buffer";
 import { toHex } from "./RexyMath.tsx";
-// Removed import from deleted connectWallet.tsx file
-let publicKey: string = "";
+import { publicKey } from "../connectWallet.tsx";
 //
 
 const supaKey: any = import.meta.env.VITE_SUPABASE_KEY;
