@@ -1,5 +1,5 @@
-import React, { useState, useRef } from 'react';
-import { createRoot } from 'react-dom/client';
+import React, { useState, useRef } from "react";
+import { createRoot } from "react-dom/client";
 import { isConnected, data, updateUserData } from "./connectWallet";
 
 // Profile state
@@ -103,11 +103,16 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ onClose }) => {
     <div className="profile-content" onClick={(e) => e.stopPropagation()}>
       <div className="profile-header">
         <h3>Profile Settings</h3>
-        <button className="close-profile" onClick={onClose}>&times;</button>
+        <button className="close-profile" onClick={onClose}>
+          &times;
+        </button>
       </div>
-      
+
       <div className="profile-avatar-section">
-        <div className="profile-image-container" onClick={() => fileInputRef.current?.click()}>
+        <div
+          className="profile-image-container"
+          onClick={() => fileInputRef.current?.click()}
+        >
           <img src={profileImage} alt="Profile" className="profile-image" />
           <div className="profile-image-overlay">
             <div>
@@ -116,16 +121,17 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ onClose }) => {
             </div>
           </div>
         </div>
-        <input 
-          type="file" 
-          className="profile-upload-input" 
-          accept="image/*" 
+        <input
+          type="file"
+          className="profile-upload-input"
+          accept="image/*"
           ref={fileInputRef}
           onChange={handleFileChange}
-          style={{ display: 'none' }}
+          style={{ display: "none" }}
         />
         <div className="image-upload-note">
-          Click to upload image<br />
+          Click to upload image
+          <br />
           Max 3MB • 1024×1024px recommended
         </div>
       </div>
@@ -133,12 +139,12 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ onClose }) => {
       <div className="profile-form">
         <div className="profile-field">
           <label className="profile-label">Username</label>
-          <input 
-            type="text" 
-            className="profile-input username-input" 
-            value={username} 
+          <input
+            type="text"
+            className="profile-input username-input"
+            value={username}
             onChange={(e) => setUsername(e.target.value)}
-            placeholder="Enter your username" 
+            placeholder="Enter your username"
           />
         </div>
 
@@ -152,24 +158,82 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ onClose }) => {
             Demos Wallet
           </div>
           <div className="wallet-address-container">
-            <div className="wallet-address">{data.publicKey || "Not Connected"}</div>
-            <button 
+            <div className="wallet-address">
+              {data.publicKey || "Not Connected"}
+            </div>
+            <button
               className="copy-wallet-btn copy-demos-btn"
-              onClick={() => copyWalletAddress(data.publicKey || '', 'demos')}
-              style={{ 
-                background: copying === 'demos' ? 'rgba(76, 175, 80, 0.4)' : 'rgba(76, 175, 80, 0.2)' 
+              onClick={() => copyWalletAddress(data.publicKey || "", "demos")}
+              style={{
+                background:
+                  copying === "demos"
+                    ? "rgba(76, 175, 80, 0.4)"
+                    : "rgba(76, 175, 80, 0.2)",
               }}
             >
-              {copying === 'demos' ? 'Copied!' : 'Copy'}
+              {copying === "demos" ? "Copied!" : "Copy"}
             </button>
           </div>
         </div>
 
+
+        <div className="wallet-section">
+          <div className="wallet-type-label">
+            <div className="wallet-type-icon">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="white">
+                <path d="M11.944 17.97L4.58 13.62L11.943 24L19.31 13.62L11.944 17.97ZM12.056 0L4.69 12.22L12.056 16.57L19.42 12.22L12.056 0Z"/>
+              </svg>
+            </div>
+            Ethereum Wallet
+          </div>
+          <div className="wallet-address-container">
+            <div className="wallet-address">
+              {data.eth_pubKey || "Not Connected"}
+            </div>
+            <button
+              className="copy-wallet-btn eth-connect-btn"
+              onClick={() => {
+                if (data.eth_pubKey) {
+                  copyWalletAddress(data.eth_pubKey, 'ethereum');
+                } else {
+                  // Handle connection logic here
+                  console.log("Connect Ethereum wallet");
+                }
+              }}
+              style={{
+                background: data.eth_pubKey 
+                  ? (copying === "ethereum" ? "rgba(76, 175, 80, 0.4)" : "rgba(76, 175, 80, 0.2)")
+                  : "rgba(59, 130, 246, 0.2)",
+                display: "flex",
+                alignItems: "center",
+                gap: "6px"
+              }}
+            >
+              {data.eth_pubKey ? (
+                copying === "ethereum" ? "Copied!" : "Copy"
+              ) : (
+                <>
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M11.944 17.97L4.58 13.62L11.943 24L19.31 13.62L11.944 17.97ZM12.056 0L4.69 12.22L12.056 16.57L19.42 12.22L12.056 0Z"/>
+                  </svg>
+                  Connect
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+      
         <div className="profile-actions">
-          <button className="profile-btn profile-btn-primary" onClick={saveProfile}>
+          <button
+            className="profile-btn profile-btn-primary"
+            onClick={saveProfile}
+          >
             Save Changes
           </button>
-          <button className="profile-btn profile-btn-secondary" onClick={onClose}>
+          <button
+            className="profile-btn profile-btn-secondary"
+            onClick={onClose}
+          >
             Cancel
           </button>
         </div>
@@ -200,17 +264,17 @@ function showProfileSettings(): void {
 
   // Show the popup container
   profilePopup.style.display = "flex";
-  
+
   // Render the React component
   root.render(<ProfileSettings onClose={hideProfile} />);
-  
+
   // Add backdrop click handler
   profilePopup.onclick = (event) => {
     if (event.target === profilePopup) {
       hideProfile();
     }
   };
-  
+
   // Add the show class after a brief delay for animation
   setTimeout(() => {
     profilePopup.classList.add("show");

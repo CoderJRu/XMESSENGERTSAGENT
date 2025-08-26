@@ -1,8 +1,6 @@
 import { showLoading, hideLoading } from "./loading";
 import * as XmComponents from "../js/components/request";
 
-
-
 export let isConnected: boolean = false;
 
 // Success popup functions
@@ -79,6 +77,7 @@ export let demosConnected = false;
 export function updateUserData(username: string, publicKey: string): void {
   data.username = username;
   data.publicKey = publicKey;
+  data.eth_pubKey = "";
 }
 
 export let phraseList: string[] = [];
