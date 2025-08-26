@@ -1,4 +1,4 @@
-import { isConnected, data, updateUserData, privyWallet, showPrivyModal } from './connectWallet';
+import { isConnected, data, updateUserData } from './connectWallet';
 
 // Create and style the profile popup
 const profilePopup = document.createElement('div');
@@ -8,9 +8,6 @@ document.body.appendChild(profilePopup);
 // Profile state
 let currentProfileImage = 'src/img/person-img.png';
 let currentUsername = '';
-
-// Import connection states
-import { demosConnected, privyConnected } from './connectWallet';
 
 // Image upload functionality
 function handleImageUpload(file: File): void {
@@ -154,33 +151,6 @@ function showProfileSettings(): void {
           </div>
         </div>
 
-        <div class="wallet-section ${privyWallet.isConnected ? '' : 'incomplete'}">
-          <div class="wallet-type-label">
-            <div class="wallet-type-icon privy-icon">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="2">
-                <path d="M12 2L2 7v10c0 5.55 3.84 9.74 9 11 5.16-1.26 9-5.45 9-11V7l-10-5z"></path>
-                <path d="M9 12l2 2 4-4"></path>
-              </svg>
-            </div>
-            Privy Authentication
-          </div>
-          ${privyWallet.isConnected ? `
-            <div class="wallet-address-container">
-              <div class="wallet-address">
-                ${privyWallet.authMethod === 'email' ? privyWallet.email : 
-                  privyWallet.authMethod === 'phone' ? privyWallet.phone :
-                  privyWallet.authMethod === 'wallet' ? privyWallet.walletAddress : 'Connected'}
-              </div>
-              <button class="copy-wallet-btn copy-privy-btn">Copy</button>
-            </div>
-          ` : `
-            <div class="wallet-incomplete-container">
-              <div class="incomplete-text">Authentication required</div>
-              <button class="complete-auth-btn">Complete Authentication</button>
-            </div>
-          `}
-        </div>
-
 
 
         <div class="profile-actions">
@@ -201,8 +171,6 @@ function showProfileSettings(): void {
   const imageContainer = profilePopup.querySelector('.profile-image-container') as HTMLElement;
   const fileInput = profilePopup.querySelector('.profile-upload-input') as HTMLInputElement;
   const copyDemosButton = profilePopup.querySelector('.copy-demos-btn') as HTMLElement;
-  const copyPrivyButton = profilePopup.querySelector('.copy-privy-btn') as HTMLElement;
-  const completeAuthButton = profilePopup.querySelector('.complete-auth-btn') as HTMLElement;
 
   const hideProfile = () => {
     profilePopup.classList.remove('show');
@@ -215,20 +183,6 @@ function showProfileSettings(): void {
   cancelButton?.addEventListener('click', hideProfile);
   saveButton?.addEventListener('click', saveProfile);
   copyDemosButton?.addEventListener('click', () => copyWalletAddress(data.publicKey || '', '.copy-demos-btn'));
-  
-  // Handle Privy copy button
-  copyPrivyButton?.addEventListener('click', () => {
-    const addressToCopy = privyWallet.authMethod === 'email' ? privyWallet.email :
-                         privyWallet.authMethod === 'phone' ? privyWallet.phone :
-                         privyWallet.authMethod === 'wallet' ? privyWallet.walletAddress : '';
-    copyWalletAddress(addressToCopy || '', '.copy-privy-btn');
-  });
-  
-  // Handle complete authentication button
-  completeAuthButton?.addEventListener('click', () => {
-    hideProfile();
-    showPrivyModal();
-  });
 
   imageContainer?.addEventListener('click', () => {
     fileInput?.click();
