@@ -100,80 +100,78 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ onClose }) => {
   };
 
   return (
-    <div className="profile-popup show" onClick={handleBackdropClick}>
-      <div className="profile-content">
-        <div className="profile-header">
-          <h3>Profile Settings</h3>
-          <button className="close-profile" onClick={onClose}>&times;</button>
-        </div>
-        
-        <div className="profile-avatar-section">
-          <div className="profile-image-container" onClick={() => fileInputRef.current?.click()}>
-            <img src={profileImage} alt="Profile" className="profile-image" />
-            <div className="profile-image-overlay">
-              <div>
-                <div className="upload-icon">📷</div>
-                <div className="upload-text">Change Photo</div>
-              </div>
+    <div className="profile-content" onClick={(e) => e.stopPropagation()}>
+      <div className="profile-header">
+        <h3>Profile Settings</h3>
+        <button className="close-profile" onClick={onClose}>&times;</button>
+      </div>
+      
+      <div className="profile-avatar-section">
+        <div className="profile-image-container" onClick={() => fileInputRef.current?.click()}>
+          <img src={profileImage} alt="Profile" className="profile-image" />
+          <div className="profile-image-overlay">
+            <div>
+              <div className="upload-icon">📷</div>
+              <div className="upload-text">Change Photo</div>
             </div>
           </div>
+        </div>
+        <input 
+          type="file" 
+          className="profile-upload-input" 
+          accept="image/*" 
+          ref={fileInputRef}
+          onChange={handleFileChange}
+          style={{ display: 'none' }}
+        />
+        <div className="image-upload-note">
+          Click to upload image<br />
+          Max 3MB • 1024×1024px recommended
+        </div>
+      </div>
+
+      <div className="profile-form">
+        <div className="profile-field">
+          <label className="profile-label">Username</label>
           <input 
-            type="file" 
-            className="profile-upload-input" 
-            accept="image/*" 
-            ref={fileInputRef}
-            onChange={handleFileChange}
-            style={{ display: 'none' }}
+            type="text" 
+            className="profile-input username-input" 
+            value={username} 
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Enter your username" 
           />
-          <div className="image-upload-note">
-            Click to upload image<br />
-            Max 3MB • 1024×1024px recommended
+        </div>
+
+        <div className="wallet-section">
+          <div className="wallet-type-label">
+            <div className="wallet-type-icon demos-icon">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="white">
+                <circle cx="12" cy="12" r="10"></circle>
+              </svg>
+            </div>
+            Demos Wallet
+          </div>
+          <div className="wallet-address-container">
+            <div className="wallet-address">{data.publicKey || "Not Connected"}</div>
+            <button 
+              className="copy-wallet-btn copy-demos-btn"
+              onClick={() => copyWalletAddress(data.publicKey || '', 'demos')}
+              style={{ 
+                background: copying === 'demos' ? 'rgba(76, 175, 80, 0.4)' : 'rgba(76, 175, 80, 0.2)' 
+              }}
+            >
+              {copying === 'demos' ? 'Copied!' : 'Copy'}
+            </button>
           </div>
         </div>
 
-        <div className="profile-form">
-          <div className="profile-field">
-            <label className="profile-label">Username</label>
-            <input 
-              type="text" 
-              className="profile-input username-input" 
-              value={username} 
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="Enter your username" 
-            />
-          </div>
-
-          <div className="wallet-section">
-            <div className="wallet-type-label">
-              <div className="wallet-type-icon demos-icon">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="white">
-                  <circle cx="12" cy="12" r="10"></circle>
-                </svg>
-              </div>
-              Demos Wallet
-            </div>
-            <div className="wallet-address-container">
-              <div className="wallet-address">{data.publicKey || "Not Connected"}</div>
-              <button 
-                className="copy-wallet-btn copy-demos-btn"
-                onClick={() => copyWalletAddress(data.publicKey || '', 'demos')}
-                style={{ 
-                  background: copying === 'demos' ? 'rgba(76, 175, 80, 0.4)' : 'rgba(76, 175, 80, 0.2)' 
-                }}
-              >
-                {copying === 'demos' ? 'Copied!' : 'Copy'}
-              </button>
-            </div>
-          </div>
-
-          <div className="profile-actions">
-            <button className="profile-btn profile-btn-primary" onClick={saveProfile}>
-              Save Changes
-            </button>
-            <button className="profile-btn profile-btn-secondary" onClick={onClose}>
-              Cancel
-            </button>
-          </div>
+        <div className="profile-actions">
+          <button className="profile-btn profile-btn-primary" onClick={saveProfile}>
+            Save Changes
+          </button>
+          <button className="profile-btn profile-btn-secondary" onClick={onClose}>
+            Cancel
+          </button>
         </div>
       </div>
     </div>
@@ -193,14 +191,30 @@ function showProfileSettings(): void {
   currentUsername = data.username || "";
 
   const hideProfile = () => {
-    root.render(<div></div>);
-    profilePopup.style.display = "none";
+    profilePopup.classList.remove("show");
+    setTimeout(() => {
+      profilePopup.style.display = "none";
+      root.render(<div></div>);
+    }, 300);
   };
 
+  // Show the popup container
   profilePopup.style.display = "flex";
   
   // Render the React component
   root.render(<ProfileSettings onClose={hideProfile} />);
+  
+  // Add backdrop click handler
+  profilePopup.onclick = (event) => {
+    if (event.target === profilePopup) {
+      hideProfile();
+    }
+  };
+  
+  // Add the show class after a brief delay for animation
+  setTimeout(() => {
+    profilePopup.classList.add("show");
+  }, 10);
 }
 
 // Attach event to dropdown trigger
