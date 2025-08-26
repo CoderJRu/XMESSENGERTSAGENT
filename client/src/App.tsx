@@ -4,8 +4,7 @@ const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
 console.log("VITE_SUPABASE_URL:", supabaseUrl);
 console.log("VITE_SUPABASE_KEY:", supabaseKey ? "✓ Present" : "✗ Missing");*/
 import { useEffect } from "react";
-
-import { usePrivy, useWallets } from "@privy-io/react-auth";
+import { usePrivy, useWallets} from "@privy-io/react-auth";
 import ProfileSettings from "./js/profile.tsx";
 /*
 import { ethers } from "ethers";
