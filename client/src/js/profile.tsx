@@ -1,4 +1,4 @@
-import { isConnected, data, updateUserData, ethereumWallet } from './connectWallet';
+import { isConnected, data, updateUserData } from './connectWallet';
 
 // Create and style the profile popup
 const profilePopup = document.createElement('div');
@@ -151,21 +151,7 @@ function showProfileSettings(): void {
           </div>
         </div>
 
-        <div class="wallet-section">
-          <div class="wallet-type-label">
-            <div class="wallet-type-icon ethereum-icon-small">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="white">
-                <polygon points="12 2 3 7 12 12 21 7 12 2"></polygon>
-                <polygon points="12 17 3 12 12 17 21 12 12 17"></polygon>
-              </svg>
-            </div>
-            Ethereum Wallet
-          </div>
-          <div class="wallet-address-container">
-            <div class="wallet-address">${ethereumWallet.address || 'Not Connected'}</div>
-            <button class="copy-wallet-btn copy-ethereum-btn" ${!ethereumWallet.address ? 'disabled' : ''}>Copy</button>
-          </div>
-        </div>
+
 
         <div class="profile-actions">
           <button class="profile-btn profile-btn-primary">Save Changes</button>
@@ -185,7 +171,6 @@ function showProfileSettings(): void {
   const imageContainer = profilePopup.querySelector('.profile-image-container') as HTMLElement;
   const fileInput = profilePopup.querySelector('.profile-upload-input') as HTMLInputElement;
   const copyDemosButton = profilePopup.querySelector('.copy-demos-btn') as HTMLElement;
-  const copyEthereumButton = profilePopup.querySelector('.copy-ethereum-btn') as HTMLElement;
 
   const hideProfile = () => {
     profilePopup.classList.remove('show');
@@ -198,7 +183,6 @@ function showProfileSettings(): void {
   cancelButton?.addEventListener('click', hideProfile);
   saveButton?.addEventListener('click', saveProfile);
   copyDemosButton?.addEventListener('click', () => copyWalletAddress(data.publicKey || '', '.copy-demos-btn'));
-  copyEthereumButton?.addEventListener('click', () => copyWalletAddress(ethereumWallet.address || '', '.copy-ethereum-btn'));
 
   imageContainer?.addEventListener('click', () => {
     fileInput?.click();
