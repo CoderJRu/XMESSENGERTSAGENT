@@ -17,10 +17,12 @@ const root = createRoot(profilePopup);
 
 // React Profile Settings Component
 interface ProfileSettingsProps {
+  _data: any; // whatever you already use
+  login: () => void; // add login from privy
   onClose: () => void;
 }
 
-const ProfileSettings: React.FC<ProfileSettingsProps> = ({ onClose }) => {
+const ProfileSettings: React.FC<ProfileSettingsProps> = ({ onClose,_data, login }) => {
   const [profileImage, setProfileImage] = useState(currentProfileImage);
   const [username, setUsername] = useState(currentUsername);
   const [copying, setCopying] = useState<string | null>(null);

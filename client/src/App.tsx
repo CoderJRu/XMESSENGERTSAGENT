@@ -4,6 +4,7 @@ const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
 console.log("VITE_SUPABASE_URL:", supabaseUrl);
 console.log("VITE_SUPABASE_KEY:", supabaseKey ? "✓ Present" : "✗ Missing");*/
 import { useEffect } from "react";
+import { usePrivy, useWallets} from "@privy-io/react-auth";
 import ProfileSettings from "./js/profile.tsx";
 /*
 import { ethers } from "ethers";
@@ -56,24 +57,21 @@ export async function getBalances(address: string) {
 }
 */
 export default function App() {
-  const handleLogin = () => {
-    console.log("🟢 Login event received");
-    // Login logic will go here
-  };
+  const { login } = usePrivy(); // <-- Privy hook gives you login()
 
   useEffect(() => {
     const handler = () => {
-      console.log("🟢 Login event received, calling handleLogin()");
-      handleLogin();
+      console.log("🟢 Privy login event received, calling login()");
+      login();
     };
 
     window.addEventListener("privy-login", handler);
     return () => window.removeEventListener("privy-login", handler);
-  }, []);
+  }, [login]);
 
   return (
     <div>
-      <ProfileSettings onClose={() => {}} />
+      <ProfileSettings />
     </div>
   );
   /*
