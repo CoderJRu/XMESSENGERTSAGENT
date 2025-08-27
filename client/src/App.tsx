@@ -27,44 +27,33 @@ export default function App() {
   }, [login]);
   // grab the connected wallet address (if any)
   const address = wallets.length > 0 ? wallets[0].address : undefined; // safer
+  
   useEffect(() => {
     if (ready && authenticated && address) {
       console.log("✅ User is still connected after reload:", user);
       console.log("connected address is ", address);
+      // Update the global variable so other parts of the app can access it
+      ConnectedEthAddress = address;
     } else if (ready && !authenticated) {
       console.log("⚠️ No user session found. Need to log in.");
+      ConnectedEthAddress = "Not Connected";
     }
   }, [ready, authenticated, user, address]);
 
-  {ready && authenticated && address ? (
-    <ProfileSettings
-      address={address}
-    />
-  ) : !authenticated ? (
-    <button onClick={login}>Login</button>
-  ) : (
-    <div>Loading wallet...</div> // fallback while address is undefined
-  )}
-
-  /*
-  const { ready, authenticated, login, logout, user } = usePrivy();
-  const { wallets } = useWallets();
-  useEffect(() => {
-    // wait until the DOM is ready
-    const btn = document.querySelector(".copy-eth-btn");
-
-    if (btn) {
-      // attach the click event
-      btn.addEventListener("click", login);
-
-      console.log("Privy login button connected ✅");
-    } else {
-      console.warn("Privy button not found ❌");
-    }
-
-    // cleanup
-    return () => {
-      if (btn) btn.removeEventListener("click", login);
-    };
-  }, [login]);*/
+  return (
+    <div>
+      {ready && authenticated && address ? (
+        <div>
+          <p>Connected: {address}</p>
+          <button onClick={() => navigator.clipboard.writeText(address)}>
+            Copy Address
+          </button>
+        </div>
+      ) : !authenticated ? (
+        <button onClick={login}>Login</button>
+      ) : (
+        <div>Loading wallet...</div>
+      )}
+    </div>
+  );
 }
