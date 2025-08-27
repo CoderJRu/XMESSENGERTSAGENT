@@ -18,6 +18,7 @@ const root = createRoot(profilePopup);
 
 // React Profile Settings Component
 interface ProfileSettingsProps {
+  address?: string;
   _data: any; // whatever you already use
   login: () => void; // add login from privy
   onClose: () => void;
@@ -27,15 +28,13 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
   onClose,
   _data,
   login,
+  address,
 }) => {
   const [profileImage, setProfileImage] = useState(currentProfileImage);
   const [username, setUsername] = useState(currentUsername);
   const [copying, setCopying] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  console.log(
-    "OPened Profile Settings and connected eth address is ",
-    getConnectedEthAddress(),
-  );
+  console.log("OPened Profile Settings and connected eth address is ", address);
   // Image upload functionality
   const handleImageUpload = (file: File): void => {
     // Validate file size (3MB max)

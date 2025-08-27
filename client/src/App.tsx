@@ -13,7 +13,6 @@ export const getConnectedEthAddress = () => {
   return ConnectedEthAddress;
 };
 
-
 export default function App() {
   const { user, login, ready, authenticated } = usePrivy();
   const { wallets } = useWallets();
@@ -23,27 +22,30 @@ export default function App() {
       console.log("🟢 Privy login event received, calling login()");
       login();
     };
-    // grab the connected wallet address (if any)
-    ConnectedEthAddress = wallets[0]?.address;
-    
     window.addEventListener("privy-login", handler);
     return () => window.removeEventListener("privy-login", handler);
   }, [login]);
- 
+  // grab the connected wallet address (if any)
+  const address = wallets.length > 0 ? wallets[0].address : undefined; // safer
   useEffect(() => {
-    if (ready && authenticated) {
+    if (ready && authenticated && address) {
       console.log("✅ User is still connected after reload:", user);
-      console.log("connected address is ", wallets[0].address);
+      console.log("connected address is ", address);
     } else if (ready && !authenticated) {
       console.log("⚠️ No user session found. Need to log in.");
     }
-  }, [ready, authenticated, user]);
+  }, [ready, authenticated, user, address]);
 
-  return (
-    <div>
-      <ProfileSettings />
-    </div>
-  );
+  {ready && authenticated && address ? (
+    <ProfileSettings
+      address={address}
+    />
+  ) : !authenticated ? (
+    <button onClick={login}>Login</button>
+  ) : (
+    <div>Loading wallet...</div> // fallback while address is undefined
+  )}
+
   /*
   const { ready, authenticated, login, logout, user } = usePrivy();
   const { wallets } = useWallets();
