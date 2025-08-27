@@ -1,8 +1,9 @@
 import React, { useState, useRef } from "react";
 import { createRoot } from "react-dom/client";
 import { isConnected, data, updateUserData } from "./connectWallet";
-
-
+import { getBalances } from "../utils/balances";
+import { getConnectedEthAddress } from "../App.tsx";
+import { get } from "http";
 // Profile state
 let currentProfileImage = "src/img/person-img.png";
 let currentUsername = "";
@@ -22,12 +23,19 @@ interface ProfileSettingsProps {
   onClose: () => void;
 }
 
-const ProfileSettings: React.FC<ProfileSettingsProps> = ({ onClose,_data, login }) => {
+const ProfileSettings: React.FC<ProfileSettingsProps> = ({
+  onClose,
+  _data,
+  login,
+}) => {
   const [profileImage, setProfileImage] = useState(currentProfileImage);
   const [username, setUsername] = useState(currentUsername);
   const [copying, setCopying] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-
+  console.log(
+    "OPened Profile Settings and connected eth address is ",
+    getConnectedEthAddress(),
+  );
   // Image upload functionality
   const handleImageUpload = (file: File): void => {
     // Validate file size (3MB max)
@@ -190,13 +198,13 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ onClose,_data, login 
           </div>
           <div className="wallet-address-container">
             <div className="wallet-address">
-              {data.eth_pubKey || "Not Connected"}
+              {getConnectedEthAddress() || "Not Connected"}
             </div>
             <button
               className="copy-wallet-btn eth-connect-btn"
               onClick={() => {
                 if (data.eth_pubKey) {
-                  copyWalletAddress(data.eth_pubKey, "ethereum");
+                  copyWalletAddress(getConnectedEthAddress(), "ethereum");
                 } else {
                   console.log("🔵 Dispatching privy-login event");
                   window.dispatchEvent(new Event("privy-login"));
@@ -204,7 +212,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ onClose,_data, login 
                 }
               }}
               style={{
-                background: data.eth_pubKey
+                background: getConnectedEthAddress()
                   ? copying === "ethereum"
                     ? "rgba(76, 175, 80, 0.4)"
                     : "rgba(76, 175, 80, 0.2)"
