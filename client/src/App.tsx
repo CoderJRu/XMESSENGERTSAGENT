@@ -34,9 +34,19 @@ export default function App() {
       console.log("connected address is ", address);
       // Update the global variable so other parts of the app can access it
       ConnectedEthAddress = address;
+      
+      // Also dispatch a custom event so the profile can update
+      window.dispatchEvent(new CustomEvent('wallet-address-updated', { 
+        detail: { address: address, connected: true } 
+      }));
     } else if (ready && !authenticated) {
       console.log("⚠️ No user session found. Need to log in.");
       ConnectedEthAddress = "Not Connected";
+      
+      // Dispatch event for disconnected state
+      window.dispatchEvent(new CustomEvent('wallet-address-updated', { 
+        detail: { address: "Not Connected", connected: false } 
+      }));
     }
   }, [ready, authenticated, user, address]);
 
