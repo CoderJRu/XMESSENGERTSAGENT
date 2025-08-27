@@ -35,12 +35,15 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
   const [copying, setCopying] = useState<string | null>(null);
   const [currentWalletAddress, setCurrentWalletAddress] = useState(address);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  console.log("Opened Profile Settings and connected eth address is ", address);
+  console.log("🔍 Opened Profile Settings:");
+  console.log("  - address prop:", address);
+  console.log("  - getConnectedEthAddress():", getConnectedEthAddress());
+  console.log("  - currentWalletAddress state:", currentWalletAddress);
 
   // Listen for wallet address updates
   React.useEffect(() => {
     const handleWalletUpdate = (event: any) => {
-      console.log("Wallet address update received:", event.detail);
+      console.log("🔄 Wallet address update received:", event.detail);
       setCurrentWalletAddress(event.detail.address !== "Not Connected" ? event.detail.address : undefined);
     };
 
@@ -50,6 +53,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
 
   // Update state when address prop changes
   React.useEffect(() => {
+    console.log("📍 Address prop changed to:", address);
     setCurrentWalletAddress(address);
   }, [address]);
   // Image upload functionality
@@ -306,10 +310,16 @@ function showProfileSettings(): void {
 
   // Get the most current address
   const currentAddress = getConnectedEthAddress();
-  console.log("Passing address to profile:", currentAddress);
+  console.log("🎯 Profile Debug:");
+  console.log("  - getConnectedEthAddress():", currentAddress);
+  console.log("  - isConnected:", isConnected);
+  
+  // Try to get address from global variable first, then fallback
+  const addressToPass = currentAddress !== "Not Connected" ? currentAddress : undefined;
+  console.log("  - Final address to pass:", addressToPass);
 
   // Render the React component
-  root.render(<ProfileSettings onClose={hideProfile} _data={data} login={() => {}} address={currentAddress !== "Not Connected" ? currentAddress : undefined} />);
+  root.render(<ProfileSettings onClose={hideProfile} _data={data} login={() => {}} address={addressToPass} />);
 
   // Add backdrop click handler
   profilePopup.onclick = (event) => {
