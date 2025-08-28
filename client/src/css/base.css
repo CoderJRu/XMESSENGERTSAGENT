@@ -4468,7 +4468,7 @@ body:has(.profile-popup.show) .hamburger {
   .home-div-content {
     display: none;
   }
-  /*keeps the bg anchored on all platform including the disappoint ios :)*/
+  /*keeps the bg anchored on all platform including the disappointment ios version :)*/
   .bg-holder {
     position: fixed;
     top: 0;
