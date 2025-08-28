@@ -7,7 +7,32 @@ export default function App() {
   const { user, login, logout, ready, authenticated } = usePrivy();
   const { wallets } = useWallets();
 
-  const address = wallets.length > 0 ? wallets[0].address : undefined;
+  // Find the correct wallet - prioritize linked account over embedded wallet
+  const getCorrectWallet = () => {
+    console.log("🔍 All wallets in App:", wallets);
+    console.log("🔍 Wallet details:", wallets.map(w => ({ 
+      address: w.address, 
+      walletClientType: w.walletClientType,
+      connectorType: w.connectorType
+    })));
+    
+    // Find the linked account wallet (usually the external wallet like MetaMask)
+    const linkedWallet = wallets.find(wallet => 
+      wallet.connectorType === 'injected' || 
+      wallet.walletClientType === 'metamask' ||
+      wallet.walletClientType === 'injected'
+    );
+    
+    // Fallback to embedded wallet if no linked wallet found
+    const activeWallet = linkedWallet || wallets.find(wallet => 
+      wallet.walletClientType === 'privy'
+    ) || wallets[0];
+    
+    console.log("🔑 Selected wallet in App:", activeWallet);
+    return activeWallet;
+  };
+
+  const address = getCorrectWallet()?.address;
 
   useEffect(() => {
     if (ready && authenticated) {
