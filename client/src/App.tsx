@@ -45,9 +45,7 @@ export default function App() {
     const address = wallets[0]?.address;
     if (authenticated && address) {
       setConnectedAddress(address); // ✅ persist once it exists
-      ConnectedEthAddress = address; // ✅ also update the exported variable
       console.log("✅ Connected address set:", address);
-      console.log("📝 Updated ConnectedEthAddress to:", ConnectedEthAddress);
     }
   }, [authenticated, wallets]);
 
