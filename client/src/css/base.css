@@ -4468,17 +4468,31 @@ body:has(.profile-popup.show) .hamburger {
   .home-div-content {
     display: none;
   }
+  /*keeps the bg anchored on all platform including the disappoint ios :)*/
+  .bg-holder {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(14, 16, 19, 0.99) url('../img/mask_background.png') no-repeat right center;
+    background-size: cover; /* or 'contain' if you don’t want it cropped */
+    z-index: -1; /* keep it behind everything */
+  }
 
-
-
-
+  /* Remove the background from html */
   html {
     background-color: rgba(14, 16, 19, 0.99);
-    /*
-    filter:blur(8px);
-    -webkit-filter:blur(8px);
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 
-    */
+/*
+  html {
+    background-color: rgba(14, 16, 19, 0.99);
+  
     overflow-y: hidden;
     overflow-x: hidden;
     background-position: right;
@@ -4493,7 +4507,7 @@ body:has(.profile-popup.show) .hamburger {
     scrollbar-width: none;
 
   }
-
+*/
   .search-div {
     text-align: center;
 
