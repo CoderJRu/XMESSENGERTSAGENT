@@ -3810,6 +3810,15 @@ input:checked+.toggle-slider:before {
   transform: scale(1.1);
 }
 
+.auth-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  font-family: "Helvetica Neue", sans-serif;
+  font-weight: 500;
+}
+
 .profile-avatar-section {
   display: flex;
   flex-direction: column;
