@@ -4487,6 +4487,13 @@ body:has(.profile-popup.show) .hamburger {
     scroll-behavior: smooth;
     -ms-overflow-style: none;
     scrollbar-width: none;
+    -webkit-text-size-adjust: 100%; /* stop font auto scaling */
+  }
+  input,
+  select,
+  textarea,
+  button {
+    font-size: 16px !important; /* prevent input zoom */
   }
 
 /*

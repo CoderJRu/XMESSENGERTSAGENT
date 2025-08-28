@@ -3,9 +3,9 @@
   <head>
     <meta charset="UTF-8" />
 
-   <!--we dont want the silly ios guys zooming things out of bound haha -->
-    <meta 
-      name="viewport" 
+    <!--we dont want the silly ios guys zooming things out of bound haha -->
+    <meta
+      name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
 
@@ -22,19 +22,37 @@
       rel="stylesheet"
     />
   </head>
+  <script>
+    // Block pinch-zoom & gesture zoom on iOS Safari
+    document.addEventListener("gesturestart", function (e) {
+      e.preventDefault();
+    });
+  </script>
+
   <body>
     <div class="bg-holder"></div>
     <!-- Success Popup -->
     <div id="success-popup-overlay" class="success-popup-overlay">
       <div class="success-popup">
         <div class="success-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="3"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
             <polyline points="20,6 9,17 4,12"></polyline>
           </svg>
         </div>
         <h2 class="success-title" id="success-title">Success!</h2>
-        <p class="success-message" id="success-message">Your wallet has been connected successfully.</p>
-        <button class="success-close-btn" id="success-close-btn">Continue</button>
+        <p class="success-message" id="success-message">
+          Your wallet has been connected successfully.
+        </p>
+        <button class="success-close-btn" id="success-close-btn">
+          Continue
+        </button>
       </div>
     </div>
 
@@ -51,107 +69,198 @@
         <div class="modern-wallet-modal">
           <div class="wallet-modal-header">
             <div class="wallet-icon-container">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M21 12V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v5m16 0v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5m16 0H8m13 0a2.5 2.5 0 0 1 0 5H8"></path>
+              <svg
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  d="M21 12V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v5m16 0v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-5m16 0H8m13 0a2.5 2.5 0 0 1 0 5H8"
+                ></path>
               </svg>
             </div>
             <h2 class="wallet-modal-title">Create New Wallet</h2>
-            <p class="wallet-modal-subtitle">Your recovery phrase is the key to your wallet</p>
+            <p class="wallet-modal-subtitle">
+              Your recovery phrase is the key to your wallet
+            </p>
           </div>
-          
+
           <div class="recovery-phrase-container">
             <div class="security-notice">
               <div class="security-icon">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                 </svg>
               </div>
               <span>Keep this phrase secure and private</span>
             </div>
-            
+
             <div class="phrase-grid">
-              <div class="phrase-item stagger-animation" title="Click to copy all phrases">
+              <div
+                class="phrase-item stagger-animation"
+                title="Click to copy all phrases"
+              >
                 <span class="phrase-number">1</span>
                 <span class="phrase-word">cloth</span>
               </div>
-              <div class="phrase-item stagger-animation" title="Click to copy all phrases">
+              <div
+                class="phrase-item stagger-animation"
+                title="Click to copy all phrases"
+              >
                 <span class="phrase-number">2</span>
                 <span class="phrase-word">table</span>
               </div>
-              <div class="phrase-item stagger-animation" title="Click to copy all phrases">
+              <div
+                class="phrase-item stagger-animation"
+                title="Click to copy all phrases"
+              >
                 <span class="phrase-number">3</span>
                 <span class="phrase-word">horse</span>
               </div>
-              <div class="phrase-item stagger-animation" title="Click to copy all phrases">
+              <div
+                class="phrase-item stagger-animation"
+                title="Click to copy all phrases"
+              >
                 <span class="phrase-number">4</span>
                 <span class="phrase-word">clown</span>
               </div>
-              <div class="phrase-item stagger-animation" title="Click to copy all phrases">
+              <div
+                class="phrase-item stagger-animation"
+                title="Click to copy all phrases"
+              >
                 <span class="phrase-number">5</span>
                 <span class="phrase-word">cup</span>
               </div>
-              <div class="phrase-item stagger-animation" title="Click to copy all phrases">
+              <div
+                class="phrase-item stagger-animation"
+                title="Click to copy all phrases"
+              >
                 <span class="phrase-number">6</span>
                 <span class="phrase-word">pencil</span>
               </div>
-              <div class="phrase-item stagger-animation" title="Click to copy all phrases">
+              <div
+                class="phrase-item stagger-animation"
+                title="Click to copy all phrases"
+              >
                 <span class="phrase-number">7</span>
                 <span class="phrase-word">motor</span>
               </div>
-              <div class="phrase-item stagger-animation" title="Click to copy all phrases">
+              <div
+                class="phrase-item stagger-animation"
+                title="Click to copy all phrases"
+              >
                 <span class="phrase-number">8</span>
                 <span class="phrase-word">house</span>
               </div>
-              <div class="phrase-item stagger-animation" title="Click to copy all phrases">
+              <div
+                class="phrase-item stagger-animation"
+                title="Click to copy all phrases"
+              >
                 <span class="phrase-number">9</span>
                 <span class="phrase-word">roof</span>
               </div>
-              <div class="phrase-item stagger-animation" title="Click to copy all phrases">
+              <div
+                class="phrase-item stagger-animation"
+                title="Click to copy all phrases"
+              >
                 <span class="phrase-number">10</span>
                 <span class="phrase-word">marble</span>
               </div>
-              <div class="phrase-item stagger-animation" title="Click to copy all phrases">
+              <div
+                class="phrase-item stagger-animation"
+                title="Click to copy all phrases"
+              >
                 <span class="phrase-number">11</span>
                 <span class="phrase-word">ripple</span>
               </div>
-              <div class="phrase-item stagger-animation" title="Click to copy all phrases">
+              <div
+                class="phrase-item stagger-animation"
+                title="Click to copy all phrases"
+              >
                 <span class="phrase-number">12</span>
                 <span class="phrase-word">effect</span>
               </div>
             </div>
-            
+
             <div class="copy-phrases-container">
-              <button class="copy-phrases-btn ripple" onclick="copyPhrasesToClipboard()">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <button
+                class="copy-phrases-btn ripple"
+                onclick="copyPhrasesToClipboard()"
+              >
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
                   <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  <path
+                    d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"
+                  ></path>
                 </svg>
                 Copy All Phrases
               </button>
             </div>
           </div>
-          
+
           <div class="wallet-warning">
             <div class="warning-icon">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"
+                ></path>
                 <line x1="12" y1="9" x2="12" y2="13"></line>
                 <line x1="12" y1="17" x2="12.01" y2="17"></line>
               </svg>
             </div>
             <div class="warning-text">
               <p class="warning-title">Store this phrase safely</p>
-              <p class="warning-description">Anyone with this phrase can access your wallet. Never share it with anyone.</p>
+              <p class="warning-description">
+                Anyone with this phrase can access your wallet. Never share it
+                with anyone.
+              </p>
             </div>
           </div>
-          
+
           <div class="wallet-modal-actions">
-            <button id="cancel-wallet-button-id" class="wallet-btn wallet-btn-secondary">
+            <button
+              id="cancel-wallet-button-id"
+              class="wallet-btn wallet-btn-secondary"
+            >
               <span>Cancel</span>
             </button>
-            <button id="create-wallet-button-id" class="wallet-btn wallet-btn-primary ripple">
+            <button
+              id="create-wallet-button-id"
+              class="wallet-btn wallet-btn-primary ripple"
+            >
               <span>Create Wallet</span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
                 <polyline points="9,18 15,12 9,6"></polyline>
               </svg>
             </button>
@@ -163,7 +272,14 @@
         <div class="modern-wallet-modal">
           <div class="wallet-modal-header">
             <div class="wallet-icon-container connect-icon">
-              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <svg
+                width="32"
+                height="32"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
                 <path d="M9 12l2 2 4-4"></path>
                 <path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"></path>
                 <path d="M3 12c1 0 3-1 3-3s-2-3-3-3-3 1-3 3 2 3 3 3"></path>
@@ -172,14 +288,23 @@
               </svg>
             </div>
             <h2 class="wallet-modal-title">Connect Wallet</h2>
-            <p class="wallet-modal-subtitle">Enter your recovery phrase to restore your wallet</p>
+            <p class="wallet-modal-subtitle">
+              Enter your recovery phrase to restore your wallet
+            </p>
           </div>
-          
+
           <div class="recovery-phrase-input-container">
             <div class="input-label">
               <span>Recovery Phrase</span>
               <div class="input-hint">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
                   <circle cx="12" cy="12" r="10"></circle>
                   <path d="M9,9h0a3,3,0,0,1,6,0c0,2-3,3-3,3"></path>
                   <path d="M12,17h.01"></path>
@@ -196,41 +321,68 @@
               <div class="input-decoration"></div>
             </div>
           </div>
-          
+
           <div class="wallet-security-tips">
             <div class="security-tip">
               <div class="tip-icon">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M9 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-4m-8 0V7a4 4 0 1 1 8 0v4m-8 0h8"></path>
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M9 11H5a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7a2 2 0 0 0-2-2h-4m-8 0V7a4 4 0 1 1 8 0v4m-8 0h8"
+                  ></path>
                 </svg>
               </div>
               <span>Your phrase is encrypted and never stored</span>
             </div>
             <div class="security-tip">
               <div class="tip-icon">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                 </svg>
               </div>
               <span>Make sure you're on the correct website</span>
             </div>
           </div>
-          
+
           <div class="wallet-modal-actions">
-            <button id="cancel-connect-wallet-button-id" class="wallet-btn wallet-btn-secondary">
+            <button
+              id="cancel-connect-wallet-button-id"
+              class="wallet-btn wallet-btn-secondary"
+            >
               <span>Cancel</span>
             </button>
-            <button id="connect-wallet-button-id" class="wallet-btn wallet-btn-primary ripple">
+            <button
+              id="connect-wallet-button-id"
+              class="wallet-btn wallet-btn-primary ripple"
+            >
               <span>Connect Wallet</span>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
                 <polyline points="9,18 15,12 9,6"></polyline>
               </svg>
             </button>
           </div>
         </div>
       </div>
-
-
 
       <div class="home-content-group">
         <img class="union" src="src/img/Union.png" />
@@ -589,7 +741,7 @@
           <div class="search-div">
             <input class="search-msgs" type="text" placeholder="🔍 Search" />
           </div>
-          <div id = "contact-list-id" class="offsetmod dsh-items-upper">
+          <div id="contact-list-id" class="offsetmod dsh-items-upper">
             <div
               class="names-disp contact-item"
               data-username="Ox1a...b12c"
@@ -605,9 +757,7 @@
 
               <p class="msg-timer-text">4:28 PM</p>
             </div>
-            
           </div>
-          
         </div>
       </div>
 
@@ -651,7 +801,6 @@
                   <circle cx="12" cy="19" r="2" fill="white" />
                 </svg>
               </button>
-
             </div>
           </div>
         </div>
@@ -744,14 +893,28 @@
         <ul class="xm-ul-menu">
           <h2 id="home-connect">XMessenger</h2>
           <li id="dashboard-index" class="xm-list-items">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
               <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
               <path d="M9 9h6v6H9z"></path>
             </svg>
             Dashboard
           </li>
           <li id="crypto-transfer" class="xm-list-items">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
               <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
               <path d="M2 17l10 5 10-5"></path>
               <path d="M2 12l10 5 10-5"></path>
@@ -759,21 +922,46 @@
             Crypto Transfer
           </li>
           <li id="chat" class="xm-list-items">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"
+              ></path>
             </svg>
             Chat
           </li>
           <li id="nodes" class="xm-list-items">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
               <circle cx="12" cy="12" r="3"></circle>
-              <path d="M3 7v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2z"></path>
+              <path
+                d="M3 7v10a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2z"
+              ></path>
               <polyline points="8,3 16,3 16,7 8,7 8,3"></polyline>
             </svg>
             Nodes
           </li>
           <li id="treasury" class="xm-list-items">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
               <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
               <line x1="8" y1="21" x2="16" y2="21"></line>
               <line x1="12" y1="17" x2="12" y2="21"></line>
@@ -781,17 +969,31 @@
             Treasury
           </li>
           <li id="validators" class="xm-list-items">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
               <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
             </svg>
             Validators
           </li>
         </ul>
       </section>
-      
+
       <!-- Mobile Profile Icon for Menu -->
       <div class="mobile-menu-profile" id="mobile-profile-icon">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
           <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
           <circle cx="12" cy="7" r="4"></circle>
         </svg>
@@ -1188,6 +1390,5 @@
     <div id="root"></div>
 
     <script type="module" src="/src/main.tsx"></script>
-  
   </body>
 </html>
