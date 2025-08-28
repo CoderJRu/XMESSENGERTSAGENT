@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { isConnected, data, updateUserData } from "./connectWallet";
 import { getBalances } from "../utils/balances";
 import { get } from "http";
+import { ConnectedEthAddress } from "../App";
 
 // Profile state
 let currentProfileImage = "src/img/person-img.png";
@@ -292,7 +293,17 @@ function showProfileSettings(): void {
   profilePopup.style.display = "flex";
 
   // Render the React component
-  root.render(<ProfileSettings onClose={hideProfile} />);
+  root.render(
+    <ProfileSettings 
+      address={ConnectedEthAddress} 
+      _data={data} 
+      login={() => {
+        console.log("🔵 Dispatching privy-login event from profile");
+        window.dispatchEvent(new Event("privy-login"));
+      }} 
+      onClose={hideProfile} 
+    />
+  );
 
   // Add backdrop click handler
   profilePopup.onclick = (event) => {
