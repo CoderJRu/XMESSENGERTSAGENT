@@ -1,13 +1,14 @@
-import React, { useState, useRef } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { createRoot } from "react-dom/client";
 import { isConnected, data, updateUserData } from "./connectWallet";
 import { getBalances } from "../utils/balances";
 import { getConnectedEthAddress } from "../App.tsx";
 import { get } from "http";
+
 // Profile state
 let currentProfileImage = "src/img/person-img.png";
 let currentUsername = "";
-
+export var currentConnectedAddress: string =""; 
 // Create the profile popup container
 const profilePopup = document.createElement("div");
 profilePopup.className = "profile-popup";
@@ -18,7 +19,7 @@ const root = createRoot(profilePopup);
 
 // React Profile Settings Component
 interface ProfileSettingsProps {
-  address?: string;
+  address: string;
   _data: any; // whatever you already use
   login: () => void; // add login from privy
   onClose: () => void;
@@ -36,6 +37,11 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
   const fileInputRef = useRef<HTMLInputElement>(null);
   console.log("OPened Profile Settings and connected eth address is ", address);
   // Image upload functionality
+  // log whenever address updates
+  useEffect(() => {
+    console.log("🔑 ProfileSettings received address:", address);
+  }, [address]);
+
   const handleImageUpload = (file: File): void => {
     // Validate file size (3MB max)
     const maxSize = 3 * 1024 * 1024; // 3MB in bytes
