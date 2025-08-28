@@ -2,12 +2,12 @@ import React, { useEffect, useState, useRef } from "react";
 import { createRoot } from "react-dom/client";
 import { isConnected, data, updateUserData } from "./connectWallet";
 import { getBalances } from "../utils/balances";
-import { usePrivy, useWallets, PrivyProvider } from "@privy-io/react-auth";
+import { getConnectedEthAddress } from "../walletstore";
 
 // Profile state
 let currentProfileImage = "src/img/person-img.png";
 let currentUsername = "";
-var currentConnectedAddress: string = ""; 
+export var currentConnectedAddress: string = ""; 
 // Create the profile popup container
 const profilePopup = document.createElement("div");
 profilePopup.className = "profile-popup";
@@ -19,62 +19,31 @@ const root = createRoot(profilePopup);
 // React Profile Settings Component
 interface ProfileSettingsProps {
   onClose: () => void;
+  authenticated?: boolean;
+  ready?: boolean;
+  address?: string | null;
+  onLogin?: () => void;
+  onLogout?: () => void;
 }
 
-const ProfileSettings: React.FC<ProfileSettingsProps> = ({ onClose }) => {
-  // Privy authentication hooks
-  const { user, login, logout, ready, authenticated } = usePrivy();
-  const { wallets } = useWallets();
-  
-  // Get connected wallet address - use state to ensure consistent renders
-  const [address, setAddress] = useState<string | null>(null);
+const ProfileSettings: React.FC<ProfileSettingsProps> = ({ 
+  onClose, 
+  authenticated = false, 
+  ready = false, 
+  address: propAddress, 
+  onLogin, 
+  onLogout 
+}) => {
+  // Use address from props or global store
+  const address = propAddress || getConnectedEthAddress();
   const [profileImage, setProfileImage] = useState(currentProfileImage);
   const [username, setUsername] = useState(currentUsername);
   const [copying, setCopying] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
   console.log("Opened Profile Settings");
-  console.log("Privy ready:", ready, "authenticated:", authenticated, "user:", user);
-  console.log("Wallets count:", wallets.length, "wallets:", wallets);
-  
-  // Update address when wallets change
-  useEffect(() => {
-    console.log("🔍 All wallets:", wallets);
-    console.log("🔍 Wallets details:", wallets.map(w => ({ 
-      address: w.address, 
-      walletClient: w.walletClient,
-      walletClientType: w.walletClientType,
-      connectorType: w.connectorType
-    })));
-    
-    // Find the linked account wallet (usually the external wallet like MetaMask)
-    const linkedWallet = wallets.find(wallet => 
-      wallet.connectorType === 'injected' || 
-      wallet.walletClientType === 'metamask' ||
-      wallet.walletClientType === 'injected'
-    );
-    
-    // Fallback to embedded wallet if no linked wallet found
-    const activeWallet = linkedWallet || wallets.find(wallet => 
-      wallet.walletClientType === 'privy'
-    ) || wallets[0];
-    
-    const walletAddress = activeWallet?.address || null;
-    
-    console.log("🔑 Selected wallet:", activeWallet);
-    console.log("🔑 Wallet address from useEffect:", walletAddress);
-    console.log("🔑 Current address state:", address);
-    
-    if (walletAddress && walletAddress !== address) {
-      setAddress(walletAddress);
-      currentConnectedAddress = walletAddress;
-      console.log("✅ Address updated to:", walletAddress);
-    } else if (!walletAddress && address) {
-      setAddress(null);
-      currentConnectedAddress = "";
-      console.log("❌ No wallet address available, clearing");
-    }
-  }, [wallets, authenticated, address]);
+  console.log("Props - ready:", ready, "authenticated:", authenticated, "address:", address);
+  console.log("Global store address:", getConnectedEthAddress());
 
   const handleImageUpload = (file: File): void => {
     // Validate file size (3MB max)
@@ -263,7 +232,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ onClose }) => {
                   copyWalletAddress(address, "ethereum");
                 } else {
                   console.log("🔵 Starting Privy login...");
-                  login();
+                  onLogin?.();
                 }
               }}
               style={{
@@ -311,7 +280,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ onClose }) => {
             <button
               className="profile-btn profile-btn-warning"
               onClick={() => {
-                logout();
+                onLogout?.();
                 console.log("🔴 User logged out");
                 onClose();
               }}
@@ -359,21 +328,27 @@ function showProfileSettings(): void {
   // Show the popup container
   profilePopup.style.display = "flex";
 
-  // Render the React component wrapped with PrivyProvider
+  // Get current auth state from global store  
+  const currentAddress = getConnectedEthAddress();
+  
+  // Render the React component with auth data from global store
   root.render(
-    <PrivyProvider
-      appId={import.meta.env.VITE_PRIVY_APP_ID!}
-      config={{
-        appearance: {
-          theme: 'dark',
-          accentColor: '#9945FF',
-          logo: 'https://pbs.twimg.com/profile_banners/1684221890242412545/1708592912/1080x360',
-        },
-        embeddedWallets: { createOnLogin: "all-users" },
+    <ProfileSettings 
+      onClose={hideProfile}
+      authenticated={!!currentAddress}
+      ready={true}
+      address={currentAddress}
+      onLogin={() => {
+        console.log("Login requested from profile");
+        // Could dispatch event or call global auth function
+        window.dispatchEvent(new Event("privy-login"));
       }}
-    >
-      <ProfileSettings onClose={hideProfile} />
-    </PrivyProvider>
+      onLogout={() => {
+        console.log("Logout requested from profile");
+        // Could dispatch event or call global auth function  
+        window.dispatchEvent(new Event("privy-logout"));
+      }}
+    />
   );
 
   // Add backdrop click handler

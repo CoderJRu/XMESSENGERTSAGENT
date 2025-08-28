@@ -1,5 +1,5 @@
 import { isConnected } from "./connectWallet";
-
+import { getConnectedEthAddress } from "../walletstore.tsx";
 let currentWindowIndex = 0;
 
 // Helper function to safely get an element by ID
@@ -18,6 +18,10 @@ getElement("home-connect").addEventListener("click", () => {
 
 getElement("dashboard-index").addEventListener("click", () => {
   if (currentWindowIndex !== 1) {
+    console.log(
+      "currentConnectedAddress from nav is ",
+      getConnectedEthAddress(),
+    );
     currentWindowIndex = 1;
     refresh();
   }
@@ -66,7 +70,7 @@ function refresh(): void {
     ".chat-plane",
     ".nodes-plane",
     ".treasury-plane",
-    ".validator-plane"
+    ".validator-plane",
   ];
 
   sections.forEach((selector, index) => {
@@ -99,22 +103,29 @@ function handleToggleSwitch(isChecked: boolean): void {
   }
 }
 
-(getElement("swap-send-toggle") as HTMLInputElement).addEventListener("change", function () {
-  handleToggleSwitch(this.checked);
-});
+(getElement("swap-send-toggle") as HTMLInputElement).addEventListener(
+  "change",
+  function () {
+    handleToggleSwitch(this.checked);
+  },
+);
 
-(getElement("swap-send-toggle-send") as HTMLInputElement).addEventListener("change", function () {
-  handleToggleSwitch(this.checked);
-});
+(getElement("swap-send-toggle-send") as HTMLInputElement).addEventListener(
+  "change",
+  function () {
+    handleToggleSwitch(this.checked);
+  },
+);
 
 // Coin list toggle
 getElement("coin-list-id").addEventListener("click", () => {
   getElement("coin-list-id").style.display = "none";
 });
 
-document.querySelector(".swap-div-height-mod")?.addEventListener("click", () => {
-  getElement("coin-list-id").style.display = "flex";
-});
+document
+  .querySelector(".swap-div-height-mod")
+  ?.addEventListener("click", () => {
+    getElement("coin-list-id").style.display = "flex";
+  });
 
 refresh();
-
