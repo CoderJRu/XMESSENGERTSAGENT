@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from "react";
 import { createRoot } from "react-dom/client";
 import { isConnected, data, updateUserData } from "./connectWallet";
 import { getBalances } from "../utils/balances";
-import { getConnectedEthAddress } from "../App.tsx";
 import { get } from "http";
 
 // Profile state
@@ -203,13 +202,13 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
           </div>
           <div className="wallet-address-container">
             <div className="wallet-address">
-              {getConnectedEthAddress() || "Not Connected"}
+              {address || "Not Connected"}
             </div>
             <button
               className="copy-wallet-btn eth-connect-btn"
               onClick={() => {
-                if (data.eth_pubKey) {
-                  copyWalletAddress(getConnectedEthAddress(), "ethereum");
+                if (address) {
+                  copyWalletAddress(address, "ethereum");
                 } else {
                   console.log("🔵 Dispatching privy-login event");
                   window.dispatchEvent(new Event("privy-login"));
@@ -217,7 +216,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
                 }
               }}
               style={{
-                background: getConnectedEthAddress()
+                background: address
                   ? copying === "ethereum"
                     ? "rgba(76, 175, 80, 0.4)"
                     : "rgba(76, 175, 80, 0.2)"
@@ -227,7 +226,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
                 gap: "6px",
               }}
             >
-              {data.eth_pubKey ? (
+              {address ? (
                 copying === "ethereum" ? (
                   "Copied!"
                 ) : (
