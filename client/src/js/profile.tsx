@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { createRoot } from "react-dom/client";
 import { isConnected, data, updateUserData } from "./connectWallet";
 import { getBalances } from "../utils/balances";
-import { usePrivy, useWallets } from "@privy-io/react-auth";
+import { usePrivy, useWallets, PrivyProvider } from "@privy-io/react-auth";
 
 // Profile state
 let currentProfileImage = "src/img/person-img.png";
@@ -327,8 +327,22 @@ function showProfileSettings(): void {
   // Show the popup container
   profilePopup.style.display = "flex";
 
-  // Render the React component
-  root.render(<ProfileSettings onClose={hideProfile} />);
+  // Render the React component wrapped with PrivyProvider
+  root.render(
+    <PrivyProvider
+      appId={import.meta.env.VITE_PRIVY_APP_ID!}
+      config={{
+        appearance: {
+          theme: 'dark',
+          accentColor: '#9945FF',
+          logo: 'https://pbs.twimg.com/profile_banners/1684221890242412545/1708592912/1080x360',
+        },
+        embeddedWallets: { createOnLogin: "all-users" },
+      }}
+    >
+      <ProfileSettings onClose={hideProfile} />
+    </PrivyProvider>
+  );
 
   // Add backdrop click handler
   profilePopup.onclick = (event) => {
