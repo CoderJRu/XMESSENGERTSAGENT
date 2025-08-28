@@ -4,6 +4,7 @@ import { isConnected, data, updateUserData } from "./connectWallet";
 import { getBalances } from "../utils/balances";
 import { get } from "http";
 import { ConnectedEthAddress } from "../App";
+import { useWallets, usePrivy } from "@privy-io/react-auth";
 
 // Profile state
 let currentProfileImage = "src/img/person-img.png";
@@ -35,12 +36,19 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
   const [username, setUsername] = useState(currentUsername);
   const [copying, setCopying] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  console.log("OPened Profile Settings and connected eth address is ", address);
-  // Image upload functionality
-  // log whenever address updates
-  useEffect(() => {
-    console.log("🔑 ProfileSettings received address:", address);
-  }, [address]);
+  
+  // Get live wallet address from Privy
+  const { wallets } = useWallets();
+  const { authenticated } = usePrivy();
+  const liveAddress = wallets.length > 0 && authenticated ? wallets[0].address : null;
+  
+  console.log("🔍 ProfileSettings - passed address:", address);
+  console.log("🔍 ProfileSettings - live address:", liveAddress);
+  console.log("🔍 ProfileSettings - authenticated:", authenticated);
+  console.log("🔍 ProfileSettings - wallets count:", wallets.length);
+  
+  // Use live address if available, otherwise fall back to passed address
+  const currentAddress = liveAddress || address;
 
   const handleImageUpload = (file: File): void => {
     // Validate file size (3MB max)
@@ -203,13 +211,13 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
           </div>
           <div className="wallet-address-container">
             <div className="wallet-address">
-              {address || "Not Connected"}
+              {currentAddress || "Not Connected"}
             </div>
             <button
               className="copy-wallet-btn eth-connect-btn"
               onClick={() => {
-                if (address) {
-                  copyWalletAddress(address, "ethereum");
+                if (currentAddress) {
+                  copyWalletAddress(currentAddress, "ethereum");
                 } else {
                   console.log("🔵 Dispatching privy-login event");
                   window.dispatchEvent(new Event("privy-login"));
@@ -217,7 +225,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
                 }
               }}
               style={{
-                background: address
+                background: currentAddress
                   ? copying === "ethereum"
                     ? "rgba(76, 175, 80, 0.4)"
                     : "rgba(76, 175, 80, 0.2)"
@@ -227,7 +235,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
                 gap: "6px",
               }}
             >
-              {address ? (
+              {currentAddress ? (
                 copying === "ethereum" ? (
                   "Copied!"
                 ) : (
