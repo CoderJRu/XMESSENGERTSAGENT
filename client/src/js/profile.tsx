@@ -39,18 +39,42 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ onClose }) => {
   
   // Update address when wallets change
   useEffect(() => {
-    const walletAddress = wallets.length > 0 ? wallets[0].address : null;
+    console.log("🔍 All wallets:", wallets);
+    console.log("🔍 Wallets details:", wallets.map(w => ({ 
+      address: w.address, 
+      walletClient: w.walletClient,
+      walletClientType: w.walletClientType,
+      connectorType: w.connectorType
+    })));
+    
+    // Find the linked account wallet (usually the external wallet like MetaMask)
+    const linkedWallet = wallets.find(wallet => 
+      wallet.connectorType === 'injected' || 
+      wallet.walletClientType === 'metamask' ||
+      wallet.walletClientType === 'injected'
+    );
+    
+    // Fallback to embedded wallet if no linked wallet found
+    const activeWallet = linkedWallet || wallets.find(wallet => 
+      wallet.walletClientType === 'privy'
+    ) || wallets[0];
+    
+    const walletAddress = activeWallet?.address || null;
+    
+    console.log("🔑 Selected wallet:", activeWallet);
     console.log("🔑 Wallet address from useEffect:", walletAddress);
+    console.log("🔑 Current address state:", address);
+    
     if (walletAddress && walletAddress !== address) {
       setAddress(walletAddress);
       currentConnectedAddress = walletAddress;
       console.log("✅ Address updated to:", walletAddress);
-    } else if (!walletAddress) {
+    } else if (!walletAddress && address) {
       setAddress(null);
       currentConnectedAddress = "";
-      console.log("❌ No wallet address available");
+      console.log("❌ No wallet address available, clearing");
     }
-  }, [wallets, authenticated]);
+  }, [wallets, authenticated, address]);
 
   const handleImageUpload = (file: File): void => {
     // Validate file size (3MB max)
