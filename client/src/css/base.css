@@ -3616,8 +3616,10 @@ input:checked+.toggle-slider:before {
 @media (max-width: 768px) {
   .greyedBackground {
     padding-bottom: 120px; /* Extra space for mobile nav buttons */
-    top: 0;
-    height: 100vh;
+    top: 10px;
+    height: calc(100vh - 20px);
+    margin: 10px;
+    border-radius: 15px;
   }
 }
 
@@ -3652,10 +3654,11 @@ body:has(.greyedBackground:not([hidden])) .hamburger {
 @media (max-width: 768px) {
   .create-wallet-section {
     padding-bottom: 120px; /* Extra space for mobile nav buttons */
-    height: calc(100vh - 140px);
+    height: calc(100vh - 60px);
     width: 95%;
-    margin: 20px auto;
-    top: 0;
+    margin: 30px auto;
+    top: 10px;
+    border-radius: 15px;
   }
 }
 
