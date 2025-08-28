@@ -26,23 +26,31 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({ onClose }) => {
   const { user, login, logout, ready, authenticated } = usePrivy();
   const { wallets } = useWallets();
   
-  // Get connected wallet address
-  const address = wallets.length > 0 ? wallets[0].address : null;
+  // Get connected wallet address - use state to ensure consistent renders
+  const [address, setAddress] = useState<string | null>(null);
   const [profileImage, setProfileImage] = useState(currentProfileImage);
   const [username, setUsername] = useState(currentUsername);
   const [copying, setCopying] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   
-  console.log("Opened Profile Settings and connected eth address is ", address);
+  console.log("Opened Profile Settings");
   console.log("Privy ready:", ready, "authenticated:", authenticated, "user:", user);
+  console.log("Wallets count:", wallets.length, "wallets:", wallets);
   
-  // Update global connected address
+  // Update address when wallets change
   useEffect(() => {
-    if (address) {
-      console.log("🔑 ProfileSettings address updated:", address);
-      currentConnectedAddress = address;
+    const walletAddress = wallets.length > 0 ? wallets[0].address : null;
+    console.log("🔑 Wallet address from useEffect:", walletAddress);
+    if (walletAddress && walletAddress !== address) {
+      setAddress(walletAddress);
+      currentConnectedAddress = walletAddress;
+      console.log("✅ Address updated to:", walletAddress);
+    } else if (!walletAddress) {
+      setAddress(null);
+      currentConnectedAddress = "";
+      console.log("❌ No wallet address available");
     }
-  }, [address]);
+  }, [wallets, authenticated]);
 
   const handleImageUpload = (file: File): void => {
     // Validate file size (3MB max)
