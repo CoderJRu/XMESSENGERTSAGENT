@@ -1,11 +1,11 @@
 // profileImage.ts
 import { supabase } from "../js/components/request.tsx";
 import imageCompression from "browser-image-compression";
-
+const codeMonkeysBucket = import.meta.env.VITE_BUCKET_ID;
 export const updateProfileImage = async (
   file: File,
   userId: string,
-  bucket: string = "REX333", // default bucket
+  bucket: string = codeMonkeysBucket, // default bucket
 ) => {
   try {
     let uploadFile = file;
@@ -73,11 +73,10 @@ export const updateProfileImage = async (
   }
 };
 
-
 // Convert <img> src → File
 export const imageElementToFile = async (
   imgEl: HTMLImageElement,
-  fileName: string = "profile.jpg"
+  fileName: string = "profile.jpg",
 ): Promise<File> => {
   const response = await fetch(imgEl.src); // fetch the data behind the image src
   const blob = await response.blob(); // turn into Blob
@@ -85,7 +84,6 @@ export const imageElementToFile = async (
 
   return new File([blob], `${fileName}.${ext}`, { type: blob.type });
 };
-
 
 /*
 const imgEl = document.getElementById("myProfileImage") as HTMLImageElement;
