@@ -3,11 +3,15 @@ import { createRoot } from "react-dom/client";
 import { isConnected, data, updateUserData } from "./connectWallet";
 import { getBalances } from "../utils/balances";
 import { getConnectedEthAddress } from "../walletstore";
-
+import {
+  updateProfileImage,
+  imageElementToFile,
+} from "../utils/profileImage.tsx";
+import * as req from "./components/request.tsx";
 // Profile state
 let currentProfileImage = "src/img/person-img.png";
 let currentUsername = "";
-export var currentConnectedAddress: string = ""; 
+export var currentConnectedAddress: string = "";
 // Create the profile popup container
 const profilePopup = document.createElement("div");
 profilePopup.className = "profile-popup";
@@ -26,13 +30,38 @@ interface ProfileSettingsProps {
   onLogout?: () => void;
 }
 
-const ProfileSettings: React.FC<ProfileSettingsProps> = ({ 
-  onClose, 
-  authenticated = false, 
-  ready = false, 
-  address: propAddress, 
-  onLogin, 
-  onLogout 
+const saveProfileToCloud = async (username: string, pubKey: any) => {
+  console.log("saving... profile to cloud");
+  const imgEl = document.getElementById("myProfileImage") as HTMLImageElement;
+
+  if (imgEl) {
+    const file = await imageElementToFile(imgEl, "profile");
+    const newUrl = await updateProfileImage(file, pubKey, "REX333");
+    console.log("Updated avatar URL:", newUrl);
+  }
+  //
+  /* 
+  {"id":80166496155910,"username":"Alexis Cherry_9433","publicKey":"da451e47ef26344192913ca155cf5a5f459b770f831abf01ef3197063eb76583"}
+  */
+  let fetchData = await req.FetchDb("user", "api", pubKey);
+  let data: any = {};
+  if (fetchData.length > 0) {
+    data = fetchData[0].data;
+  }
+  data.username = username;
+  await req.UpdateDbData("user", data, "api", pubKey);
+  //
+  console.log("successfully saved profile to cloud");
+  //
+};
+
+const ProfileSettings: React.FC<ProfileSettingsProps> = ({
+  onClose,
+  authenticated = false,
+  ready = false,
+  address: propAddress,
+  onLogin,
+  onLogout,
 }) => {
   // Use address from props or global store
   const address = propAddress || getConnectedEthAddress();
@@ -40,9 +69,16 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
   const [username, setUsername] = useState(currentUsername);
   const [copying, setCopying] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  
+
   console.log("Opened Profile Settings");
-  console.log("Props - ready:", ready, "authenticated:", authenticated, "address:", address);
+  console.log(
+    "Props - ready:",
+    ready,
+    "authenticated:",
+    authenticated,
+    "address:",
+    address,
+  );
   console.log("Global store address:", getConnectedEthAddress());
 
   const handleImageUpload = (file: File): void => {
@@ -102,12 +138,14 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
         alert("Failed to copy address");
       });
   };
-
+  // here lies the the secret of david jones locker ........................................................................................................................................
   const saveProfile = (): void => {
     const newUsername = username.trim();
     if (newUsername && newUsername !== currentUsername) {
       currentUsername = newUsername;
       updateUserData(newUsername, data.publicKey);
+      //lets call the cloud Update
+      saveProfileToCloud(newUsername, data.publicKey);
     }
     onClose();
   };
@@ -125,16 +163,16 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
         <div className="auth-status">
           {ready ? (
             authenticated ? (
-              <span style={{color: "#4ade80", fontSize: "12px"}}>
-                ✓ Connected {address ? `(${address.slice(0,6)}...)` : ""}
+              <span style={{ color: "#4ade80", fontSize: "12px" }}>
+                ✓ Connected {address ? `(${address.slice(0, 6)}...)` : ""}
               </span>
             ) : (
-              <span style={{color: "#f59e0b", fontSize: "12px"}}>
+              <span style={{ color: "#f59e0b", fontSize: "12px" }}>
                 ⚠ Not authenticated
               </span>
             )
           ) : (
-            <span style={{color: "#6b7280", fontSize: "12px"}}>
+            <span style={{ color: "#6b7280", fontSize: "12px" }}>
               Loading...
             </span>
           )}
@@ -223,9 +261,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
               Ethereum Wallet
             </div>
             <div className="wallet-address-container">
-              <div className="wallet-address">
-                {address || "Not Connected"}
-              </div>
+              <div className="wallet-address">{address || "Not Connected"}</div>
               <button
                 className="copy-wallet-btn eth-connect-btn"
                 onClick={() => {
@@ -288,7 +324,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
                 style={{
                   background: "rgba(239, 68, 68, 0.2)",
                   color: "#ef4444",
-                  border: "1px solid rgba(239, 68, 68, 0.3)"
+                  border: "1px solid rgba(239, 68, 68, 0.3)",
                 }}
               >
                 Logout
@@ -330,12 +366,12 @@ function showProfileSettings(): void {
   // Show the popup container
   profilePopup.style.display = "flex";
 
-  // Get current auth state from global store  
+  // Get current auth state from global store
   const currentAddress = getConnectedEthAddress();
-  
+
   // Render the React component with auth data from global store
   root.render(
-    <ProfileSettings 
+    <ProfileSettings
       onClose={hideProfile}
       authenticated={!!currentAddress}
       ready={true}
@@ -347,10 +383,10 @@ function showProfileSettings(): void {
       }}
       onLogout={() => {
         console.log("Logout requested from profile");
-        // Could dispatch event or call global auth function  
+        // Could dispatch event or call global auth function
         window.dispatchEvent(new Event("privy-logout"));
       }}
-    />
+    />,
   );
 
   // Add backdrop click handler

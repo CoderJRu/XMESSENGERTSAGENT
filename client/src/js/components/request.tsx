@@ -17,7 +17,7 @@ import { publicKey } from "../connectWallet.tsx";
 const supaKey: any = import.meta.env.VITE_SUPABASE_KEY;
 export var demos: any = null;
 const supaUrl: any = import.meta.env.VITE_SUPABASE_URL;
-const supabase: any = createClient(supaUrl, supaKey);
+export const supabase: any = createClient(supaUrl, supaKey);
 
 export const InsertDb = async (newData: any, pubKey: any) => {
   try {
@@ -34,7 +34,7 @@ const connectMe = async () => {
 // connects the app to demos nodes :)
 connectMe();
 
-const UpdateDb = async (
+export const UpdateDbData = async (
   table: any,
   data: any,
   target: any,
@@ -59,7 +59,7 @@ const FetchAll = async (table: any, row: any) => {
   }
 };
 
-const FetchDb = async (table: any, target: any, targetValue: any) => {
+export const FetchDb = async (table: any, target: any, targetValue: any) => {
   const { data: _data } = await supabase
     .from(table)
     .select()
