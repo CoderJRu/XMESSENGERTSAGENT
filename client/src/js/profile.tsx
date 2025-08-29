@@ -16,7 +16,8 @@ export var currentConnectedAddress: string = "";
 const profilePopup = document.createElement("div");
 profilePopup.className = "profile-popup";
 document.body.appendChild(profilePopup);
-
+//d7bed83c-44a0-4a4f-925f-efc384ea1e50
+const bucketapi = import.meta.env.VITE_BUCKETAPI_ID ;
 // Create React root for the popup
 const root = createRoot(profilePopup);
 
@@ -32,22 +33,18 @@ interface ProfileSettingsProps {
 
 const saveProfileToCloud = async (username: string, pubKey: any) => {
   console.log("saving... profile to cloud");
-  const imgEl = document.getElementById("myProfileImage") as HTMLImageElement;
 
-  if (imgEl) {
-    const file = await imageElementToFile(imgEl, "profile");
-    const newUrl = await updateProfileImage(file, pubKey, "REX333");
-    console.log("Updated avatar URL:", newUrl);
-  }
   //
   /* 
   {"id":80166496155910,"username":"Alexis Cherry_9433","publicKey":"da451e47ef26344192913ca155cf5a5f459b770f831abf01ef3197063eb76583"}
   */
   let fetchData = await req.FetchDb("user", "api", pubKey);
   let data: any = {};
+
   if (fetchData.length > 0) {
     data = fetchData[0].data;
   }
+  console.log("fetched data is ding ding ding ,", data);
   data.username = username;
   await req.UpdateDbData("user", data, "api", pubKey);
   //
@@ -118,6 +115,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
       img.src = e.target?.result as string;
     };
     reader.readAsDataURL(file);
+    updateProfileImage(file, bucketapi, "REX333");
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
