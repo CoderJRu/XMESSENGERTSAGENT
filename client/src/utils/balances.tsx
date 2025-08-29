@@ -1,5 +1,6 @@
 import { ethers } from "ethers";
 
+
 const ETH_RPC = "https://mainnet.infura.io/v3/f73cf42608a44a429c2c3d7e51563084"; // <-- replace with your provider (Alchemy/Infura/Ankr)
 
 const provider = new ethers.JsonRpcProvider(ETH_RPC);

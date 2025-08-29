@@ -8,7 +8,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    
+
     <link rel="icon" type="image/png" href="src/img/mask.png" />
     <title>Xmessenger</title>
     <link rel="stylesheet" href="src/css/base.css" />
@@ -408,9 +408,9 @@
         <hr class="hori" />
         <div class="dash-parent-div1">
           <p class="rewards-para">Rewards</p>
-          <p class="rewards-val-para">$10k</p>
+          <p id="rewards-val-id" class="rewards-val-para">0</p>
           <div class="pending-rewards-div">
-            <p class="pending-rewards-para">Pending rewards • $500</p>
+            <p class="pending-rewards-para">Pending rewards • $0.00</p>
             <p class="claim-para">Claim</p>
           </div>
         </div>
@@ -425,15 +425,15 @@
               <div class="dashboard-stats">
                 <div class="stat-item">
                   <p class="stat-label">Total Transactions:</p>
-                  <p class="stat-value">2.49k</p>
+                  <p id="total-tx-id" class="stat-value">0</p>
                 </div>
                 <div class="stat-item">
                   <p class="stat-label">24hr Volume:</p>
-                  <p class="stat-value">$19k</p>
+                  <p id="24hrs-vol-id" class="stat-value">0</p>
                 </div>
                 <div class="stat-item">
                   <p class="stat-label">Total Amount:</p>
-                  <p class="stat-value">$10k</p>
+                  <p id="total-amt-id" class="stat-value">0</p>
                 </div>
               </div>
             </div>
@@ -447,15 +447,15 @@
               <div class="dashboard-stats">
                 <div class="stat-item">
                   <p class="stat-label">Total Transactions:</p>
-                  <p class="stat-value">2.48k</p>
+                  <p id="total-swap-tx-id" class="stat-value">0</p>
                 </div>
                 <div class="stat-item">
                   <p class="stat-label">24hr Volume:</p>
-                  <p class="stat-value">$19k</p>
+                  <p id="24hrs-swap-id" class="stat-value">$0</p>
                 </div>
                 <div class="stat-item">
                   <p class="stat-label">Total Amount:</p>
-                  <p class="stat-value">$10k</p>
+                  <p id="total-swap-amt-id" class="stat-value">0</p>
                 </div>
               </div>
             </div>
@@ -469,7 +469,7 @@
             <!-- Tokens Section -->
             <div class="dual-section-left">
               <p class="rewards-para">Total X Tokens Owned</p>
-              <p class="rewards-val-para">13.5k</p>
+              <p id="X-tokenowned-id" class="rewards-val-para">0.00</p>
             </div>
 
             <!-- Vertical Divider -->
@@ -478,7 +478,7 @@
             <!-- NFTs Section -->
             <div class="dual-section-right">
               <p class="rewards-para">Total NFTs Owned</p>
-              <p class="rewards-val-para">50</p>
+              <p id="total-xnftowned-id" class="rewards-val-para">0</p>
             </div>
           </div>
         </div>
@@ -741,7 +741,10 @@
           <div class="search-div">
             <input class="search-msgs" type="text" placeholder="🔍 Search" />
           </div>
-          <div id="contact-list-id" class="search-result-scroller offsetmod dsh-items-upper">
+          <div
+            id="contact-list-id"
+            class="search-result-scroller offsetmod dsh-items-upper"
+          >
             <div
               class="names-disp contact-item"
               data-username="Ox1a...b12c"
@@ -757,9 +760,6 @@
 
               <p class="msg-timer-text">4:28 PM</p>
             </div>
-
-          
-
 
             <!--here lies david jones locker-->
           </div>
@@ -796,7 +796,6 @@
               <h3 class="chat-username" id="chat-username">Username</h3>
               <p class="chat-last-seen" id="chat-last-seen">Last seen</p>
             </div>
-            
           </div>
           <div class="chat-header-right">
             <div class="chat-menu-dropdown">
@@ -1386,7 +1385,7 @@
     <script type="module" src="/src/js/profile.tsx"></script>
     <script type="module" src="/src/js/chat.tsx"></script>
     <script type="module" src="/src/js/search.tsx"></script>
-
+    <script type="module" src ="/src/utils/dashBoardDisplay.tsx"></script>
     <!-- This is a replit script which adds a banner on the top of the page when opened in development mode outside the replit environment -->
     <script
       type="text/javascript"
