@@ -1916,6 +1916,7 @@ textarea:focus {
   gap: 0;
   background: rgba(14, 16, 19, 1);
   padding: 0 30px;
+ 
 }
 
 .contact-item {
@@ -2003,7 +2004,7 @@ textarea:focus {
 .search-div {
   text-align: center;
   width: 100%;
-  padding: 20px 30px;
+  padding: 20px 45px;
   height: auto;
   display: flex;
   flex-direction: column;
@@ -2013,7 +2014,24 @@ textarea:focus {
   gap: 0;
   background: rgba(14, 16, 19, 1);
 }
+.search-result-scroller{
+ 
+  position: relative;
+  height: calc(100vh - 150px); /* or your flex layout */
+  overflow-y: auto;
+  overflow-x: hidden;
 
+  padding-bottom: 60px; /* space so last item isn’t clipped */
+  box-sizing: border-box;
+
+  -webkit-overflow-scrolling: touch; /* smooth on iOS */
+}
+@media(max-width: 768px) {
+  .search-div {
+   position : relative;
+    top:-15px;
+  }
+}
 .search-msgs {
   width: 90%;
   height: 48px;
@@ -4243,15 +4261,15 @@ body:has(.profile-popup.show) .hamburger {
   text-align: center;
   overflow-y: auto;
   overflow-x: hidden;
-  margin: 0px auto;
+  margin: -150px auto;
+  padding-top: 210px;
   position: fixed;
   align-items: center;
   justify-content: center;
   right: 0;
   left: 0;
-  top: 100px;
+  top: 210px;
   bottom: 0;
-  margin: auto;
   background: rgba(14, 16, 19, 1);
   display: flex;
   align-items: center;
@@ -4580,6 +4598,7 @@ body:has(.profile-popup.show) .hamburger {
   .nodes-chart-section {
     width: 90%;
     margin: 20px auto;
+    padding-bottom: 65px;
   }
 
   .nodes-section-title {
