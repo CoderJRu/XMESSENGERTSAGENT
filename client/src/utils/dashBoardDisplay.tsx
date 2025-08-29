@@ -21,14 +21,19 @@ mouseUpdate(
   },
   10000,
   10,
-); // fires every 500ms at most, after moving ≥10px
+); // fires every 10secs at most, after moving ≥10px
 
 const refreshBalances = async () => {
   const ethAddress = getConnectedEthAddress();
   if (ethAddress) {
     const allBalanaces = await balance.getBalances(ethAddress);
     console.log("all balaances are :", allBalanaces);
+    total_Xnft_owned.innerHTML = allBalanaces.nftBalance;
+    total_Xtokens_owned.innerHTML = allBalanaces.tokenBalance;
   } else {
+    console.log("No Connected Address is defined Yet");
+    total_Xnft_owned.innerHTML = "0";
+    total_Xnft_owned.innerHTML = "0.0";
     return;
   }
 };
