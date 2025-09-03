@@ -116,7 +116,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
       img.src = e.target?.result as string;
     };
     reader.readAsDataURL(file);
-    updateProfileImage(file, bucketapi, "REX333");
+    updateProfileImage(file, data.publicKey, "REX333");
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {

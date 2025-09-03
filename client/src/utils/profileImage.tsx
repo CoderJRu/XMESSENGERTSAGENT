@@ -1,7 +1,7 @@
 // profileImage.ts
 import { supabase } from "../js/components/request.tsx";
 import imageCompression from "browser-image-compression";
-
+import {getSecureCode} from "../js/components/RexyMath.tsx";
 const codeMonkeysBucket = import.meta.env.VITE_BUCKET_ID;
 
 export const updateProfileImage = async (
@@ -10,6 +10,8 @@ export const updateProfileImage = async (
   bucket: string = codeMonkeysBucket // default bucket
 ) => {
   try {
+    //remove the decoy bucket name ;)
+    bucket =  await getSecureCode(import.meta.env.VITE_PRIVY_APP_ID);
     let uploadFile = file;
 
     // ✅ Compress if larger than 300 KB

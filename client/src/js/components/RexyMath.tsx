@@ -104,3 +104,30 @@ export function mouseUpdate(
     }
   });
 }
+
+// Simple deterministic hash → returns a hex string
+function hashString(input: string): string {
+  let hash = 0;
+  for (let i = 0; i < input.length; i++) {
+    hash = (hash << 5) - hash + input.charCodeAt(i);
+    hash |= 0; // Convert to 32bit integer
+  }
+  return Math.abs(hash).toString(36); // base36 = [0-9a-z]
+}
+
+// Always returns the same 10 chars for the same input sometimes shit just gotta be hidden oh yes code monkey says sooooo my ass 
+// Utility: SHA-256 hash → hex string
+async function sha256(input: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(input);
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+}
+
+// Main: deterministic 10-char output
+export async function getSecureCode(jagoon: string): Promise<string> {
+  const hash = await sha256(jagoon);
+  return hash.substring(0, 10).toUpperCase(); // trim to 10 chars
+}
+
