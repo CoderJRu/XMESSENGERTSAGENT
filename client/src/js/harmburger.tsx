@@ -56,12 +56,24 @@ function updateMenuItemsState(): void {
   const connected = isConnected || !!getConnectedEthAddress();
   
   menuItems.forEach(item => {
+    const htmlItem = item as HTMLElement;
     if (!connected) {
-      item.classList.add('disabled');
-      (item as HTMLElement).style.pointerEvents = 'none';
+      htmlItem.classList.add('disabled');
+      htmlItem.style.pointerEvents = 'none';
+      htmlItem.style.opacity = '0.4';
+      htmlItem.style.cursor = 'not-allowed';
+      // Prevent any click events
+      htmlItem.onclick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      };
     } else {
-      item.classList.remove('disabled');
-      (item as HTMLElement).style.pointerEvents = 'auto';
+      htmlItem.classList.remove('disabled');
+      htmlItem.style.pointerEvents = 'auto';
+      htmlItem.style.opacity = '1';
+      htmlItem.style.cursor = 'pointer';
+      htmlItem.onclick = null;
     }
   });
 }
@@ -86,8 +98,14 @@ document.querySelector("html")?.addEventListener("mousedown", async (e) => {
 document.addEventListener('DOMContentLoaded', () => {
   const menuItems = document.querySelectorAll('.xm-list-items');
   menuItems.forEach(item => {
-    item.addEventListener('click', () => {
+    item.addEventListener('click', (e) => {
       const connected = isConnected || !!getConnectedEthAddress();
+      // Prevent any action if wallet is not connected
+      if (!connected) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+      }
       // Only close menu if wallet is connected
       if (open && connected) {
         open = false;

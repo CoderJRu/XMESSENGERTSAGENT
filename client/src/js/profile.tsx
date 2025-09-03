@@ -19,8 +19,8 @@ export async function updateDesktopAvatar(): Promise<void> {
   const accountDropdown = document.querySelector(".account-drop-down-window") as HTMLElement;
   if (!accountDropdown) return;
 
-  const currentAddress = getConnectedEthAddress();
-  if (!currentAddress) {
+  // Check if connected and has publicKey
+  if (!isConnected || !data.publicKey) {
     // Reset to default SVG if not connected
     accountDropdown.innerHTML = `
       <svg
@@ -34,32 +34,28 @@ export async function updateDesktopAvatar(): Promise<void> {
         stroke-linecap="round"
         stroke-linejoin="round"
       >
-        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-        <polyline points="9,22 9,12 15,12 15,22"></polyline>
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
       </svg>
     `;
     return;
   }
 
   try {
-    // Fetch user profile image from database
-    const { data: userData } = await supabase
-      .from("user")
-      .select("avatar_url")
-      .eq("api", currentAddress)
-      .maybeSingle();
+    // Fetch user profile image using the same method as profile component
+    const userData = await req.FetchDb("user", "api", data.publicKey);
 
-    if (userData?.avatar_url && userData.avatar_url !== "src/img/person-img.png") {
+    if (userData?.length > 0 && userData[0].avatar_url && userData[0].avatar_url !== "src/img/person-img.png") {
       // Show profile image
       accountDropdown.innerHTML = `
         <img 
-          src="${userData.avatar_url}" 
+          src="${userData[0].avatar_url}" 
           alt="Profile" 
           style="width: 24px; height: 24px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.3);"
         />
       `;
     } else {
-      // Keep default SVG if no custom image uploaded
+      // Keep default person SVG if no custom image uploaded
       accountDropdown.innerHTML = `
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -72,13 +68,30 @@ export async function updateDesktopAvatar(): Promise<void> {
           stroke-linecap="round"
           stroke-linejoin="round"
         >
-          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-          <polyline points="9,22 9,12 15,12 15,22"></polyline>
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
         </svg>
       `;
     }
   } catch (error) {
     console.error("Error updating desktop avatar:", error);
+    // Fallback to default person icon
+    accountDropdown.innerHTML = `
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+        <circle cx="12" cy="7" r="4"></circle>
+      </svg>
+    `;
   }
 }
 // Create the profile popup container
