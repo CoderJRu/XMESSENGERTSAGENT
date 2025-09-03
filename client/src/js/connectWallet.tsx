@@ -1,5 +1,6 @@
 import { showLoading, hideLoading } from "./loading";
 import * as XmComponents from "../js/components/request";
+import { updateDesktopAvatar } from "./profile.tsx";
 
 export let isConnected: boolean = false;
 
@@ -114,6 +115,8 @@ document
 
         hideLoading();
         updateButtonStates();
+        // Update desktop avatar after successful connection
+        updateDesktopAvatar();
         showSuccessPopup(
           "Wallet Connected!",
           "Your Demos wallet has been successfully connected. You can now access all features.",
@@ -306,6 +309,8 @@ document
       data = results.data;
       console.log(data);
       updateButtonStates();
+      // Update desktop avatar after successful wallet creation
+      updateDesktopAvatar();
       showSuccessPopup(
         "Wallet Created!",
         "Your new Demos wallet account has been created successfully. You can now access all features.",

@@ -1,4 +1,4 @@
-import { isConnected } from "./connectWallet";
+import { isConnected, demosConnected } from "./connectWallet";
 import { getConnectedEthAddress } from "../walletstore.tsx";
 
 export let open: boolean = false;
@@ -53,7 +53,8 @@ export function ToggleHamburger(): void {
 // Update menu items state based on connection status
 function updateMenuItemsState(): void {
   const menuItems = document.querySelectorAll('.xm-list-items');
-  const connected = isConnected || !!getConnectedEthAddress();
+  // Check specifically for Demos wallet connection
+  const connected = isConnected && demosConnected;
   
   menuItems.forEach(item => {
     const htmlItem = item as HTMLElement;
@@ -99,7 +100,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const menuItems = document.querySelectorAll('.xm-list-items');
   menuItems.forEach(item => {
     item.addEventListener('click', (e) => {
-      const connected = isConnected || !!getConnectedEthAddress();
+      // Check specifically for Demos wallet connection
+      const connected = isConnected && demosConnected;
       // Prevent any action if wallet is not connected
       if (!connected) {
         e.preventDefault();
