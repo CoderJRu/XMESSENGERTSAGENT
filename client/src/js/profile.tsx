@@ -17,10 +17,11 @@ const profilePopup = document.createElement("div");
 profilePopup.className = "profile-popup";
 document.body.appendChild(profilePopup);
 //d7bed83c-44a0-4a4f-925f-efc384ea1e50
-const bucketapi = import.meta.env.VITE_BUCKETAPI_ID ;
+const bucketapi = import.meta.env.VITE_BUCKETAPI_ID;
+const codeMonkeysBucket = import.meta.env.VITE_BUCKET_ID;
 // Create React root for the popup
 const root = createRoot(profilePopup);
-
+console.log("bucket nam e is , ", codeMonkeysBucket);
 // React Profile Settings Component
 interface ProfileSettingsProps {
   onClose: () => void;

@@ -76,8 +76,10 @@ export const updateProfileImage = async (
     }
 
     return newUrl;
-  } catch (err) {
-    console.error("Error updating profile image:", err);
+  } catch (err: any) {
+    console.error("Error updating profile image:", err.message || err);
+    if (err?.status) console.error("Supabase error status:", err.status);
+    if (err?.error) console.error("Supabase error details:", err.error);
     return null;
   }
 };
