@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { usePrivy, useWallets } from "@privy-io/react-auth";
 import ProfileSettings from "./js/profile.tsx";
 import { setConnectedEthAddress } from "./walletstore";
+import { updateDesktopAvatar } from "./js/profile.tsx";
 
 export default function App() {
   const { user, login, logout, ready, authenticated } = usePrivy();
@@ -38,8 +39,12 @@ export default function App() {
     if (ready && authenticated) {
       setConnectedEthAddress(address); // ✅ update global store
       console.log("Connected address:", address);
+      // Update desktop avatar when connected
+      updateDesktopAvatar();
     } else {
       setConnectedEthAddress(undefined); // clear if logged out
+      // Reset desktop avatar when disconnected
+      updateDesktopAvatar();
     }
   }, [ready, authenticated, address]);
 

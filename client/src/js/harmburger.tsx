@@ -1,3 +1,6 @@
+import { isConnected } from "./connectWallet";
+import { getConnectedEthAddress } from "../walletstore.tsx";
+
 export let open: boolean = false;
 
 function delay(ms: number): Promise<void> {
@@ -33,6 +36,9 @@ export function ToggleHamburger(): void {
     headerBar.classList.add("active");
     // Prevent body scroll when menu is open
     document.body.style.overflow = 'hidden';
+    
+    // Apply disabled state to menu items if not connected
+    updateMenuItemsState();
   } else {
     hamburger.classList.remove("active");
     hamburgerPlane.classList.remove("active");
@@ -42,6 +48,22 @@ export function ToggleHamburger(): void {
     // Restore body scroll when menu is closed
     document.body.style.overflow = '';
   }
+}
+
+// Update menu items state based on connection status
+function updateMenuItemsState(): void {
+  const menuItems = document.querySelectorAll('.xm-list-items');
+  const connected = isConnected || !!getConnectedEthAddress();
+  
+  menuItems.forEach(item => {
+    if (!connected) {
+      item.classList.add('disabled');
+      (item as HTMLElement).style.pointerEvents = 'none';
+    } else {
+      item.classList.remove('disabled');
+      (item as HTMLElement).style.pointerEvents = 'auto';
+    }
+  });
 }
 
 // Close menu when clicking outside
@@ -65,7 +87,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const menuItems = document.querySelectorAll('.xm-list-items');
   menuItems.forEach(item => {
     item.addEventListener('click', () => {
-      if (open) {
+      const connected = isConnected || !!getConnectedEthAddress();
+      // Only close menu if wallet is connected
+      if (open && connected) {
         open = false;
         ToggleHamburger();
       }

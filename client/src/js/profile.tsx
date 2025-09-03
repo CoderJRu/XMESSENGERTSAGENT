@@ -8,10 +8,79 @@ import {
   imageElementToFile,
 } from "../utils/profileImage.tsx";
 import * as req from "./components/request.tsx";
+import { supabase } from "./components/request.tsx";
 // Profile state
 let currentProfileImage = "src/img/person-img.png";
 let currentUsername = "";
 export var currentConnectedAddress: string = "";
+
+// Update desktop avatar with profile image
+export async function updateDesktopAvatar(): Promise<void> {
+  const accountDropdown = document.querySelector(".account-drop-down-window") as HTMLElement;
+  if (!accountDropdown) return;
+
+  const currentAddress = getConnectedEthAddress();
+  if (!currentAddress) {
+    // Reset to default SVG if not connected
+    accountDropdown.innerHTML = `
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+        <polyline points="9,22 9,12 15,12 15,22"></polyline>
+      </svg>
+    `;
+    return;
+  }
+
+  try {
+    // Fetch user profile image from database
+    const { data: userData } = await supabase
+      .from("user")
+      .select("avatar_url")
+      .eq("api", currentAddress)
+      .maybeSingle();
+
+    if (userData?.avatar_url && userData.avatar_url !== "src/img/person-img.png") {
+      // Show profile image
+      accountDropdown.innerHTML = `
+        <img 
+          src="${userData.avatar_url}" 
+          alt="Profile" 
+          style="width: 24px; height: 24px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.3);"
+        />
+      `;
+    } else {
+      // Keep default SVG if no custom image uploaded
+      accountDropdown.innerHTML = `
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9,22 9,12 15,12 15,22"></polyline>
+        </svg>
+      `;
+    }
+  } catch (error) {
+    console.error("Error updating desktop avatar:", error);
+  }
+}
 // Create the profile popup container
 const profilePopup = document.createElement("div");
 profilePopup.className = "profile-popup";
@@ -93,6 +162,9 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
           currentUsername = userData[0].username;
           setUsername(userData[0].username);
         }
+        
+        // Update desktop avatar after fetching data
+        updateDesktopAvatar();
       } catch (err) {
         console.error("Failed to preload avatar:", err);
       }
@@ -138,7 +210,10 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
       img.src = e.target?.result as string;
     };
     reader.readAsDataURL(file);
-    updateProfileImage(file, data.publicKey, "REX333");
+    updateProfileImage(file, data.publicKey, "REX333").then(() => {
+      // Update desktop avatar after successful upload
+      updateDesktopAvatar();
+    });
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -3497,6 +3497,27 @@ input:checked+.toggle-slider:before {
   color: green;
 }
 
+/* Disabled state for hamburger menu items when wallet not connected */
+.xm-list-items.disabled {
+  opacity: 0.4 !important;
+  color: #666666 !important;
+  cursor: not-allowed !important;
+  background: rgba(255, 255, 255, 0.02) !important;
+  border-color: rgba(255, 255, 255, 0.05) !important;
+  transform: none !important;
+}
+
+.xm-list-items.disabled:hover {
+  background: rgba(255, 255, 255, 0.02) !important;
+  border-color: rgba(255, 255, 255, 0.05) !important;
+  transform: none !important;
+  opacity: 0.4 !important;
+}
+
+.xm-list-items.disabled svg {
+  opacity: 0.4;
+}
+
 .xm-list-items {
   color: var(--Text-Primary, var(--White, #FFF));
   font-weight: bold;
