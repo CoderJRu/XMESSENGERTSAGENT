@@ -79,6 +79,28 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
   );
   console.log("Global store address:", getConnectedEthAddress());
 
+  // --- Preload current avatar from Supabase ---
+  useEffect(() => {
+    const fetchCurrentAvatar = async () => {
+      try {
+        const userData = await req.FetchDb("user", "api", data.publicKey);
+
+        if (userData?.length > 0 && userData[0].avatar_url) {
+          currentProfileImage = userData[0].avatar_url;
+          setProfileImage(userData[0].avatar_url);
+        }
+        if (userData?.length > 0 && userData[0].username) {
+          currentUsername = userData[0].username;
+          setUsername(userData[0].username);
+        }
+      } catch (err) {
+        console.error("Failed to preload avatar:", err);
+      }
+    };
+
+    fetchCurrentAvatar();
+  }, []);
+  //uploades new image
   const handleImageUpload = (file: File): void => {
     // Validate file size (3MB max)
     const maxSize = 3 * 1024 * 1024; // 3MB in bytes
