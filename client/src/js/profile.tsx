@@ -13,10 +13,15 @@ import { supabase } from "./components/request.tsx";
 let currentProfileImage = "src/img/person-img.png";
 let currentUsername = "";
 export var currentConnectedAddress: string = "";
-
+console.log(
+  "Your bucket api id is whatever you think it is",
+  import.meta.env.VITE_BUCKETAPI_ID,
+);
 // Update desktop avatar with profile image
 export async function updateDesktopAvatar(): Promise<void> {
-  const accountDropdown = document.querySelector(".account-drop-down-window") as HTMLElement;
+  const accountDropdown = document.querySelector(
+    ".account-drop-down-window",
+  ) as HTMLElement;
   if (!accountDropdown) return;
 
   // Check if connected and has publicKey
@@ -45,7 +50,11 @@ export async function updateDesktopAvatar(): Promise<void> {
     // Fetch user profile image using the same method as profile component
     const userData = await req.FetchDb("user", "api", data.publicKey);
 
-    if (userData?.length > 0 && userData[0].avatar_url && userData[0].avatar_url !== "src/img/person-img.png") {
+    if (
+      userData?.length > 0 &&
+      userData[0].avatar_url &&
+      userData[0].avatar_url !== "src/img/person-img.png"
+    ) {
       // Show profile image
       accountDropdown.innerHTML = `
         <img 
@@ -175,7 +184,7 @@ const ProfileSettings: React.FC<ProfileSettingsProps> = ({
           currentUsername = userData[0].username;
           setUsername(userData[0].username);
         }
-        
+
         // Update desktop avatar after fetching data
         updateDesktopAvatar();
       } catch (err) {
