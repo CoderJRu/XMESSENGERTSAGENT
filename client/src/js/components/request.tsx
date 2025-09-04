@@ -29,7 +29,7 @@ export const InsertDb = async (newData: any, pubKey: any) => {
 };
 
 const connectMe = async () => {
- demos =  await connectSdk();
+  demos = await connectSdk();
 };
 // connects the app to demos nodes :)
 connectMe();
@@ -138,7 +138,7 @@ type LoggedAccount = {
 export const loginPhrase = async (PhraseList: any): Promise<LoggedAccount> => {
   try {
     var _phraseList: any = PhraseList;
-    var status: any = await loggingMnemonics(_phraseList,demos);
+    var status: any = await loggingMnemonics(_phraseList, demos);
 
     const decoder: any = new TextDecoder();
     console.log(

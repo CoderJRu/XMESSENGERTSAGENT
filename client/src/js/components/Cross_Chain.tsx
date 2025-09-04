@@ -6,7 +6,7 @@ import { Network } from "@aptos-labs/ts-sdk";
 import { APTOS } from "@kynesyslabs/demosdk/xmcore";
 import { XMScript } from "@kynesyslabs/demosdk/types";
 import { prepareXMPayload } from "@kynesyslabs/demosdk/websdk";
-
+import * as bIP_39 from "./BIP39Handle.tsx";
 enum ChainType {
   EVM,
   BTC,
@@ -75,7 +75,6 @@ export const getInstance = async (rpc_url: string) => {
 };
 
 export const connectWallet = async (instance: any, privateKey: any) => {
-  var instance: any = null;
   await instance.connectWallet(privateKey);
   return instance;
 };
