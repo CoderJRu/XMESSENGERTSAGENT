@@ -2779,6 +2779,24 @@ input:checked+.toggle-slider:before {
   top: -28px;
   width: 40px;
   height: 40px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.vertswap-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  border-color: rgba(76, 175, 80, 0.3);
+}
+
+.vertswap-button:active {
+  transform: scale(0.95);
 }
 
 .sell-buy-dollar-value {
