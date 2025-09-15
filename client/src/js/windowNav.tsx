@@ -118,6 +118,7 @@ function handleToggleSwitch(isChecked: boolean): void {
 );
 
 // Coin list toggle
+/* this is disabled as not needed for now but might be needed later coin secltion is being hanlded by a different component called CoinSelector.tsx ;)
 getElement("coin-list-id").addEventListener("click", () => {
   getElement("coin-list-id").style.display = "none";
 });
@@ -126,6 +127,6 @@ document
   .querySelector(".swap-div-height-mod")
   ?.addEventListener("click", () => {
     getElement("coin-list-id").style.display = "flex";
-  });
+  });*/
 
 refresh();
