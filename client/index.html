@@ -385,6 +385,157 @@
         </div>
       </div>
 
+      <!-- Cryptocurrency Selection Modal -->
+      <div id="crypto-selector-overlay" class="crypto-selector-overlay" hidden>
+        <div class="crypto-selector-modal">
+          <div class="crypto-selector-header">
+            <div class="crypto-header-content">
+              <h2 class="crypto-modal-title">Select Token</h2>
+              <button id="crypto-close-btn" class="crypto-close-btn" data-testid="button-close-crypto-modal">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+            
+            <div class="crypto-search-container">
+              <div class="crypto-search-input-wrapper">
+                <svg class="crypto-search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <path d="M21 21l-4.35-4.35"></path>
+                </svg>
+                <input 
+                  id="crypto-search-input" 
+                  class="crypto-search-input" 
+                  placeholder="Search tokens..."
+                  data-testid="input-crypto-search"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div class="crypto-selector-content">
+            <div class="crypto-list" id="crypto-list">
+              <!-- ETH - Main highlighted coin -->
+              <div class="crypto-item main-crypto" data-symbol="ETH" data-name="Ethereum" data-testid="crypto-item-ETH">
+                <div class="crypto-item-left">
+                  <div class="crypto-icon eth-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                      <path d="M12 2L5 12.5L12 16L19 12.5L12 2Z" fill="#627EEA"/>
+                      <path d="M12 17L5 13.5L12 22L19 13.5L12 17Z" fill="#627EEA" opacity="0.6"/>
+                    </svg>
+                  </div>
+                  <div class="crypto-info">
+                    <div class="crypto-symbol">ETH</div>
+                    <div class="crypto-name">Ethereum</div>
+                  </div>
+                </div>
+                <div class="crypto-item-right">
+                  <div class="crypto-balance">0.0000</div>
+                  <div class="main-badge">MAIN</div>
+                </div>
+              </div>
+
+              <!-- BTC -->
+              <div class="crypto-item" data-symbol="BTC" data-name="Bitcoin" data-testid="crypto-item-BTC">
+                <div class="crypto-item-left">
+                  <div class="crypto-icon btc-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                      <circle cx="12" cy="12" r="10" fill="#F7931A"/>
+                      <path d="M10 7h4c1.1 0 2 .9 2 2s-.9 2-2 2h-4V7zM10 11h4c1.1 0 2 .9 2 2s-.9 2-2 2h-4v-4z" fill="white"/>
+                    </svg>
+                  </div>
+                  <div class="crypto-info">
+                    <div class="crypto-symbol">BTC</div>
+                    <div class="crypto-name">Bitcoin</div>
+                  </div>
+                </div>
+                <div class="crypto-item-right">
+                  <div class="crypto-balance">0.0000</div>
+                </div>
+              </div>
+
+              <!-- BNB -->
+              <div class="crypto-item" data-symbol="BNB" data-name="BNB" data-testid="crypto-item-BNB">
+                <div class="crypto-item-left">
+                  <div class="crypto-icon bnb-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                      <circle cx="12" cy="12" r="10" fill="#F3BA2F"/>
+                      <path d="M8.5 10.5L12 7l3.5 3.5L17 9l-5-5-5 5 1.5 1.5zM7 12l1.5-1.5L10 12l-1.5 1.5L7 12zM8.5 13.5L12 17l3.5-3.5L17 15l-5 5-5-5 1.5-1.5zM14 12l1.5-1.5L17 12l-1.5 1.5L14 12z" fill="white"/>
+                    </svg>
+                  </div>
+                  <div class="crypto-info">
+                    <div class="crypto-symbol">BNB</div>
+                    <div class="crypto-name">BNB</div>
+                  </div>
+                </div>
+                <div class="crypto-item-right">
+                  <div class="crypto-balance">0.0000</div>
+                </div>
+              </div>
+
+              <!-- TON -->
+              <div class="crypto-item" data-symbol="TON" data-name="Toncoin" data-testid="crypto-item-TON">
+                <div class="crypto-item-left">
+                  <div class="crypto-icon ton-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                      <circle cx="12" cy="12" r="10" fill="#0088CC"/>
+                      <path d="M8 8h8v2H8V8zM8 10h8v2H8v-2zM8 12h8v2H8v-2zM8 14h8v2H8v-2z" fill="white"/>
+                    </svg>
+                  </div>
+                  <div class="crypto-info">
+                    <div class="crypto-symbol">TON</div>
+                    <div class="crypto-name">Toncoin</div>
+                  </div>
+                </div>
+                <div class="crypto-item-right">
+                  <div class="crypto-balance">0.0000</div>
+                </div>
+              </div>
+
+              <!-- XRPL -->
+              <div class="crypto-item" data-symbol="XRPL" data-name="XRP Ledger" data-testid="crypto-item-XRPL">
+                <div class="crypto-item-left">
+                  <div class="crypto-icon xrpl-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                      <circle cx="12" cy="12" r="10" fill="#23292F"/>
+                      <path d="M7 7l5 5 5-5h-3l-2 2-2-2H7zM7 17l5-5 5 5h-3l-2-2-2 2H7z" fill="white"/>
+                    </svg>
+                  </div>
+                  <div class="crypto-info">
+                    <div class="crypto-symbol">XRPL</div>
+                    <div class="crypto-name">XRP Ledger</div>
+                  </div>
+                </div>
+                <div class="crypto-item-right">
+                  <div class="crypto-balance">0.0000</div>
+                </div>
+              </div>
+
+              <!-- IBC ARB -->
+              <div class="crypto-item" data-symbol="ARB" data-name="Arbitrum" data-testid="crypto-item-ARB">
+                <div class="crypto-item-left">
+                  <div class="crypto-icon arb-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none">
+                      <circle cx="12" cy="12" r="10" fill="#2D374B"/>
+                      <path d="M12 6l6 4-6 4-6-4 6-4zM6 10l6 4v4l-6-4v-4zM18 10v4l-6 4v-4l6-4z" fill="#96BEDC"/>
+                    </svg>
+                  </div>
+                  <div class="crypto-info">
+                    <div class="crypto-symbol">ARB</div>
+                    <div class="crypto-name">Arbitrum</div>
+                  </div>
+                </div>
+                <div class="crypto-item-right">
+                  <div class="crypto-balance">0.0000</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div class="home-content-group">
         <img class="union" src="src/img/Union.png" />
         <h1 class="xm-para">XMESSENGER</h1>
@@ -1386,6 +1537,7 @@
     <script type="module" src="/src/js/profile.tsx"></script>
     <script type="module" src="/src/js/chat.tsx"></script>
     <script type="module" src="/src/js/search.tsx"></script>
+    <script type="module" src="/src/js/cryptoSelector.tsx"></script>
     <script type="module" src ="/src/utils/dashBoardDisplay.tsx"></script>
     <!-- This is a replit script which adds a banner on the top of the page when opened in development mode outside the replit environment -->
     <script
