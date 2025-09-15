@@ -157,6 +157,12 @@ input,
   }
 }
 
+.swap-img{
+  position: relative;
+  right: 3px;
+}
+
+
 .success-title {
   color: #4CAF50;
   font-family: "Helvetica Neue", sans-serif;
