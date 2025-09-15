@@ -95,7 +95,7 @@ function getTokenIcon(symbol: string): string {
       <path d="M16 8l8 5.33-8 5.34-8-5.34L16 8zm-8 6.67l8 5.33v5.33l-8-5.33V14.67zm16 0v5.33l-8 5.33V20l8-5.33z" fill="#96BEDC"/>
     </svg>`,
     
-    X: `<img src="@assets/photo_2023-07-27_07-36-32_1757947561477.jpg" width="32" height="32" style="border-radius: 50%; object-fit: cover;" alt="X Token" />`
+    X: `<img src="src/img/X.jpg" width="32" height="32" style="border-radius: 50%; object-fit: cover;" alt="X Token" />`
   };
   
   return icons[symbol] || `<div style="width: 32px; height: 32px; background: #666; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold;">${symbol}</div>`;
