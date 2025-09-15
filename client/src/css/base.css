@@ -2759,45 +2759,6 @@ input:checked+.toggle-slider:before {
   }
 }
 
-/* Smooth coin swap animations */
-.coin-swapping-out {
-  animation: coinSwapOut 0.3s ease-in-out;
-}
-
-.coin-swapping-in {
-  animation: coinSwapIn 0.3s ease-in-out;
-}
-
-@keyframes coinSwapOut {
-  0% {
-    transform: translateX(0) scale(1);
-    opacity: 1;
-  }
-  50% {
-    transform: translateX(-20px) scale(0.8);
-    opacity: 0.3;
-  }
-  100% {
-    transform: translateX(0) scale(0.9);
-    opacity: 0.6;
-  }
-}
-
-@keyframes coinSwapIn {
-  0% {
-    transform: translateX(20px) scale(0.9);
-    opacity: 0.6;
-  }
-  50% {
-    transform: translateX(10px) scale(1.05);
-    opacity: 0.8;
-  }
-  100% {
-    transform: translateX(0) scale(1);
-    opacity: 1;
-  }
-}
-
 .sell-buy-dollar-balance {
   color: var(--Text-Secondary, #9AA0A6);
   text-align: left;
@@ -2818,40 +2779,6 @@ input:checked+.toggle-slider:before {
   top: -28px;
   width: 40px;
   height: 40px;
-  cursor: pointer;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s cubic-bezier(0.4, 0.0, 0.2, 1);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
-.vertswap-button:hover {
-  background: #f8f9fa;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
-  border-color: rgba(76, 175, 80, 0.3);
-}
-
-.vertswap-button.swap-button-clicked {
-  transform: rotate(180deg) scale(0.95);
-  background: linear-gradient(135deg, #4CAF50, #45a049);
-  box-shadow: 0 0 20px rgba(76, 175, 80, 0.4);
-}
-
-.vertswap-button img {
-  transition: all 0.3s ease;
-  width: 20px;
-  height: 20px;
-}
-
-.vertswap-button:hover img {
-  transform: rotate(180deg);
-}
-
-.vertswap-button.swap-button-clicked img {
-  filter: brightness(0) invert(1);
 }
 
 .sell-buy-dollar-value {
