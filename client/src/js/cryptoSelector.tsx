@@ -132,13 +132,17 @@ function initializeCryptoSelector(): void {
       });
     });
     
-    // Add event listeners to all coin selection buttons
-    const coinButtons = document.querySelectorAll('.sell-buy-button');
-    coinButtons.forEach((button) => {
-      button.addEventListener('click', (e) => {
+    // Use event delegation for coin selection buttons (more robust for dynamic content)
+    document.addEventListener('click', (e) => {
+      const target = e.target as HTMLElement;
+      const button = target.closest('.sell-buy-button') as HTMLElement;
+      
+      if (button) {
+        console.log('🔍 Coin button clicked:', button);
         e.preventDefault();
-        showCryptoSelector(button as HTMLElement);
-      });
+        e.stopPropagation();
+        showCryptoSelector(button);
+      }
     });
     
     // ESC key to close modal
@@ -150,6 +154,10 @@ function initializeCryptoSelector(): void {
         }
       }
     });
+    
+    // Log current coin buttons for debugging
+    const coinButtons = document.querySelectorAll('.sell-buy-button');
+    console.log('🪙 Found coin buttons:', coinButtons.length);
     
     console.log('🪙 Crypto selector initialized successfully');
     
