@@ -29,21 +29,32 @@ function getElement(id: string): HTMLElement {
 
 // Show the crypto selector modal
 export function showCryptoSelector(targetButton: HTMLElement): void {
+  console.log('📱 showCryptoSelector called with button:', targetButton);
   currentTargetButton = targetButton;
-  const overlay = getElement('crypto-selector-overlay');
-  const searchInput = getElement('crypto-search-input') as HTMLInputElement;
   
-  // Show the modal
-  overlay.removeAttribute('hidden');
-  
-  // Focus on search input after animation
-  setTimeout(() => {
-    searchInput.focus();
-  }, 300);
-  
-  // Clear any previous search
-  searchInput.value = '';
-  filterCryptos('');
+  try {
+    const overlay = getElement('crypto-selector-overlay');
+    const searchInput = getElement('crypto-search-input') as HTMLInputElement;
+    
+    console.log('📱 Modal elements found, showing overlay...');
+    
+    // Show the modal
+    overlay.removeAttribute('hidden');
+    
+    console.log('📱 Modal should now be visible');
+    
+    // Focus on search input after animation
+    setTimeout(() => {
+      searchInput.focus();
+    }, 300);
+    
+    // Clear any previous search
+    searchInput.value = '';
+    filterCryptos('');
+    
+  } catch (error) {
+    console.error('❌ Error in showCryptoSelector:', error);
+  }
 }
 
 // Hide the crypto selector modal
@@ -139,11 +150,19 @@ function initializeCryptoSelector(): void {
       
       if (button) {
         console.log('🔍 Coin button clicked:', button);
+        console.log('🔍 Button classList:', button.classList.toString());
+        console.log('🔍 Button textContent:', button.textContent);
         e.preventDefault();
         e.stopPropagation();
         showCryptoSelector(button);
       }
     });
+    
+    // Add a test function to manually show the modal (for debugging)
+    (window as any).testCryptoModal = () => {
+      console.log('🧪 Testing crypto modal manually...');
+      showCryptoSelector(document.querySelector('.sell-buy-button') as HTMLElement);
+    };
     
     // ESC key to close modal
     document.addEventListener('keydown', (e) => {
