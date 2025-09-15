@@ -17,6 +17,8 @@ const CRYPTO_TOKENS: CryptoToken[] = [
   { symbol: 'TON', name: 'Toncoin', balance: '0.0000', iconClass: 'ton-bg' },
   { symbol: 'XRPL', name: 'XRP Ledger', balance: '0.0000', iconClass: 'xrpl-bg' },
   { symbol: 'ARB', name: 'Arbitrum', balance: '0.0000', iconClass: 'arb-bg' },
+  { symbol: 'USDT', name: 'Tether USD', balance: '0.0000', iconClass: 'usdt-bg' },
+  { symbol: 'USDC', name: 'USD Coin', balance: '0.0000', iconClass: 'usdc-bg' },
   { symbol: 'X', name: 'X Token', balance: '0.0000', iconClass: 'x-bg' }
 ];
 
@@ -93,6 +95,17 @@ function getTokenIcon(symbol: string): string {
     ARB: `<svg width="32" height="32" viewBox="0 0 32 32" fill="none">
       <circle cx="16" cy="16" r="16" fill="#2D374B"/>
       <path d="M16 8l8 5.33-8 5.34-8-5.34L16 8zm-8 6.67l8 5.33v5.33l-8-5.33V14.67zm16 0v5.33l-8 5.33V20l8-5.33z" fill="#96BEDC"/>
+    </svg>`,
+    
+    USDT: `<svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+      <circle cx="16" cy="16" r="16" fill="#26A17B"/>
+      <path d="M15.5 18.5v2.5c1.5 0 2.5-.5 2.5-1.25s-1-1.25-2.5-1.25zm0-3.5v2.5c1.5 0 2.5-.5 2.5-1.25s-1-1.25-2.5-1.25zm0-6v2h5v2h-5v.5c2.5 0 4.5 1 4.5 2.75s-2 2.75-4.5 2.75c-2.5 0-4.5-1-4.5-2.75s2-2.75 4.5-2.75v-.5h-5v-2h5v-2h-5v-2h10v2h-5z" fill="#fff"/>
+    </svg>`,
+    
+    USDC: `<svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+      <circle cx="16" cy="16" r="16" fill="#2775CA"/>
+      <circle cx="16" cy="16" r="6" fill="none" stroke="#fff" stroke-width="2"/>
+      <path d="M18.5 14c0-.8-.7-1.5-1.5-1.5h-2c-.8 0-1.5.7-1.5 1.5s.7 1.5 1.5 1.5h2c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5h-2c-.8 0-1.5-.7-1.5-1.5M16 10v2M16 20v2" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
     </svg>`,
     
     X: `<img src="src/img/X.jpg" width="32" height="32" style="border-radius: 50%; object-fit: cover;" alt="X Token" />`
@@ -246,6 +259,13 @@ function createMiniIcon(symbol: string): string {
     ARB: `<svg width="24" height="24" viewBox="0 0 32 32" style="border-radius: 50%; background: #2D374B;">
       <path d="M16 10l6 4-6 4-6-4 6-4zm-6 5l6 4v4l-6-4v-4zm12 0v4l-6 4v-4l6-4z" fill="#96BEDC"/>
     </svg>`,
+    USDT: `<svg width="24" height="24" viewBox="0 0 32 32" style="border-radius: 50%; background: #26A17B;">
+      <path d="M16 6.5c5.25 0 9.5 4.25 9.5 9.5s-4.25 9.5-9.5 9.5-9.5-4.25-9.5-9.5 4.25-9.5 9.5-9.5zM16 11v2h4v2h-4v2c2 0 3.5.5 3.5 1.5s-1.5 1.5-3.5 1.5c-2 0-3.5-.5-3.5-1.5s1.5-1.5 3.5-1.5v-2h-4v-2h4v-2h-4v-2h8v2h-4z" fill="#fff"/>
+    </svg>`,
+    USDC: `<svg width="24" height="24" viewBox="0 0 32 32" style="border-radius: 50%; background: #2775CA;">
+      <circle cx="16" cy="16" r="6" fill="none" stroke="#fff" stroke-width="2"/>
+      <path d="M18.5 14c0-.8-.7-1.5-1.5-1.5h-2c-.8 0-1.5.7-1.5 1.5s.7 1.5 1.5 1.5h2c.8 0 1.5.7 1.5 1.5s-.7 1.5-1.5 1.5h-2c-.8 0-1.5-.7-1.5-1.5M16 10v2M16 20v2" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>`,
     X: `<img src="src/img/X.jpg" width="24" height="24" style="border-radius: 50%; object-fit: cover;" alt="X" />`
   };
   
@@ -253,21 +273,23 @@ function createMiniIcon(symbol: string): string {
 }
 
 // Select a cryptocurrency
-function selectCrypto(symbol: string): void {
+function selectCrypto(symbol: string, targetButton?: HTMLElement): void {
   console.log(`🪙 Selected crypto: ${symbol}`);
   
-  if (!currentTargetButton) return;
+  // Use provided button or current target
+  const buttonToUpdate = targetButton || currentTargetButton;
+  if (!buttonToUpdate) return;
   
   // Find the crypto data
   const crypto = CRYPTO_TOKENS.find(c => c.symbol === symbol);
   if (!crypto) return;
   
   // Update the coin icon (replace Ellipse.png or existing icon container)
-  let iconElement = currentTargetButton.querySelector('.sell-buy-img:first-child') as HTMLElement;
+  let iconElement = buttonToUpdate.querySelector('.sell-buy-img:first-child') as HTMLElement;
   
   // If not found, it might be a replaced div container (from previous selection)
   if (!iconElement) {
-    iconElement = currentTargetButton.children[0] as HTMLElement;
+    iconElement = buttonToUpdate.children[0] as HTMLElement;
   }
   
   if (iconElement) {
@@ -281,7 +303,7 @@ function selectCrypto(symbol: string): void {
   }
   
   // Update the button text (find the text node)
-  const textNodes = Array.from(currentTargetButton.childNodes).filter(
+  const textNodes = Array.from(buttonToUpdate.childNodes).filter(
     node => node.nodeType === Node.TEXT_NODE && node.textContent?.trim()
   );
   
@@ -289,7 +311,7 @@ function selectCrypto(symbol: string): void {
     textNodes[0].textContent = ` ${crypto.symbol} `;
   } else {
     // Fallback: look for the first text content
-    const textElements = currentTargetButton.querySelectorAll('*');
+    const textElements = buttonToUpdate.querySelectorAll('*');
     for (const element of Array.from(textElements)) {
       if (element.textContent?.includes('ETH') || element.textContent?.includes('USDT') || element.textContent?.includes('BTC')) {
         element.textContent = crypto.symbol;
@@ -299,16 +321,16 @@ function selectCrypto(symbol: string): void {
   }
   
   // Add light green highlight if ETH is selected (main chain)
-  currentTargetButton.classList.remove('eth-main-selected');
+  buttonToUpdate.classList.remove('eth-main-selected');
   if (symbol === 'ETH') {
-    currentTargetButton.classList.add('eth-main-selected');
+    buttonToUpdate.classList.add('eth-main-selected');
   }
   
   // Add visual feedback
-  currentTargetButton.style.transform = 'scale(0.95)';
+  buttonToUpdate.style.transform = 'scale(0.95)';
   setTimeout(() => {
-    if (currentTargetButton) {
-      currentTargetButton.style.transform = 'scale(1)';
+    if (buttonToUpdate) {
+      buttonToUpdate.style.transform = 'scale(1)';
     }
   }, 150);
   
@@ -369,9 +391,38 @@ function initializeCryptoSelector(): void {
   };
 }
 
+// Set default selected coins on page load
+function setDefaultCoins(): void {
+  console.log('🎯 Setting default coins: ETH and USDT');
+  
+  // Wait a bit for the page to be fully loaded
+  setTimeout(() => {
+    const coinButtons = document.querySelectorAll('.sell-buy-button');
+    
+    if (coinButtons.length >= 2) {
+      // Set ETH as first button (already has ETH text by default)
+      const ethButton = coinButtons[0] as HTMLElement;
+      selectCrypto('ETH', ethButton);
+      
+      // Set USDT as second button (currently shows USDT text)
+      const usdtButton = coinButtons[1] as HTMLElement;
+      selectCrypto('USDT', usdtButton);
+      
+      console.log('✅ Default coins set: ETH and USDT');
+    } else {
+      console.log('⚠️ Could not find coin buttons for default selection');
+    }
+  }, 1000);
+}
+
+
 // Initialize when DOM is ready
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initializeCryptoSelector);
+  document.addEventListener('DOMContentLoaded', () => {
+    initializeCryptoSelector();
+    setDefaultCoins();
+  });
 } else {
   initializeCryptoSelector();
+  setDefaultCoins();
 }

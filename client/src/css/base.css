@@ -5771,6 +5771,8 @@ body:has(.modern-wallet-overlay:not([hidden])) .hamburger {
 .ton-bg { background: linear-gradient(135deg, #0088CC 0%, #006FA3 100%) !important; }
 .xrpl-bg { background: linear-gradient(135deg, #23292F 0%, #1A1E23 100%) !important; }
 .arb-bg { background: linear-gradient(135deg, #2D374B 0%, #242B3A 100%) !important; }
+.usdt-bg { background: linear-gradient(135deg, #26A17B 0%, #1E8A66 100%) !important; }
+.usdc-bg { background: linear-gradient(135deg, #2775CA 0%, #1E5FA6 100%) !important; }
 .x-bg { background: linear-gradient(135deg, #000000 0%, #333333 100%) !important; }
 
 @keyframes modalFadeIn {
