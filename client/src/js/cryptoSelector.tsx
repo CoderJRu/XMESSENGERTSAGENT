@@ -486,7 +486,7 @@ function handleCoinSwap(event: Event): void {
   event.stopPropagation();
   
   const swapButton = event.currentTarget as HTMLElement;
-  console.log('🔄 Coin swap button clicked');
+  console.log('🔄 Coin swap button clicked!');
   
   // Check if button is already disabled (animation in progress)
   if (swapButton.hasAttribute('data-swapping')) {
@@ -494,22 +494,23 @@ function handleCoinSwap(event: Event): void {
     return;
   }
   
-  // Use robust DOM traversal to find container with sell-buy-button elements
-  const container = findContainerWithCoinButtons(swapButton);
-  if (!container) {
-    console.log('❌ Could not find container with coin buttons');
-    return;
-  }
+  // Find all coin buttons in the document first
+  const allCoinButtons = document.querySelectorAll('.sell-buy-button');
+  console.log(`🔍 Found ${allCoinButtons.length} coin buttons total`);
   
-  // Find the two coin buttons in this container
-  const coinButtons = container.querySelectorAll('.sell-buy-button');
-  if (coinButtons.length < 2) {
+  if (allCoinButtons.length < 2) {
     console.log('❌ Need at least 2 coin buttons to swap');
     return;
   }
   
-  const topButton = coinButtons[0] as HTMLElement;
-  const bottomButton = coinButtons[1] as HTMLElement;
+  // For now, just use the first two coin buttons found
+  const topButton = allCoinButtons[0] as HTMLElement;
+  const bottomButton = allCoinButtons[1] as HTMLElement;
+  
+  console.log('🔀 Swapping buttons:', {
+    top: topButton.textContent?.trim(),
+    bottom: bottomButton.textContent?.trim()
+  });
   
   // Disable button during animation
   swapButton.setAttribute('data-swapping', 'true');
@@ -550,8 +551,8 @@ function animateCoinSwap(topButton: HTMLElement, bottomButton: HTMLElement, swap
   bottomButton.style.transition = transitionCSS;
   swapButton.style.transition = 'transform 0.6s cubic-bezier(0.4, 0.0, 0.2, 1)';
   
-  // Animate swap button rotation
-  swapButton.style.transform = 'rotate(180deg)';
+  // Animate swap button rotation while keeping it centered
+  swapButton.style.transform = 'translate(-50%, -50%) rotate(180deg)';
   
   // Get current positions
   const topRect = topButton.getBoundingClientRect();
@@ -569,7 +570,7 @@ function animateCoinSwap(topButton: HTMLElement, bottomButton: HTMLElement, swap
     // Reset positions
     topButton.style.transform = '';
     bottomButton.style.transform = '';
-    swapButton.style.transform = '';
+    swapButton.style.transform = 'translate(-50%, -50%)';
     
     // Remove transitions after animation
     setTimeout(() => {

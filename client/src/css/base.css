@@ -2775,13 +2775,15 @@ input:checked+.toggle-slider:before {
 .vertswap-button {
   border-radius: 20px;
   background: var(--White, #FFF);
-  position: relative;
-  top: -28px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 40px;
   height: 40px;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
-  z-index: 100;
+  z-index: 1000 !important;
   display: flex;
   align-items: center;
   justify-content: center;
