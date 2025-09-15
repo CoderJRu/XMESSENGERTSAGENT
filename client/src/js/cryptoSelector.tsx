@@ -156,6 +156,9 @@ function hideCryptoSelector(): void {
   console.log('🔒 Closing crypto selector');
   
   if (cryptoModal) {
+    // Remove event listener first
+    document.removeEventListener('keydown', handleEscKey);
+    // Remove the modal completely
     cryptoModal.remove();
     cryptoModal = null;
   }
@@ -219,6 +222,36 @@ function handleEscKey(e: KeyboardEvent): void {
   }
 }
 
+// Create mini icon for button
+function createMiniIcon(symbol: string): string {
+  const miniIcons: Record<string, string> = {
+    ETH: `<svg width="24" height="24" viewBox="0 0 32 32" style="border-radius: 50%; background: #627EEA;">
+      <path d="M16.498 8v5.87l4.5 2.03L16.498 8z" fill="#fff" fill-opacity=".8"/>
+      <path d="M16.498 8L12 15.9l4.498-2.03V8z" fill="#fff"/>
+      <path d="M16.498 18.97v3.63L21 16.61l-4.502 2.36z" fill="#fff" fill-opacity=".8"/>
+      <path d="M16.498 22.6v-3.63L12 16.61l4.498 5.99z" fill="#fff"/>
+    </svg>`,
+    BTC: `<svg width="24" height="24" viewBox="0 0 32 32" style="border-radius: 50%; background: #F7931A;">
+      <path d="M19.5 14.5c.2-1.4-.8-2.2-2.2-2.7l.5-1.9-1.2-.3-.5 1.8c-.3-.07-.6-.14-.9-.21l.5-1.9-1.2-.3-.5 1.9c-.25-.06-.5-.11-.74-.17l-1.6-.4-.3 1.2s.86.2.84.21c.47.12.55.43.54.68l-.54 2.17c.03.008.07.02.12.04l-.12-.03-.76 3.05c-.06.14-.2.36-.53.27.01.017-.84-.21-.84-.21L10 19.5l1.5.37c.28.07.56.14.83.21l-.48 1.93 1.2.3.48-1.92c.32.09.63.17.93.24l-.48 1.9 1.2.3.48-1.93c1.98.37 3.47.22 4.1-1.57.5-1.44-.02-2.27-1.07-2.82.76-.17 1.33-.67 1.48-1.71z" fill="#fff"/>
+    </svg>`,
+    BNB: `<svg width="24" height="24" viewBox="0 0 32 32" style="border-radius: 50%; background: #F3BA2F;">
+      <path d="M14 12l2-2 2 2 1.5-1.5L16 7l-3.5 3.5L14 12zm-6 4l1.5-1.5L11 16l-1.5 1.5L8 16zm6 2l2 2 2-2 1.5 1.5L16 25l-3.5-3.5L14 20zm8-2l1.5-1.5L25 16l-1.5 1.5L22 16zM16 14l-1 1 1 1 1-1-1-1z" fill="#fff"/>
+    </svg>`,
+    TON: `<svg width="24" height="24" viewBox="0 0 32 32" style="border-radius: 50%; background: #0088CC;">
+      <path d="M10 11h12v2H10v-2zm0 3h12v2H10v-2zm0 3h12v2H10v-2zm0 3h12v2H10v-2z" fill="#fff"/>
+    </svg>`,
+    XRPL: `<svg width="24" height="24" viewBox="0 0 32 32" style="border-radius: 50%; background: #23292F;">
+      <path d="M10 10l6 6 6-6h-3l-3 3-3-3h-3zm0 12l6-6 6 6h-3l-3-3-3 3h-3z" fill="#fff"/>
+    </svg>`,
+    ARB: `<svg width="24" height="24" viewBox="0 0 32 32" style="border-radius: 50%; background: #2D374B;">
+      <path d="M16 10l6 4-6 4-6-4 6-4zm-6 5l6 4v4l-6-4v-4zm12 0v4l-6 4v-4l6-4z" fill="#96BEDC"/>
+    </svg>`,
+    X: `<img src="src/img/X.jpg" width="24" height="24" style="border-radius: 50%; object-fit: cover;" alt="X" />`
+  };
+  
+  return miniIcons[symbol] || `<div style="width: 24px; height: 24px; background: #666; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 10px;">${symbol}</div>`;
+}
+
 // Select a cryptocurrency
 function selectCrypto(symbol: string): void {
   console.log(`🪙 Selected crypto: ${symbol}`);
@@ -229,13 +262,24 @@ function selectCrypto(symbol: string): void {
   const crypto = CRYPTO_TOKENS.find(c => c.symbol === symbol);
   if (!crypto) return;
   
+  // Update the coin icon (replace Ellipse.png)
+  const iconImg = currentTargetButton.querySelector('.sell-buy-img:first-child') as HTMLImageElement;
+  if (iconImg) {
+    const iconContainer = document.createElement('div');
+    iconContainer.innerHTML = createMiniIcon(symbol);
+    iconContainer.style.display = 'flex';
+    iconContainer.style.alignItems = 'center';
+    iconContainer.style.justifyContent = 'center';
+    iconImg.replaceWith(iconContainer);
+  }
+  
   // Update the button text (find the text node)
   const textNodes = Array.from(currentTargetButton.childNodes).filter(
     node => node.nodeType === Node.TEXT_NODE && node.textContent?.trim()
   );
   
   if (textNodes.length > 0) {
-    textNodes[0].textContent = crypto.symbol;
+    textNodes[0].textContent = ` ${crypto.symbol} `;
   } else {
     // Fallback: look for the first text content
     const textElements = currentTargetButton.querySelectorAll('*');
@@ -245,6 +289,12 @@ function selectCrypto(symbol: string): void {
         break;
       }
     }
+  }
+  
+  // Add light green highlight if ETH is selected (main chain)
+  currentTargetButton.classList.remove('eth-main-selected');
+  if (symbol === 'ETH') {
+    currentTargetButton.classList.add('eth-main-selected');
   }
   
   // Add visual feedback

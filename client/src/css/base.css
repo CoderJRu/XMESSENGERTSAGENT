@@ -2736,6 +2736,29 @@ input:checked+.toggle-slider:before {
   margin: auto 10px;
 }
 
+/* Light green highlight for ETH main chain selection */
+.sell-buy-button.eth-main-selected {
+  border: 2px solid rgba(76, 175, 80, 0.8) !important;
+  background: rgba(76, 175, 80, 0.1) !important;
+  box-shadow: 0 0 10px rgba(76, 175, 80, 0.3) !important;
+  animation: ethPulse 2s infinite ease-in-out;
+}
+
+.sell-buy-button.eth-main-selected:hover {
+  background: rgba(76, 175, 80, 0.15) !important;
+  border-color: rgba(76, 175, 80, 0.9) !important;
+  box-shadow: 0 0 15px rgba(76, 175, 80, 0.4) !important;
+}
+
+@keyframes ethPulse {
+  0%, 100% {
+    box-shadow: 0 0 10px rgba(76, 175, 80, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(76, 175, 80, 0.6);
+  }
+}
+
 .sell-buy-dollar-balance {
   color: var(--Text-Secondary, #9AA0A6);
   text-align: left;
