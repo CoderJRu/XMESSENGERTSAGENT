@@ -262,15 +262,22 @@ function selectCrypto(symbol: string): void {
   const crypto = CRYPTO_TOKENS.find(c => c.symbol === symbol);
   if (!crypto) return;
   
-  // Update the coin icon (replace Ellipse.png)
-  const iconImg = currentTargetButton.querySelector('.sell-buy-img:first-child') as HTMLImageElement;
-  if (iconImg) {
+  // Update the coin icon (replace Ellipse.png or existing icon container)
+  let iconElement = currentTargetButton.querySelector('.sell-buy-img:first-child') as HTMLElement;
+  
+  // If not found, it might be a replaced div container (from previous selection)
+  if (!iconElement) {
+    iconElement = currentTargetButton.children[0] as HTMLElement;
+  }
+  
+  if (iconElement) {
     const iconContainer = document.createElement('div');
     iconContainer.innerHTML = createMiniIcon(symbol);
     iconContainer.style.display = 'flex';
     iconContainer.style.alignItems = 'center';
     iconContainer.style.justifyContent = 'center';
-    iconImg.replaceWith(iconContainer);
+    iconContainer.className = 'coin-icon-container'; // Add class to identify it
+    iconElement.replaceWith(iconContainer);
   }
   
   // Update the button text (find the text node)
