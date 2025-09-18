@@ -454,50 +454,79 @@ function setDefaultCoins(): void {
   }, 1000);
 }
 
-// Setup smooth swap button rotation
-function initializeSwapButton(): void {
-  // Find all swap buttons (there might be multiple)
-  const swapButtons = document.querySelectorAll('.vertswap-button');
-  
-  swapButtons.forEach((swapButton, index) => {
-    // Give each button its own independent swapped state using data attribute
-    swapButton.setAttribute('data-swapped', 'false');
-    
-    swapButton.addEventListener('click', (e) => {
-      // Prevent any event bubbling that might cause double-firing
-      e.preventDefault();
-      e.stopPropagation();
-      
-      console.log(`🔄 Swap button ${index + 1} clicked - rotating...`);
-      
-      // Get the current state for THIS specific button
-      const currentState = swapButton.getAttribute('data-swapped') === 'true';
-      const newState = !currentState;
-      
-      // Update this button's state
-      swapButton.setAttribute('data-swapped', newState.toString());
-      
-      // Apply the CSS class for rotation
-      if (newState) {
-        swapButton.classList.add('swapped');
-      } else {
-        swapButton.classList.remove('swapped');
-      }
-      
-      console.log(`🔄 Swap button ${index + 1} rotated: ${newState ? '180deg' : '0deg'}`);
-    });
+let swapped = false;
+let isAnimating = false;
+
+function initializeSwapCoins(): void {
+  const swapBtn = document.getElementById("vertswap-btn-id") as HTMLButtonElement;
+  const sellBtn = document.getElementById("swap-top-button-id") as HTMLElement;
+  const buyBtn = document.getElementById("swap-bottom-button-id") as HTMLElement;
+
+  if (!swapBtn || !sellBtn || !buyBtn) return;
+
+  swapBtn.addEventListener("click", () => {
+    if (isAnimating) return;
+    isAnimating = true;
+    swapBtn.disabled = true;
+
+    // 🔄 Rotate the button (continuous spin, not back/forth)
+    const currentRotation = swapped ? 180 : 0;
+    const newRotation = currentRotation + 180;
+    swapBtn.style.transition = "transform 0.3s ease-in-out";
+    swapBtn.style.transform = `rotate(${newRotation}deg)`;
+
+    // 📦 Animate the coin buttons
+    const rectSell = sellBtn.getBoundingClientRect();
+    const rectBuy = buyBtn.getBoundingClientRect();
+    const deltaY = rectBuy.top - rectSell.top;
+
+    sellBtn.style.transition = "transform 0.3s ease-in-out";
+    buyBtn.style.transition = "transform 0.3s ease-in-out";
+
+    sellBtn.style.transform = `translateY(${deltaY}px)`;
+    buyBtn.style.transform = `translateY(${-deltaY}px)`;
+
+    setTimeout(() => {
+      // Reset transitions
+      sellBtn.style.transition = "";
+      buyBtn.style.transition = "";
+      swapBtn.style.transition = "";
+
+      // Reset transforms (coin buttons only)
+      sellBtn.style.transform = "";
+      buyBtn.style.transform = "";
+
+      // Swap DOM positions
+      const sellParent = sellBtn.parentElement;
+      const buyParent = buyBtn.parentElement;
+
+      buyParent?.appendChild(sellBtn);
+      sellParent?.appendChild(buyBtn);
+
+      swapped = !swapped;
+
+      isAnimating = false;
+      swapBtn.disabled = false;
+    }, 300); // matches animation duration
   });
 }
+
+
+
+
+
+
 
 // Initialize when DOM is ready
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", () => {
     initializeCryptoSelector();
     setDefaultCoins();
-    initializeSwapButton();
+    initializeSwapCoins();
   });
 } else {
   initializeCryptoSelector();
   setDefaultCoins();
-  initializeSwapButton();
+  initializeSwapCoins();
 }
+

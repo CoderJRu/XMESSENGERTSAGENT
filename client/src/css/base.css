@@ -161,8 +161,8 @@ input,
   position: relative;
   right: 0;
   left: 0;
-  top: 0;
-  bottom: 0;
+  top: 2.5px;
+  bottom:0;
   
 }
 
@@ -2744,6 +2744,8 @@ input:checked+.toggle-slider:before {
   font-style: normal;
   font-weight: 700;
   margin: auto 10px;
+  /* Add transition so order swaps animate smoothly */
+  transition: all 0.3s ease-in-out;
 }
 
 /* Light green highlight for ETH main chain selection */
@@ -2783,34 +2785,23 @@ input:checked+.toggle-slider:before {
 }
 
 .vertswap-button {
-  border: none !important;
-  border-radius: 20px;
+  border-radius: 10px;
   background: var(--White, #FFF);
   position: relative;
   top: -28px;
   width: 40px;
   height: 40px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  
-  /* Force transform and transition */
-  transform: rotate(0deg) !important;
+
+  /* transition is always present */
   transition: transform 0.3s ease-in-out !important;
-  will-change: transform;
 }
 
-.vertswap-button.swapped {
-  transform: rotate(180deg) !important;
+.vertswap-button[data-rotated="false"] {
+  transform: rotate(0deg);
 }
 
-.vertswap-button img,
-.vertswap-button .swap-img {
-  pointer-events: none;
-  user-select: none;
-  width: 20px;
-  height: 20px;
+.vertswap-button[data-rotated="true"] {
+  transform: rotate(180deg);
 }
 
 
