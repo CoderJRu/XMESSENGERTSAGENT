@@ -159,7 +159,11 @@ input,
 
 .swap-img{
   position: relative;
-  right: 3px;
+  right: 0;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  
 }
 
 
@@ -2785,7 +2789,20 @@ input:checked+.toggle-slider:before {
   top: -28px;
   width: 40px;
   height: 40px;
+
+  /* Always defined */
+  transform: rotate(0deg);
+  transition: transform 0.3s ease-in-out;
 }
+
+.vertswap-button.swapped {
+  transform: rotate(180deg);
+}
+
+
+
+
+
 
 .sell-buy-dollar-value {
   color: var(--Text-Secondary, #9AA0A6);
