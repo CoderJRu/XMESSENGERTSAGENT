@@ -456,24 +456,35 @@ function setDefaultCoins(): void {
 
 // Setup smooth swap button rotation
 function initializeSwapButton(): void {
-  let swappedState: boolean = false;
-  
   // Find all swap buttons (there might be multiple)
   const swapButtons = document.querySelectorAll('.vertswap-button');
   
-  swapButtons.forEach((swapButton) => {
-    swapButton.addEventListener('click', () => {
-      console.log('🔄 Swap button clicked - rotating...');
+  swapButtons.forEach((swapButton, index) => {
+    // Give each button its own independent swapped state using data attribute
+    swapButton.setAttribute('data-swapped', 'false');
+    
+    swapButton.addEventListener('click', (e) => {
+      // Prevent any event bubbling that might cause double-firing
+      e.preventDefault();
+      e.stopPropagation();
       
-      swappedState = !swappedState;
+      console.log(`🔄 Swap button ${index + 1} clicked - rotating...`);
       
-      if (swappedState) {
+      // Get the current state for THIS specific button
+      const currentState = swapButton.getAttribute('data-swapped') === 'true';
+      const newState = !currentState;
+      
+      // Update this button's state
+      swapButton.setAttribute('data-swapped', newState.toString());
+      
+      // Apply the CSS class for rotation
+      if (newState) {
         swapButton.classList.add('swapped');
       } else {
         swapButton.classList.remove('swapped');
       }
       
-      console.log(`🔄 Swap button rotated: ${swappedState ? '180deg' : '0deg'}`);
+      console.log(`🔄 Swap button ${index + 1} rotated: ${newState ? '180deg' : '0deg'}`);
     });
   });
 }

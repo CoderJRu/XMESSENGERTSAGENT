@@ -2783,20 +2783,34 @@ input:checked+.toggle-slider:before {
 }
 
 .vertswap-button {
+  border: none !important;
   border-radius: 20px;
   background: var(--White, #FFF);
   position: relative;
   top: -28px;
   width: 40px;
   height: 40px;
-
-  /* Always defined */
-  transform: rotate(0deg);
-  transition: transform 0.3s ease-in-out;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Force transform and transition */
+  transform: rotate(0deg) !important;
+  transition: transform 0.3s ease-in-out !important;
+  will-change: transform;
 }
 
 .vertswap-button.swapped {
-  transform: rotate(180deg);
+  transform: rotate(180deg) !important;
+}
+
+.vertswap-button img,
+.vertswap-button .swap-img {
+  pointer-events: none;
+  user-select: none;
+  width: 20px;
+  height: 20px;
 }
 
 
