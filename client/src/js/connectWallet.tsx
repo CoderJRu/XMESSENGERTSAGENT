@@ -82,8 +82,9 @@ export function updateUserData(username: string, publicKey: string): void {
 }
 
 export let phraseList: string[] = [];
+export let mnemonics: string = "";
 export let publicKey: string = "";
-let privateKey: string = "";
+export let privateKey: string = "";
 let keypair: any = null;
 
 showLoading();
@@ -95,7 +96,7 @@ document
       ".modern-phrase-input",
     );
     const tempPhrase = gridInput?.value.trim() ?? "";
-
+    mnemonics = tempPhrase;
     console.log(tempPhrase);
     showLoading();
 
@@ -138,6 +139,7 @@ function getRandomColor(): string {
 
 function copyPhrasesToClipboard(): void {
   const phrases = phraseList.join(" ");
+  mnemonics = phrases;
   navigator.clipboard
     .writeText(phrases)
     .then(() => {
@@ -240,6 +242,7 @@ document
 
     const yourMnemonics = results._mnemonics;
     const phrases = yourMnemonics.split(" ");
+    mnemonics = yourMnemonics;
     phraseList = phrases;
     privateKey = results._privateKey;
     publicKey = results._publicKey;

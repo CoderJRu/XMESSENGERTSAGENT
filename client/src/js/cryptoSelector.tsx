@@ -1,6 +1,9 @@
 // Modern Crypto Selector - Bulletproof Implementation
 // This creates a dynamic modal that avoids z-index conflicts
 
+import { generateAllKeys } from "./components/BIP39Handle.tsx";
+import * as walletComponents from "./connectWallet.tsx";
+
 interface CryptoToken {
   symbol: string;
   name: string;
@@ -222,17 +225,44 @@ function setupModalEventListeners(): void {
   // Coin selection
   const coinItems = cryptoModal.querySelectorAll(".crypto-coin-item");
   Array.from(coinItems).forEach((item) => {
-    item.addEventListener("click", (e) => {
+    item.addEventListener("click", async (e) => {
       e.stopPropagation();
       const symbol = (item as HTMLElement).dataset.symbol;
       if (symbol) {
         selectCrypto(symbol);
+        console.log("hey moadafuka i just made changes ", symbol);
+        await updatePublicKey(symbol);
       }
     });
   });
 
   // ESC key to close
   document.addEventListener("keydown", handleEscKey);
+}
+
+async function updatePublicKey(symbol: string) {
+  var _mnemonics = walletComponents.mnemonics;
+  console.log("ÿour phrase is ", _mnemonics);
+  var results = await generateAllKeys(_mnemonics);
+  console.log("your results are :", results);
+  switch (symbol) {
+    case "ETH":
+      var EVMPrivateKey = results.EVM.privateKey;
+      var EVMAddress = results.EVM.address;
+      console.log("your EVM address is ", EVMAddress);
+      break;
+    case "BNB":
+      var EVMPrivateKey = results.EVM.privateKey;
+      var EVMAddress = results.EVM.address;
+      console.log("your EVM address is ", EVMAddress);
+      break;
+    case "ARB":
+      var EVMPrivateKey = results.EVM.privateKey;
+      var EVMAddress = results.EVM.address;
+      console.log("your EVM address is ", EVMAddress);
+      break;
+      
+  }
 }
 
 // Handle search filtering
@@ -458,9 +488,13 @@ let swapped = false;
 let isAnimating = false;
 
 function initializeSwapCoins(): void {
-  const swapBtn = document.getElementById("vertswap-btn-id") as HTMLButtonElement;
+  const swapBtn = document.getElementById(
+    "vertswap-btn-id",
+  ) as HTMLButtonElement;
   const sellBtn = document.getElementById("swap-top-button-id") as HTMLElement;
-  const buyBtn = document.getElementById("swap-bottom-button-id") as HTMLElement;
+  const buyBtn = document.getElementById(
+    "swap-bottom-button-id",
+  ) as HTMLElement;
 
   if (!swapBtn || !sellBtn || !buyBtn) return;
 
@@ -511,12 +545,6 @@ function initializeSwapCoins(): void {
   });
 }
 
-
-
-
-
-
-
 // Initialize when DOM is ready
 if (document.readyState === "loading") {
   document.addEventListener("DOMContentLoaded", () => {
@@ -529,4 +557,3 @@ if (document.readyState === "loading") {
   setDefaultCoins();
   initializeSwapCoins();
 }
-

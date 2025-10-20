@@ -1,102 +1,80 @@
-import * as bip39 from "bip39";
-import { Keypair as SolKeypair } from "@solana/web3.js";
-import bs58 from "bs58";
-import { Account, Ed25519PrivateKey } from "@aptos-labs/ts-sdk";
-import * as bip32 from "bip32";
-import * as ecc from "tiny-secp256k1";
-import { mnemonicToPrivateKey as tonMnemonicToPrivateKey } from "@ton/crypto";
-import { Wallet as XRPLWallet } from "xrpl";
-// Setup bip32 factory for modern Node.js
-const BIP32 = bip32.BIP32Factory(ecc);
+// ====== Imports ======
+import { ethers } from "ethers";
+import { AptosAccount } from "aptos";
+import * as solanaWeb3 from "@solana/web3.js";
+import * as tonMnemonic from "tonweb-mnemonic";
+import { DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
+import * as secp from "@noble/secp256k1";
+import * as bitcoin from "bitcoinjs-lib";
+import { mnemonicToSeedSync } from "@scure/bip39";
+import { HDKey } from "@scure/bip32";
+import { Secp256k1 } from "@cosmjs/crypto";
+import { toHex } from "@cosmjs/encoding";
+// ====== Helpers ======
+const u8ToHex = (b: Uint8Array) =>
+  Array.from(b)
+    .map((x) => x.toString(16).padStart(2, "0"))
+    .join("");
 
-interface GeneratedKeys {
-  EVM: string;
-  BTC: string;
-  SOL: string;
-  APTOS: string;
-  TON: string;
-  XRPL: string;
-  IBC: string;
-}
+// ====== Main Function ======
+export async function generateAllKeys(mnemonic: string) {
+  const seed = mnemonicToSeedSync(mnemonic);
+  const root = HDKey.fromMasterSeed(seed);
+  const getPriv = (path: string) => root.derive(path).privateKey!;
 
-export async function generateKeys(
-  mnemonic?: string,
-): Promise<{ mnemonic: string; keys: GeneratedKeys }> {
-  // 1️⃣ Generate mnemonic if not provided
-  if (!mnemonic) mnemonic = bip39.generateMnemonic();
-
-  // 2️⃣ Convert mnemonic to seed
-  const seed = await bip39.mnemonicToSeed(mnemonic);
-
-  // 3️⃣ Ensure seed is a Buffer
-  if (!Buffer.isBuffer(seed)) throw new Error("Seed is not a Buffer");
-
-  // 4️⃣ Create root node safely
-  const root = BIP32.fromSeed(seed);
-
-  function getPrivateKeyHex(
-    node: ReturnType<typeof root.derivePath>,
-    name: string,
-  ): string {
-    if (!node.privateKey) throw new Error(`${name} private key is undefined`);
-    return (node.privateKey as Buffer).toString("hex");
-  }
-
-  // 5️⃣ EVM (Ethereum, BSC, Polygon)
-  const nodeEVM = root.derivePath("m/44'/60'/0'/0/0");
-  const evmPrivateKey = getPrivateKeyHex(nodeEVM, "EVM");
-
-  // 6️⃣ BTC
-  const nodeBTC = root.derivePath("m/44'/0'/0'/0/0");
-  const btcPrivateKey = getPrivateKeyHex(nodeBTC, "BTC");
-
-  // 7️⃣ SOL
-  const nodeSOL = root.derivePath("m/44'/501'/0'/0'");
-  if (!nodeSOL.privateKey) throw new Error("SOL private key is undefined");
-  const solKeypair = SolKeypair.fromSeed(nodeSOL.privateKey.slice(0, 32));
-  const solPrivateKey = bs58.encode(solKeypair.secretKey);
-
-  // 8️⃣ Aptos
-  const nodeAPTOS = root.derivePath("m/44'/637'/0'/0'/0'");
-  if (!nodeAPTOS.privateKey) throw new Error("APTOS private key is undefined");
-  const privateKey = new Ed25519PrivateKey(nodeAPTOS.privateKey);
-  const aptosAccount = Account.fromPrivateKey({ privateKey, legacy: false });
-  const aptosPrivateKey = aptosAccount.privateKey.toString("hex");
-
-  // TON
-  const nodeTON = root.derivePath("m/44'/396'/0'/0/0");
-  if (!nodeTON.privateKey) throw new Error("TON private key is undefined");
-  const tonmnemonic = nodeTON.privateKey.toString("utf-8");
-  const mnemonicWords = tonmnemonic.split(" "); // Split the string into an array of words
-  const tonKeyPair = await tonMnemonicToPrivateKey(mnemonicWords);
-  const tonPrivateKey = tonKeyPair.secretKey.toString("hex");
-
-  // XRPL
-  const nodeXRPL = root.derivePath("m/44'/144'/0'/0/0");
-  if (!nodeXRPL.privateKey) throw new Error("XRPL private key is undefined");
-  const xrplWallet = XRPLWallet.fromSeed(nodeXRPL.privateKey.toString("hex"));
-  const xrplPrivateKey = xrplWallet.privateKey;
-
-  // IBC (Cosmos-style secp256k1)
-  const nodeIBC = root.derivePath("m/44'/118'/0'/0/0");
-  if (!nodeIBC.privateKey) throw new Error("IBC private key is undefined");
-  const ibcPrivateKey = (nodeIBC.privateKey as Buffer).toString("hex");
-
-  return {
-    mnemonic,
-    keys: {
-      EVM: evmPrivateKey,
-      BTC: btcPrivateKey,
-      SOL: solPrivateKey,
-      APTOS: aptosPrivateKey,
-      TON: tonPrivateKey,
-      XRPL: xrplPrivateKey,
-      IBC: ibcPrivateKey,
-    },
+  // ===== EVM =====
+  const evmPriv = getPriv("m/44'/60'/0'/0/0");
+  const evmWallet = new ethers.Wallet(u8ToHex(evmPriv));
+  const EVM = {
+    privateKey: evmWallet.privateKey,
+    publicKey: evmWallet.signingKey.publicKey,
+    address: evmWallet.address,
   };
-}
 
-// Optional: standalone mnemonic generator
-export function generateMnemonic(): string {
-  return bip39.generateMnemonic(); // 12 words
+  // ===== BTC =====
+  let btcPrivU8 = getPriv("m/44'/0'/0'/0/0");
+  if (btcPrivU8.length !== 32) btcPrivU8 = btcPrivU8.slice(0, 32);
+  const btcPubU8 = secp.getPublicKey(btcPrivU8, true);
+  const { address: btcAddress } = bitcoin.payments.p2pkh({
+    pubkey: Buffer.from(btcPubU8),
+  });
+  const BTC = {
+    privateKey: u8ToHex(btcPrivU8),
+    publicKey: u8ToHex(btcPubU8),
+    address: btcAddress || "",
+  };
+
+  // ===== Solana =====
+  const solPriv = getPriv("m/44'/501'/0'/0'");
+  const solKeypair = solanaWeb3.Keypair.fromSeed(solPriv.slice(0, 32));
+  const SOL = {
+    privateKey: u8ToHex(solKeypair.secretKey),
+    publicKey: solKeypair.publicKey.toBase58(),
+    address: solKeypair.publicKey.toBase58(),
+  };
+
+  // ===== Aptos =====
+  const aptPriv = getPriv("m/44'/637'/0'/0'/0'");
+  const aptAccount = new AptosAccount(aptPriv);
+  const APTOS = {
+    privateKey: Buffer.from(aptAccount.signingKey.secretKey).toString("hex"),
+    publicKey: Buffer.from(aptAccount.signingKey.publicKey).toString("hex"),
+    address: aptAccount.address().toString(),
+  };
+
+  // ===== TON ===== (✅ your version)
+  const tonWords = mnemonic.trim().split(" ");
+  const tonKeyPair = await tonMnemonic.mnemonicToKeyPair(tonWords);
+  const TON = {
+    privateKey: Buffer.from(tonKeyPair.secretKey).toString("hex"),
+    publicKey: Buffer.from(tonKeyPair.publicKey).toString("hex"),
+  };
+
+  // ===== IBC (Cosmos SDK) =====
+  const ibcPriv = getPriv("m/44'/118'/0'/0/0");
+  const pub = await Secp256k1.makeKeypair(ibcPriv);
+  const IBC = { privateKey: toHex(ibcPriv), publicKey: toHex(pub.pubkey) };
+
+  // ===== Result =====
+  return { EVM, BTC, SOL, APTOS, TON, IBC };
 }
