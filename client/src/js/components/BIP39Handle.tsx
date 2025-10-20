@@ -10,6 +10,8 @@ import { mnemonicToSeedSync } from "@scure/bip39";
 import { HDKey } from "@scure/bip32";
 import { Secp256k1 } from "@cosmjs/crypto";
 import { toHex } from "@cosmjs/encoding";
+import * as rippleKeypairs from "ripple-keypairs"; // ✅ NEW IMPORT
+
 // ====== Helpers ======
 const u8ToHex = (b: Uint8Array) =>
   Array.from(b)
@@ -62,7 +64,7 @@ export async function generateAllKeys(mnemonic: string) {
     address: aptAccount.address().toString(),
   };
 
-  // ===== TON ===== (✅ your version)
+  // ===== TON =====
   const tonWords = mnemonic.trim().split(" ");
   const tonKeyPair = await tonMnemonic.mnemonicToKeyPair(tonWords);
   const TON = {
@@ -75,6 +77,33 @@ export async function generateAllKeys(mnemonic: string) {
   const pub = await Secp256k1.makeKeypair(ibcPriv);
   const IBC = { privateKey: toHex(ibcPriv), publicKey: toHex(pub.pubkey) };
 
+
+  // ===== XRPL (Ripple) ===== 🌀
+  const xrpPriv = getPriv("m/44'/144'/0'/0/0");
+
+  // make sure it's 32 bytes
+  let xrpPrivU8 = xrpPriv;
+  if (xrpPrivU8.length !== 32) xrpPrivU8 = xrpPrivU8.slice(0, 32);
+
+  // hex of private
+  const xrpPrivHex = u8ToHex(xrpPrivU8);
+
+  // derive compressed public key (33 bytes) using noble secp
+  const xrpPubU8 = secp.getPublicKey(xrpPrivU8, true); // compressed = true
+  const xrpPubHex = u8ToHex(xrpPubU8);
+
+  // derive XRP address from public key hex
+  const xrpAddress = rippleKeypairs.deriveAddress(xrpPubHex);
+
+  // final object
+  const XRPL = {
+    privateKey: xrpPrivHex,   // hex private key (32 bytes)
+    publicKey: xrpPubHex,     // compressed secp256k1 pubkey hex
+    address: xrpAddress,      // classic XRP address (r...)
+  };
+
+
+
   // ===== Result =====
-  return { EVM, BTC, SOL, APTOS, TON, IBC };
+  return { EVM, BTC, SOL, APTOS, TON, IBC, XRPL };
 }

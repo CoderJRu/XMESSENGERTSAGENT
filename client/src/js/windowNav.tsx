@@ -83,7 +83,7 @@ function refresh(): void {
     }
   });
 }
-
+export let GlobalisSwappedChecked = false;
 function handleToggleSwitch(isChecked: boolean): void {
   const swapReg = getElement("swap-reg");
   const sendReg = getElement("send-reg");
@@ -101,6 +101,7 @@ function handleToggleSwitch(isChecked: boolean): void {
     toggleSwap.checked = false;
     toggleSend.checked = false;
   }
+  GlobalisSwappedChecked = isChecked;
 }
 
 (getElement("swap-send-toggle") as HTMLInputElement).addEventListener(

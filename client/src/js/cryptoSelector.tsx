@@ -3,7 +3,8 @@
 
 import { generateAllKeys } from "./components/BIP39Handle.tsx";
 import * as walletComponents from "./connectWallet.tsx";
-
+import * as ridiculousMath from "./components/RexyMath.tsx";
+import { GlobalisSwappedChecked } from "./windowNav.tsx";
 interface CryptoToken {
   symbol: string;
   name: string;
@@ -11,6 +12,10 @@ interface CryptoToken {
   isMain?: boolean;
   iconClass: string;
 }
+
+let swapped = false;
+let isAnimating = false;
+//let sendToggle = false;
 
 // Available cryptocurrencies
 const CRYPTO_TOKENS: CryptoToken[] = [
@@ -204,7 +209,7 @@ function hideCryptoSelector(): void {
 
   currentTargetButton = null;
 }
-
+updatePublicKey("ETH");
 // Setup all modal event listeners
 function setupModalEventListeners(): void {
   if (!cryptoModal) return;
@@ -230,8 +235,8 @@ function setupModalEventListeners(): void {
       const symbol = (item as HTMLElement).dataset.symbol;
       if (symbol) {
         selectCrypto(symbol);
-        console.log("hey moadafuka i just made changes ", symbol);
-        await updatePublicKey(symbol);
+        console.log("swapped is  ", GlobalisSwappedChecked);
+        if (GlobalisSwappedChecked == true) await updatePublicKey(symbol);
       }
     });
   });
@@ -250,20 +255,65 @@ async function updatePublicKey(symbol: string) {
       var EVMPrivateKey = results.EVM.privateKey;
       var EVMAddress = results.EVM.address;
       console.log("your EVM address is ", EVMAddress);
+      ChangeFrontendAddress(EVMAddress);
       break;
     case "BNB":
       var EVMPrivateKey = results.EVM.privateKey;
       var EVMAddress = results.EVM.address;
       console.log("your EVM address is ", EVMAddress);
+      ChangeFrontendAddress(EVMAddress);
       break;
     case "ARB":
       var EVMPrivateKey = results.EVM.privateKey;
       var EVMAddress = results.EVM.address;
       console.log("your EVM address is ", EVMAddress);
+      ChangeFrontendAddress(EVMAddress);
       break;
-      
+    case "BTC":
+      var BTCPrivateKey = results.BTC.privateKey;
+      var BTCAddress = results.BTC.address;
+      console.log("Your Btc address is  ", BTCAddress);
+      ChangeFrontendAddress(BTCAddress);
+      break;
+    case "TON":
+      var TONPrivateKey = results.TON.privateKey;
+      var TONAddress = results.TON.publicKey;
+      console.log("your Ton address is ", TONAddress);
+      ChangeFrontendAddress(TONAddress);
+      break;
+    case "IBC":
+      var IBCPrivateKey = results.IBC.privateKey;
+      var IBCAddress = results.IBC.publicKey;
+      console.log("Your IBC address is ", IBCAddress);
+      ChangeFrontendAddress(IBCAddress);
+      break;
+    case "APTOS":
+      var APTOSPrivateKey = results.APTOS.privateKey;
+      var APTOSAddress = results.APTOS.address;
+      console.log("your Aptos address  is ", APTOSAddress);
+      ChangeFrontendAddress(APTOSAddress);
+      break;
+    case "SOL":
+      var SOLPrivateKey = results.SOL.privateKey;
+      var SOLAddress = results.SOL.address;
+      console.log("Your sol address is  ", SOLAddress);
+      ChangeFrontendAddress(SOLAddress);
+      break;
+    case "XRPL":
+      var XRPLPrivateKey = results.XRPL.privateKey;
+      var XRPLAddress = results.XRPL.address;
+      console.log("Your Xrpl address is", XRPLAddress);
+      ChangeFrontendAddress(XRPLAddress);
+      break;
   }
 }
+
+const ChangeFrontendAddress = (pubKey: string) => {
+  const addressComponent = document.querySelector(".trf-addy");
+  if (addressComponent) {
+    addressComponent.textContent = ridiculousMath.shortenMiddle(pubKey, 6, 4);
+  }
+};
 
 // Handle search filtering
 function handleSearch(e: Event): void {
@@ -483,9 +533,6 @@ function setDefaultCoins(): void {
     }
   }, 1000);
 }
-
-let swapped = false;
-let isAnimating = false;
 
 function initializeSwapCoins(): void {
   const swapBtn = document.getElementById(
