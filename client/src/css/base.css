@@ -2065,7 +2065,7 @@ textarea:focus {
   height: calc(100vh - 150px);
   overflow-y: auto;
   overflow-x: hidden;
-  padding-bottom: 60px;
+  padding: 0 24px 60px 24px;
   box-sizing: border-box;
   -webkit-overflow-scrolling: touch;
   max-width: 420px;
