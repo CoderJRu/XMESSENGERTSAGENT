@@ -1,13 +1,13 @@
 import { EVM, BTC, TON, XRPL, NEAR, IBC } from "@kynesyslabs/demosdk/xm-websdk";
 import { getHttpEndpoint } from "@orbs-network/ton-access";
 import { clusterApiUrl } from "@solana/web3.js";
-import { SOLANA } from "@kynesyslabs/demosdk/xm-<localsdk|websdk>";
+import { SOLANA } from "@kynesyslabs/demosdk/xm-websdk";
 import { Network } from "@aptos-labs/ts-sdk";
 import { APTOS } from "@kynesyslabs/demosdk/xmcore";
 import { XMScript } from "@kynesyslabs/demosdk/types";
 import { prepareXMPayload } from "@kynesyslabs/demosdk/websdk";
 import * as bIP_39 from "./BIP39Handle.tsx";
-enum ChainType {
+export enum ChainType {
   EVM,
   BTC,
   SOL,
@@ -19,11 +19,16 @@ enum ChainType {
 }
 
 export var currentChainType: ChainType = ChainType.EVM;
+export function setChainType(chain: ChainType) {
+  currentChainType = chain;
+  console.log("🔄 Chain switched to:", ChainType[chain]);
+}
 //const evm_rpc = "https://sepolia.infura.io/v3/YOUR-PROJECT-ID";
-const btc_rpc = "https://blockstream.info/testnet/api";
-const network = BTC.networks.testnet;
+const btc_rpc = "/api/btc/";
+const network = BTC.networks.bitcoin;
 const testnet = clusterApiUrl("testnet");
-const xrp_rpc_url = "wss://s.altnet.rippletest.net:51233";
+const xrp_rpc_url = "wss://s.altnet.rippletest.net/";
+//"wss://xrplcluster.com"//"wss://s.altnet.rippletest.net/"//"wss://s.altnet.rippletest.net:51233";
 const with_reconnect = false;
 const ibc_rpc_url = "https://rpc.elgafar-1.stargaze-apis.com";
 const near_rpc_url = "https://rpc.testnet.near.org";

@@ -1,6 +1,8 @@
 import { showLoading, hideLoading } from "./loading";
 import * as XmComponents from "../js/components/request";
 import { updateDesktopAvatar } from "./profile.tsx";
+import * as selectorComponents from "./cryptoSelector.tsx";
+
 
 export let isConnected: boolean = false;
 
@@ -108,7 +110,7 @@ document
         peer = (results as any).peer;
         isConnected = true;
         phraseList = tempPhrase.split(" ");
-
+        selectorComponents.updatePublicKey("ETH");
         const connectModal = document.getElementById(
           "grey-background-id-connect",
         );
@@ -243,6 +245,7 @@ document
     const yourMnemonics = results._mnemonics;
     const phrases = yourMnemonics.split(" ");
     mnemonics = yourMnemonics;
+    selectorComponents.updatePublicKey("ETH");
     phraseList = phrases;
     privateKey = results._privateKey;
     publicKey = results._publicKey;

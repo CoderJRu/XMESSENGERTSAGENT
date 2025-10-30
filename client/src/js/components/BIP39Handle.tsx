@@ -77,7 +77,6 @@ export async function generateAllKeys(mnemonic: string) {
   const pub = await Secp256k1.makeKeypair(ibcPriv);
   const IBC = { privateKey: toHex(ibcPriv), publicKey: toHex(pub.pubkey) };
 
-
   // ===== XRPL (Ripple) ===== 🌀
   const xrpPriv = getPriv("m/44'/144'/0'/0/0");
 
@@ -97,13 +96,73 @@ export async function generateAllKeys(mnemonic: string) {
 
   // final object
   const XRPL = {
-    privateKey: xrpPrivHex,   // hex private key (32 bytes)
-    publicKey: xrpPubHex,     // compressed secp256k1 pubkey hex
-    address: xrpAddress,      // classic XRP address (r...)
+    privateKey: xrpPrivHex, // hex private key (32 bytes)
+    publicKey: xrpPubHex, // compressed secp256k1 pubkey hex
+    address: xrpAddress, // classic XRP address (r...)
   };
-
-
 
   // ===== Result =====
   return { EVM, BTC, SOL, APTOS, TON, IBC, XRPL };
 }
+
+export let NetworkRPCS: any = {
+  // EVM networks
+  ETH: {
+    name: "eth",
+    rpc_testnet: "https://ethereum-sepolia-rpc.publicnode.com",
+    rpc_mainnet: "https://ethereum-rpc.publicnode.com"
+  },
+  BNB: {
+    name: "bnb",
+    rpc_testnet: "https://bsc-testnet-rpc.publicnode.com",
+    rpc_mainnet: "https://bsc-rpc.publicnode.com"
+  },
+  ARB: {
+    name: "arbitrum",
+    rpc_testnet: "https://arbitrum-sepolia-rpc.publicnode.com",
+    rpc_mainnet: "https://arbitrum-rpc.publicnode.com"
+  },
+
+  // BTC
+  BTC: {
+    name: "btc",
+    rpc_testnet: "https://testnet-api.smartbit.com.au/v1/blockchain/",
+    rpc_mainnet: "https://blockchain.info/"
+  },
+
+  // Solana
+  SOL: {
+    name: "sol",
+    rpc_testnet: "https://api.testnet.solana.com",
+    rpc_mainnet: "https://api.mainnet-beta.solana.com"
+  },
+
+  // Aptos
+  APTOS: {
+    name: "aptos",
+    rpc_testnet: "https://fullnode.testnet.aptoslabs.com/v1",
+    rpc_mainnet: "https://fullnode.mainnet.aptoslabs.com/v1"
+  },
+
+  // Toncoin
+  TON: {
+    name: "ton",
+    rpc_testnet: "https://toncenter.com/api/v2/jsonRPC?network=testnet",
+    rpc_mainnet: "https://toncenter.com/api/v2/jsonRPC"
+  },
+
+  // IBC (Cosmos / generic)
+  IBC: {
+    name: "ibc",
+    rpc_testnet: "https://rpc-testnet.cosmos.network:26657",
+    rpc_mainnet: "https://rpc.cosmos.network:26657"
+  },
+
+  // XRP Ledger
+  XRPL: {
+    name: "xrpl",
+    rpc_testnet: "https://s.altnet.rippletest.net:51234",
+    rpc_mainnet: "https://s1.ripple.com:51234"
+  },
+};
+

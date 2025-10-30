@@ -1,10 +1,11 @@
 // Modern Crypto Selector - Bulletproof Implementation
 // This creates a dynamic modal that avoids z-index conflicts
 
-import { generateAllKeys } from "./components/BIP39Handle.tsx";
+import { generateAllKeys, NetworkRPCS } from "./components/BIP39Handle.tsx";
 import * as walletComponents from "./connectWallet.tsx";
 import * as ridiculousMath from "./components/RexyMath.tsx";
 import { GlobalisSwappedChecked } from "./windowNav.tsx";
+import * as crossChain from "./components/Cross_Chain.jsx";
 interface CryptoToken {
   symbol: string;
   name: string;
@@ -209,7 +210,7 @@ function hideCryptoSelector(): void {
 
   currentTargetButton = null;
 }
-updatePublicKey("ETH");
+
 // Setup all modal event listeners
 function setupModalEventListeners(): void {
   if (!cryptoModal) return;
@@ -244,8 +245,114 @@ function setupModalEventListeners(): void {
   // ESC key to close
   document.addEventListener("keydown", handleEscKey);
 }
+//
+const displayBalHTML = document.getElementById("trf-balance-id") as HTMLElement;
+const getWalletBalance = async (
+  chainType: string,
+  address: string,
+  privateKey = "",
+) => {
+  if (chainType == "ETH") {
+    crossChain.setChainType(crossChain.ChainType.EVM);
+    var chainInstance = await crossChain.getInstance(
+      NetworkRPCS.ETH.rpc_testnet,
+    );
+    console.log("instance", chainInstance);
+    //get balance
+    var walletBalance = await crossChain.getBalance(address, chainInstance);
+    console.log(`Your balance is ${walletBalance} ${chainType}`);
+    //diplay balance
+    displayBalHTML.innerText = `Balance ${walletBalance}`;
+  } else if (chainType == "BNB") {
+    crossChain.setChainType(crossChain.ChainType.EVM);
+    var chainInstance = await crossChain.getInstance(
+      NetworkRPCS.BNB.rpc_testnet,
+    );
+    console.log("instance", chainInstance);
+    //get balance
+    var walletBalance = await crossChain.getBalance(address, chainInstance);
+    console.log(`Your balance is ${walletBalance} ${chainType}`);
+    //diplay balance
+    displayBalHTML.innerText = `Balance ${walletBalance}`;
+  } else if (chainType == "ARB") {
+    crossChain.setChainType(crossChain.ChainType.EVM);
+    var chainInstance = await crossChain.getInstance(
+      NetworkRPCS.ARB.rpc_testnet,
+    );
+    console.log("instance", chainInstance);
+    //get balance
+    var walletBalance = await crossChain.getBalance(address, chainInstance);
+    console.log(`Your balance is ${walletBalance} ${chainType}`);
+    //diplay balance
+    displayBalHTML.innerText = `Balance ${walletBalance}`;
+  } else if (chainType == "BTC") {
+    crossChain.setChainType(crossChain.ChainType.BTC);
+    var chainInstance = await crossChain.getInstance("NULL");
+    console.log("instance", chainInstance);
+    //get balance
+    var btcInst = await crossChain.connectWallet(chainInstance, privateKey);
+    var walletBalance = await crossChain.getBalance(address, btcInst);
+    console.log(`Your balance is ${walletBalance} ${chainType}`);
+    //diplay balance
+    displayBalHTML.innerText = `Balance ${walletBalance}`;
+  } else if (chainType == "TON") {
+    crossChain.setChainType(crossChain.ChainType._TON);
+    var chainInstance = await crossChain.getInstance("NULL");
+    console.log("instance", chainInstance);
+    //get balance
+    var walletBalance = await crossChain.getBalance(address, chainInstance);
+    console.log(`Your balance is ${walletBalance} ${chainType}`);
+    //diplay balance
+    displayBalHTML.innerText = `Balance ${walletBalance}`;
+  } else if (chainType == "APTOS") {
+    crossChain.setChainType(crossChain.ChainType.APTOS);
+    var chainInstance = await crossChain.getInstance("NULL");
+    console.log("instance", chainInstance);
+    //get balance
+    var walletBalance = await crossChain.getBalance(address, chainInstance);
+    console.log(`Your balance is ${walletBalance} ${chainType}`);
+    //diplay balance
+    displayBalHTML.innerText = `Balance ${walletBalance}`;
+  } else if (chainType == "IBC") {
+    crossChain.setChainType(crossChain.ChainType.IBC);
+    var chainInstance = await crossChain.getInstance("NULL");
+    console.log("instance", chainInstance);
+    //get balance
+    var walletBalance = await crossChain.getBalance(address, chainInstance);
+    console.log(`Your balance is ${walletBalance} ${chainType}`);
+    //diplay balance
+    displayBalHTML.innerText = `Balance ${walletBalance}`;
+  } else if (chainType == "SOL") {
+    crossChain.setChainType(crossChain.ChainType.SOL);
+    var chainInstance = await crossChain.getInstance("NULL");
+    console.log("instance", chainInstance);
+    //get balance
+    var walletBalance = await crossChain.getBalance(address, chainInstance);
+    console.log(`Your balance is ${walletBalance} ${chainType}`);
+    //diplay balance
+    displayBalHTML.innerText = `Balance ${walletBalance}`;
+  } else if (chainType == "APTOS") {
+    crossChain.setChainType(crossChain.ChainType.APTOS);
+    var chainInstance = await crossChain.getInstance("NULL");
+    console.log("instance", chainInstance);
+    //get balance
+    var walletBalance = await crossChain.getBalance(address, chainInstance);
+    console.log(`Your balance is ${walletBalance} ${chainType}`);
+    //diplay balance
+    displayBalHTML.innerText = `Balance ${walletBalance}`;
+  } else if (chainType == "XRPL") {
+    crossChain.setChainType(crossChain.ChainType.XRPL);
+    var chainInstance = await crossChain.getInstance("NULL");
+    console.log("instance", chainInstance);
+    //get balance
+    var walletBalance = await crossChain.getBalance(address, chainInstance);
+    console.log(`Your balance is ${walletBalance} ${chainType}`);
+    //diplay balance
+    displayBalHTML.innerText = `Balance ${walletBalance}`;
+  }
+};
 
-async function updatePublicKey(symbol: string) {
+export async function updatePublicKey(symbol: string) {
   var _mnemonics = walletComponents.mnemonics;
   console.log("ÿour phrase is ", _mnemonics);
   var results = await generateAllKeys(_mnemonics);
@@ -256,54 +363,63 @@ async function updatePublicKey(symbol: string) {
       var EVMAddress = results.EVM.address;
       console.log("your EVM address is ", EVMAddress);
       ChangeFrontendAddress(EVMAddress);
+      await getWalletBalance(symbol, EVMAddress);
       break;
     case "BNB":
       var EVMPrivateKey = results.EVM.privateKey;
       var EVMAddress = results.EVM.address;
       console.log("your EVM address is ", EVMAddress);
       ChangeFrontendAddress(EVMAddress);
+      await getWalletBalance(symbol, EVMAddress);
       break;
     case "ARB":
       var EVMPrivateKey = results.EVM.privateKey;
       var EVMAddress = results.EVM.address;
       console.log("your EVM address is ", EVMAddress);
       ChangeFrontendAddress(EVMAddress);
+      await getWalletBalance(symbol, EVMAddress);
       break;
     case "BTC":
       var BTCPrivateKey = results.BTC.privateKey;
       var BTCAddress = results.BTC.address;
       console.log("Your Btc address is  ", BTCAddress);
       ChangeFrontendAddress(BTCAddress);
+      await getWalletBalance(symbol, BTCAddress, BTCPrivateKey);
       break;
     case "TON":
       var TONPrivateKey = results.TON.privateKey;
       var TONAddress = results.TON.publicKey;
       console.log("your Ton address is ", TONAddress);
       ChangeFrontendAddress(TONAddress);
+      await getWalletBalance(symbol, TONAddress);
       break;
     case "IBC":
       var IBCPrivateKey = results.IBC.privateKey;
       var IBCAddress = results.IBC.publicKey;
       console.log("Your IBC address is ", IBCAddress);
       ChangeFrontendAddress(IBCAddress);
+      await getWalletBalance(symbol, IBCAddress);
       break;
     case "APTOS":
       var APTOSPrivateKey = results.APTOS.privateKey;
       var APTOSAddress = results.APTOS.address;
       console.log("your Aptos address  is ", APTOSAddress);
       ChangeFrontendAddress(APTOSAddress);
+      await getWalletBalance(symbol, APTOSAddress);
       break;
     case "SOL":
       var SOLPrivateKey = results.SOL.privateKey;
       var SOLAddress = results.SOL.address;
       console.log("Your sol address is  ", SOLAddress);
       ChangeFrontendAddress(SOLAddress);
+      await getWalletBalance(symbol, SOLAddress);
       break;
     case "XRPL":
       var XRPLPrivateKey = results.XRPL.privateKey;
       var XRPLAddress = results.XRPL.address;
       console.log("Your Xrpl address is", XRPLAddress);
       ChangeFrontendAddress(XRPLAddress);
+      await getWalletBalance(symbol, XRPLAddress);
       break;
   }
 }

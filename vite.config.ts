@@ -39,6 +39,12 @@ export default defineConfig({
     fs: {
       strict: true,
       deny: ["**/.*"],
+    },proxy: {
+      "/api/btc": {
+        target: "https://public-btc.nownodes.io",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/btc/, ""),
+      },
     },
   },
 });
