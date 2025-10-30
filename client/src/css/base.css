@@ -2056,7 +2056,7 @@ textarea:focus {
   flex-direction: column;
   align-items: stretch;
   justify-content: flex-start;
-  margin: 0 0 0 auto;
+  margin: 0 auto 0 0;
   gap: 0;
   background: rgba(14, 16, 19, 1);
 }
@@ -2069,7 +2069,7 @@ textarea:focus {
   box-sizing: border-box;
   -webkit-overflow-scrolling: touch;
   max-width: 420px;
-  margin: 0 0 0 auto;
+  margin: 0 auto 0 0;
   width: 100%;
 }
 
