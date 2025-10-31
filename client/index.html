@@ -31,6 +31,27 @@
   </script>
 
   <body>
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="loading-screen">
+      <div class="loading-content">
+        <div class="xmessenger-loader">
+          <span class="letter">X</span>
+          <span class="letter">M</span>
+          <span class="letter">E</span>
+          <span class="letter">S</span>
+          <span class="letter">S</span>
+          <span class="letter">E</span>
+          <span class="letter">N</span>
+          <span class="letter">G</span>
+          <span class="letter">E</span>
+          <span class="letter">R</span>
+        </div>
+        <div class="loading-bar">
+          <div class="loading-progress"></div>
+        </div>
+      </div>
+    </div>
+
     <div class="bg-holder"></div>
     <!-- Success Popup -->
     <div id="success-popup-overlay" class="success-popup-overlay">
@@ -1405,5 +1426,23 @@
     <div id="root"></div>
 
     <script type="module" src="/src/main.tsx"></script>
+
+    <!-- Loading Screen Handler -->
+    <script>
+      // Hide loading screen once everything is loaded
+      window.addEventListener('load', function() {
+        const loadingScreen = document.getElementById('loading-screen');
+        if (loadingScreen) {
+          // Add a small delay to ensure animations complete
+          setTimeout(() => {
+            loadingScreen.classList.add('hidden');
+            // Remove from DOM after fade out
+            setTimeout(() => {
+              loadingScreen.style.display = 'none';
+            }, 600);
+          }, 1000);
+        }
+      });
+    </script>
   </body>
 </html>
