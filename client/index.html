@@ -1429,18 +1429,34 @@
 
     <!-- Loading Screen Handler -->
     <script>
+      // Function to hide loading screen
+      function hideLoadingScreen() {
+        const loadingScreen = document.getElementById('loading-screen');
+        if (loadingScreen && !loadingScreen.classList.contains('hidden')) {
+          loadingScreen.classList.add('hidden');
+          // Remove from DOM after fade out
+          setTimeout(() => {
+            loadingScreen.style.display = 'none';
+          }, 600);
+        }
+      }
+
       // Hide loading screen once everything is loaded
       window.addEventListener('load', function() {
         const loadingScreen = document.getElementById('loading-screen');
         if (loadingScreen) {
           // Add a small delay to ensure animations complete
           setTimeout(() => {
-            loadingScreen.classList.add('hidden');
-            // Remove from DOM after fade out
-            setTimeout(() => {
-              loadingScreen.style.display = 'none';
-            }, 600);
+            hideLoadingScreen();
           }, 1000);
+        }
+      });
+
+      // Allow clicking to skip loading screen
+      document.addEventListener('DOMContentLoaded', function() {
+        const loadingScreen = document.getElementById('loading-screen');
+        if (loadingScreen) {
+          loadingScreen.addEventListener('click', hideLoadingScreen);
         }
       });
     </script>
