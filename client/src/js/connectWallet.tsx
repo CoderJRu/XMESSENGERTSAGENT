@@ -8,14 +8,20 @@ export let isConnected: boolean = false;
 
 // Success popup functions
 export function showSuccessPopup(title: string, message: string): void {
+  console.log("🎉 showSuccessPopup called:", title);
   const overlay = document.getElementById("success-popup-overlay");
   const titleEl = document.getElementById("success-title");
   const messageEl = document.getElementById("success-message");
+
+  console.log("🔍 Popup elements found:", { overlay: !!overlay, titleEl: !!titleEl, messageEl: !!messageEl });
 
   if (overlay && titleEl && messageEl) {
     titleEl.textContent = title;
     messageEl.textContent = message;
     overlay.classList.add("show");
+    console.log("✅ Popup displayed successfully");
+  } else {
+    console.error("❌ Failed to find popup elements");
   }
 }
 
@@ -29,6 +35,9 @@ export function hideSuccessPopup(): void {
 
 // Button state management
 export function updateButtonStates(): void {
+  console.log("🔄 updateButtonStates called");
+  console.log("📊 State: isConnected =", isConnected, ", demosConnected =", demosConnected);
+  
   const connectBtn = document.getElementById(
     "connect-button-id",
   ) as HTMLButtonElement;
@@ -37,17 +46,23 @@ export function updateButtonStates(): void {
   ) as HTMLButtonElement;
   const connectPara = document.querySelector(".connect-para") as HTMLElement;
 
+  console.log("🔍 Found elements:", { connectBtn: !!connectBtn, createBtn: !!createBtn, connectPara: !!connectPara });
+
   if (isConnected && !demosConnected) {
     demosConnected = true;
+    console.log("✅ Setting demosConnected to true");
   }
 
   if (demosConnected) {
+    console.log("🎯 Updating UI elements...");
     if (connectBtn) {
       connectBtn.textContent = "Connected";
       connectBtn.disabled = true;
+      console.log("✅ Connect button updated");
     }
     if (createBtn) {
       createBtn.disabled = true;
+      console.log("✅ Create button disabled");
     }
     if (connectPara) {
       connectPara.innerHTML = `
@@ -56,7 +71,10 @@ export function updateButtonStates(): void {
         </svg>
         <span style="color: #4CAF50;">Wallet connected successfully</span>
       `;
+      console.log("✅ Connect para updated");
     }
+  } else {
+    console.log("⚠️ demosConnected is false, skipping UI update");
   }
 }
 
@@ -309,11 +327,13 @@ document
       phraseList,
     );
     const results = response;
+    console.log("📦 Wallet creation response:", results);
     isConnected = true;
+    console.log("🔗 isConnected set to:", isConnected);
 
     if (results.status === "success") {
       data = results.data;
-      console.log(data);
+      console.log("✅ Wallet created successfully:", data);
       updateButtonStates();
       // Update desktop avatar after successful wallet creation
       updateDesktopAvatar();
@@ -321,6 +341,8 @@ document
         "Wallet Created!",
         "Your new Demos wallet account has been created successfully. You can now access all features.",
       );
+    } else {
+      console.error("❌ Wallet creation failed:", results);
     }
 
     hideLoading();
