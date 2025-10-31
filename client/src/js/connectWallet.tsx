@@ -334,13 +334,20 @@ document
     if (results.status === "success") {
       data = results.data;
       console.log("✅ Wallet created successfully:", data);
-      updateButtonStates();
-      // Update desktop avatar after successful wallet creation
-      updateDesktopAvatar();
-      showSuccessPopup(
-        "Wallet Created!",
-        "Your new Demos wallet account has been created successfully. You can now access all features.",
-      );
+      
+      // Force demosConnected to true
+      demosConnected = true;
+      console.log("🔗 demosConnected set to:", demosConnected);
+      
+      // Small delay to ensure DOM is ready
+      setTimeout(() => {
+        updateButtonStates();
+        updateDesktopAvatar();
+        showSuccessPopup(
+          "Wallet Created!",
+          "Your new Demos wallet account has been created successfully. You can now access all features.",
+        );
+      }, 100);
     } else {
       console.error("❌ Wallet creation failed:", results);
     }
