@@ -98,20 +98,20 @@ export const createAccount = async (
     var _keyPair: any = Keypair;
     var publicKey: string = publicKey;
     console.log("🔑 Creating account with public key:", _keyPair.publicKey);
-    
+
     // Check if demos SDK is connected
     if (!demos) {
       console.error("❌ Demos SDK is not initialized. Reconnecting...");
       demos = await connectSdk();
     }
-    
+
     if (!demos.connected) {
       console.error("❌ Demos SDK is not connected. Status:", demos.connected);
       throw new Error("Demos SDK not connected");
     }
-    
+
     console.log("✅ Demos SDK is connected");
-    
+
     var selectedFirstName = firstNames[generateID(0, firstNames.length - 1)];
     var selectedLastName = lastNames[generateID(0, lastNames.length - 1)];
     var _username =
@@ -121,15 +121,19 @@ export const createAccount = async (
       username: _username,
       publicKey: publicKey,
     };
-    
+
     console.log("📝 Inserting user data into database...");
     await InsertDb(_newData, publicKey);
     console.log("✅ User data inserted");
-    
+
     console.log("🔐 Logging mnemonics...");
-    var status: any = await loggingMnemonics(_phraseList, demos);
+    console.log("creating.... and yur phrase list is ", _phraseList);
+    const words = _phraseList;
+    const Phrasestr = words.join(" ");
+    console.log(Phrasestr);
+    var status: any = await loggingMnemonics(Phrasestr, demos);
     console.log("✅ Mnemonics logged successfully");
-    
+
     var myidentity = status.identity;
     const resultsJson: AccountCreated = {
       status: "success",
